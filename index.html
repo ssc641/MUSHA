@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSC Grand Mall | Premium Furniture Logistics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. The Gateway Overlay -->
+<div id="gateway-overlay">
+    <div class="gateway-content">
+        <h1>WELCOME TO</h1>
+        <button id="open-btn" onclick="openTheMall()">ENTER THE MALL</button>
+    </div>
+</div>
+
+    <nav class="side-bar">
+        <div class="logo">SSC GRAND MALL</div>
+        
+        <div class="tabs">
+            <button class="tab-btn active">Premium Quality</button>
+            <button class="tab-btn">Standard Quality</button>
+        </div>
+
+        <ul class="sections">
+            <li>Lounge & Living</li>
+            <li>Bedroom Suite</li>
+            <li>Office & Study</li>
+            <li>Kitchen & Dining</li>
+            <li>Outdoor Living</li>
+        </ul>
+
+        <div class="logistics-tag">
+            <p>SSC Logistics: Delivery Guaranteed</p>
+        </div>
+    </nav>
+
+    <main class="lobby-container">
+    <div class="fountain-wrapper">
+        <!-- The Master Image -->
+        <img src="assets/lobby_v2.png" class="main-img" usemap="#mallmap">
+
+        <!-- Clickable hotspots for different sections -->
+        <map name="mallmap">
+            <!-- Coordinates for the Left Wing (Standard) -->
+            <area shape="rect" coords="0,0,300,1000" href="#" onclick="showSection('standard')" alt="Standard Furniture">
+            <!-- Coordinates for the Right Wing (Premium) -->
+            <area shape="rect" coords="700,0,1000,1000" href="#" onclick="showSection('premium')" alt="Premium Furniture">
+            <!-- Coordinates for the Fountain (Logistics/Track Order) -->
+            <area shape="circle" coords="500,600,150" href="#" onclick="showSection('logistics')" alt="SSC Logistics">
+        </map>
+    </div>
+</main>
+<script src="script.js"></script>
+
+</body>
+</html>

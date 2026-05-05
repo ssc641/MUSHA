@@ -1,0 +1,199 @@
+/* 1. RESET: Clears all default browser gaps */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. BODY: This is the most important fix. 
+   'display: flex' forces the Sidebar and the Lobby to sit side-by-side. */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex; 
+    flex-direction: row; /* Horizontal layout */
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Prevents the page from scrolling up and down */
+    background-color: #050a08;
+}
+
+/* 3. SIDEBAR: Fixed width on the left */
+.side-bar {
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(145deg, #004d33 0%, #2eaf7d 50%, #002e1f 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    border-right: 2px solid #d4af37; /* Gold Trim */
+    box-shadow: 5px 0 20px rgba(0,0,0,0.6);
+    z-index: 10;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 0px 4px 4px rgba(0,0,0,0.4);
+}
+
+.tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.tab-btn {
+    width: 100%;
+    padding: 12px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: white;
+    color: #004d33;
+}
+
+.sections {
+    list-style: none;
+    flex-grow: 1; /* Pushes the logistics tag to the bottom */
+}
+
+.sections li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.sections li:hover {
+    color: #d4af37;
+    padding-left: 10px;
+    transition: 0.3s;
+}
+
+.logistics-tag {
+    padding: 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 1px dashed #d4af37;
+}
+
+/* 4. LOBBY CONTAINER: Fills the remaining space on the right */
+.lobby-container {
+    flex-grow: 1; /* Takes up all space not used by sidebar */
+    height: 100vh;
+    position: relative;
+    background-color: #000;
+}
+
+.fountain-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Forces the Copilot image to fill the screen like a wall */
+    display: block;
+}
+
+/* Gateway Styling */
+#gateway-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: url('assets/doors_closed.png') center/cover no-repeat; /* Use the name of your door pic */
+    z-index: 9999; /* Higher than everything else */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1.5s ease, visibility 1.5s;
+}
+
+.gateway-content {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6); /* Darkens the area behind text */
+    padding: 40px;
+    border-radius: 15px;
+    border: 2px solid #2eaf7d;
+}
+
+#open-btn {
+    padding: 15px 35px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: #2eaf7d; /* Your signature green */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(46, 175, 125, 0.6);
+    transition: 0.3s;
+}
+
+#open-btn:hover {
+    transform: scale(1.1);
+    background: white;
+    color: #004d33;
+}
+
+/* Class to trigger the 'opening' effect */
+.mall-opened {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* MOBILE FIXES */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* Stack sidebar on top of the image */
+        overflow-y: auto; /* Allow scrolling on mobile */
+    }
+
+    .side-bar {
+        width: 100%; /* Sidebar takes full width */
+        height: auto; /* Only as tall as the content needs */
+        border-right: none;
+        border-bottom: 2px solid #d4af37; /* Move gold trim to the bottom */
+        padding: 15px;
+    }
+
+    .logo {
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    .sections {
+        display: none; /* Hide the long list on mobile to save space */
+    }
+
+    .lobby-container {
+        width: 100%;
+        height: 60vh; /* Make the mall image smaller so it fits the screen */
+    }
+
+    #gateway-overlay .gateway-content {
+        width: 90%; /* Make the 'Welcome' box fit phone screens */
+        padding: 20px;
+    }
+    
+    #open-btn {
+        font-size: 1.1rem;
+    }
+}
