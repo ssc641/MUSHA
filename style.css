@@ -19,14 +19,11 @@ body {
 /* =========================================
    2. MUSHA LANDING PAGE (index.html)
    ========================================= */
-
-/* This sets the background for the whole page */
 .musha-container {
     display: flex;
     height: 100vh;
     width: 100vw;
     flex-direction: row;
-    /* Light at top, Black at bottom */
     background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%); 
 }
 
@@ -37,11 +34,11 @@ body {
     transform: translateX(-50%);
     z-index: 100;
     text-align: center;
-    width: 100%; /* Ensures text doesn't wrap weirdly */
+    width: 100%;
 }
 
 .main-logo {
-    width: 80px; /* Sightly smaller for mobile-first comfort */
+    width: 80px;
     height: auto;
     margin-bottom: 5px;
 }
@@ -54,7 +51,7 @@ body {
 }
 
 .tagline {
-    color: #333; /* Darker text since the top is white */
+    color: #333;
     font-size: 0.9rem;
     font-weight: bold;
 }
@@ -67,10 +64,9 @@ body {
     transition: 0.5s all ease;
     cursor: pointer;
     border: 1px solid rgba(0,0,0,0.1);
-    padding-top: 100px; /* Pushes content down so it doesn't hit the header */
+    padding-top: 100px;
 }
 
-/* Updated Portal Content Spacing */
 .portal-content h1 {
     color: #d4af37;
     font-size: 1.8rem;
@@ -84,27 +80,8 @@ body {
     font-size: 0.9rem;
 }
 
-/* Mobile Adjustments for the Overlap */
-@media (max-width: 768px) {
-    .musha-container { 
-        flex-direction: column; 
-    }
-    
-    .portal-section {
-        padding-top: 0; /* Reset for mobile stack */
-    }
-
-    .brand-name {
-        font-size: 1.5rem;
-    }
-
-    /* Gives the first section room so it doesn't hide under the logo */
-    .mall-bg {
-        padding-top: 120px; 
-    }
-}
 /* =========================================
-   3. SIDEBAR & NAVIGATION (mall.html / auto.html)
+   3. SIDEBAR & NAVIGATION
    ========================================= */
 .app-body {
     display: flex;
@@ -200,7 +177,7 @@ body {
 }
 
 /* =========================================
-   5. GATEWAY OVERLAY
+   5. GATEWAY OVERLAY (PC DEFAULT)
    ========================================= */
 #gateway-overlay {
     position: fixed;
@@ -208,7 +185,8 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
-    background: url('assets/doors_closed.png') center/cover no-repeat;
+    /* Uses the wide PC image */
+    background: url('assets/doors_desktop.png') center/cover no-repeat;
     z-index: 9999;
     display: flex;
     justify-content: center;
@@ -216,9 +194,17 @@ body {
     transition: opacity 1.5s ease, visibility 1.5s;
 }
 
+/* Class added via JS to fade the doors */
+.mall-opened {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
 .gateway-content {
     text-align: center;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
     padding: 40px;
     border-radius: 15px;
     border: 2px solid #2eaf7d;
@@ -238,7 +224,7 @@ body {
 }
 
 #open-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     background: white;
     color: #004d33;
 }
@@ -249,7 +235,12 @@ body {
 @media (max-width: 768px) {
     /* Musha Landing Mobile */
     .musha-container { flex-direction: column; }
-    .portal-section:hover { flex: 1; }
+    
+    .brand-name { font-size: 1.5rem; }
+    
+    .mall-bg { padding-top: 120px; }
+
+    .portal-section { padding-top: 0; }
 
     /* App Layout Mobile */
     .app-body {
@@ -272,37 +263,24 @@ body {
         height: 60vh;
     }
 
-    #gateway-overlay .gateway-content {
-        width: 90%;
-        padding: 20px;
-    }
-}
-@media (max-width: 768px) {
+    /* GATEWAY MOBILE FIX - The Swap */
     #gateway-overlay {
-        /* This is the magic fix for the zoom/crop */
-        background-size: cover; 
-        background-position: top center; /* Shows the sign FIRST */
-        display: flex;
+        /* Automatically swaps to the tall cropped image */
+        background: url('assets/doors_mobile.png') center/cover no-repeat;
+        background-position: top center; 
         flex-direction: column;
-        justify-content: center; 
-        align-items: center;
     }
 
     .gateway-content {
         width: 85%;
-        /* Move the box down slightly so it doesn't cover the sign */
-        margin-top: 80px; 
-        background: rgba(0, 0, 0, 0.8); 
-        backdrop-filter: blur(10px);
-        border: 1px solid #2eaf7d;
-        border-radius: 20px;
+        margin-top: 60px; /* Pushes box down to clear the Mall Sign */
         padding: 25px;
+        backdrop-filter: blur(10px);
     }
 
     #open-btn {
         width: 100%;
-        font-size: 1rem;
-        letter-spacing: 1px;
-        text-transform: uppercase;
+        font-size: 1.1rem;
+        padding: 12px;
     }
 }
