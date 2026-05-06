@@ -6,16 +6,18 @@
     <title>SSC Grand Mall | Premium Furniture Logistics</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="app-body"> <!-- Added class to help Sidebar/Lobby layout -->
 
-    <!-- 1. The Gateway Overlay -->
-<div id="gateway-overlay">
-    <div class="gateway-content">
-        <h1>WELCOME TO</h1>
-        <button id="open-btn" onclick="openTheMall()">ENTER THE MALL</button>
+    <!-- 1. The Gateway Overlay (Entrance) -->
+    <div id="gateway-overlay">
+        <div class="gateway-content">
+            <h1 class="brand-name">MUSHA</h1> <!-- Added brand name for consistency -->
+            <h2>WELCOME TO THE MALL</h2>
+            <button id="open-btn" onclick="openTheMall()">ENTER SHOWROOM</button>
+        </div>
     </div>
-</div>
 
+    <!-- 2. The Interactive Showroom Sidebar -->
     <nav class="side-bar">
         <div class="logo">SSC GRAND MALL</div>
         
@@ -37,23 +39,22 @@
         </div>
     </nav>
 
+    <!-- 3. The Main Visual Lobby -->
     <main class="lobby-container">
-    <div class="fountain-wrapper">
-        <!-- The Master Image -->
-        <img src="assets/lobby_v2.png" class="main-img" usemap="#mallmap">
+        <div class="fountain-wrapper">
+            <!-- The Master Image -->
+            <img src="assets/lobby_v2.png" class="main-img" usemap="#mallmap" alt="SSC Grand Mall Lobby">
 
-        <!-- Clickable hotspots for different sections -->
-        <map name="mallmap">
-            <!-- Coordinates for the Left Wing (Standard) -->
-            <area shape="rect" coords="0,0,300,1000" href="#" onclick="showSection('standard')" alt="Standard Furniture">
-            <!-- Coordinates for the Right Wing (Premium) -->
-            <area shape="rect" coords="700,0,1000,1000" href="#" onclick="showSection('premium')" alt="Premium Furniture">
-            <!-- Coordinates for the Fountain (Logistics/Track Order) -->
-            <area shape="circle" coords="500,600,150" href="#" onclick="showSection('logistics')" alt="SSC Logistics">
-        </map>
-    </div>
-</main>
-<script src="script.js"></script>
+            <!-- Clickable hotspots -->
+            <map name="mallmap">
+                <area shape="rect" coords="0,0,300,1000" href="#" onclick="showSection('standard')" alt="Standard Furniture">
+                <area shape="rect" coords="700,0,1000,1000" href="#" onclick="showSection('premium')" alt="Premium Furniture">
+                <area shape="circle" coords="500,600,150" href="#" onclick="showSection('logistics')" alt="SSC Logistics">
+            </map>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
