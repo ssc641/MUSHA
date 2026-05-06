@@ -19,67 +19,90 @@ body {
 /* =========================================
    2. MUSHA LANDING PAGE (index.html)
    ========================================= */
-.musha-header {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    text-align: center;
-}
 
-.main-logo {
-    width: 120px;
-    height: auto;
-    filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.5));
-    margin-bottom: 10px;
-}
-
-.brand-name {
-    color: #2eaf7d; /* Musha Green */
-    font-size: 2.5rem;
-    letter-spacing: 5px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-}
-
+/* This sets the background for the whole page */
 .musha-container {
     display: flex;
     height: 100vh;
     width: 100vw;
     flex-direction: row;
+    /* Light at top, Black at bottom */
+    background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%); 
+}
+
+.musha-header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    text-align: center;
+    width: 100%; /* Ensures text doesn't wrap weirdly */
+}
+
+.main-logo {
+    width: 80px; /* Sightly smaller for mobile-first comfort */
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.brand-name {
+    color: #2eaf7d; 
+    font-size: 2rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.tagline {
+    color: #333; /* Darker text since the top is white */
+    font-size: 0.9rem;
+    font-weight: bold;
 }
 
 .portal-section {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: center; 
     justify-content: center;
-    text-align: center;
     transition: 0.5s all ease;
     cursor: pointer;
-    position: relative;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+    padding-top: 100px; /* Pushes content down so it doesn't hit the header */
 }
 
-.portal-section:hover { 
-    flex: 1.5; 
-    filter: brightness(1.2); 
+/* Updated Portal Content Spacing */
+.portal-content h1 {
+    color: #d4af37;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
-/* Backgrounds */
-.mall-bg { 
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('assets/lobby_v2.jpg') center/cover; 
-}
-.auto-bg { 
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('assets/car-showroom.jpg') center/cover; 
+.portal-content p {
+    color: #eee;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
 }
 
-.portal-content h1 { 
-    color: #d4af37; 
-    font-size: 2.5rem; 
-    margin-bottom: 10px; 
-}
+/* Mobile Adjustments for the Overlap */
+@media (max-width: 768px) {
+    .musha-container { 
+        flex-direction: column; 
+    }
+    
+    .portal-section {
+        padding-top: 0; /* Reset for mobile stack */
+    }
 
+    .brand-name {
+        font-size: 1.5rem;
+    }
+
+    /* Gives the first section room so it doesn't hide under the logo */
+    .mall-bg {
+        padding-top: 120px; 
+    }
+}
 /* =========================================
    3. SIDEBAR & NAVIGATION (mall.html / auto.html)
    ========================================= */
