@@ -1,32 +1,101 @@
-/* 1. RESET: Clears all default browser gaps */
+/* =========================================
+   1. GLOBAL RESET & FOUNDATION
+   ========================================= */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* 2. BODY: This is the most important fix. 
-   'display: flex' forces the Sidebar and the Lobby to sit side-by-side. */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex; 
-    flex-direction: row; /* Horizontal layout */
+    background-color: #050a08;
+    color: white;
     height: 100vh;
     width: 100vw;
-    overflow: hidden; /* Prevents the page from scrolling up and down */
-    background-color: #050a08;
+    overflow: hidden; 
 }
 
-/* 3. SIDEBAR: Fixed width on the left */
+/* =========================================
+   2. MUSHA LANDING PAGE (index.html)
+   ========================================= */
+.musha-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: row;
+    background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%); 
+}
+
+.musha-header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    text-align: center;
+    width: 100%;
+}
+
+.main-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.brand-name {
+    color: #2eaf7d; 
+    font-size: 2rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.tagline {
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.portal-section {
+    flex: 1;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    transition: 0.5s all ease;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.1);
+    padding-top: 100px;
+}
+
+.portal-content h1 {
+    color: #d4af37;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.portal-content p {
+    color: #eee;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   3. SIDEBAR & NAVIGATION
+   ========================================= */
+.app-body {
+    display: flex;
+    flex-direction: row;
+}
+
 .side-bar {
     width: 300px;
     height: 100vh;
     background: linear-gradient(145deg, #004d33 0%, #2eaf7d 50%, #002e1f 100%);
-    color: white;
     display: flex;
     flex-direction: column;
     padding: 25px;
-    border-right: 2px solid #d4af37; /* Gold Trim */
+    border-right: 2px solid #d4af37;
     box-shadow: 5px 0 20px rgba(0,0,0,0.6);
     z-index: 10;
 }
@@ -65,7 +134,7 @@ body {
 
 .sections {
     list-style: none;
-    flex-grow: 1; /* Pushes the logistics tag to the bottom */
+    flex-grow: 1;
 }
 
 .sections li {
@@ -90,44 +159,52 @@ body {
     border: 1px dashed #d4af37;
 }
 
-/* 4. LOBBY CONTAINER: Fills the remaining space on the right */
+/* =========================================
+   4. CONTENT CONTAINERS
+   ========================================= */
 .lobby-container {
-    flex-grow: 1; /* Takes up all space not used by sidebar */
+    flex-grow: 1;
     height: 100vh;
     position: relative;
     background-color: #000;
 }
 
-.fountain-wrapper {
-    width: 100%;
-    height: 100%;
-}
-
 .main-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Forces the Copilot image to fill the screen like a wall */
+    object-fit: cover;
     display: block;
 }
 
-/* Gateway Styling */
+/* =========================================
+   5. GATEWAY OVERLAY (PC DEFAULT)
+   ========================================= */
 #gateway-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: url('assets/doors_closed.png') center/cover no-repeat; /* Use the name of your door pic */
-    z-index: 9999; /* Higher than everything else */
+    /* Uses the wide PC image */
+    background: url('assets/doors_desktop.png') center/cover no-repeat;
+    z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: opacity 1.5s ease, visibility 1.5s;
 }
 
+/* Class added via JS to fade the doors */
+.mall-opened {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
 .gateway-content {
     text-align: center;
-    background: rgba(0, 0, 0, 0.6); /* Darkens the area behind text */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
     padding: 40px;
     border-radius: 15px;
     border: 2px solid #2eaf7d;
@@ -138,7 +215,7 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
-    background: #2eaf7d; /* Your signature green */
+    background: #2eaf7d;
     color: white;
     border: none;
     border-radius: 50px;
@@ -147,110 +224,63 @@ body {
 }
 
 #open-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     background: white;
     color: #004d33;
 }
 
-/* Class to trigger the 'opening' effect */
-.mall-opened {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-/* MOBILE FIXES */
+/* =========================================
+   6. RESPONSIVE DESIGN (MOBILE FIXES)
+   ========================================= */
 @media (max-width: 768px) {
-    body {
-        flex-direction: column; /* Stack sidebar on top of the image */
-        overflow-y: auto; /* Allow scrolling on mobile */
+    /* Musha Landing Mobile */
+    .musha-container { flex-direction: column; }
+    
+    .brand-name { font-size: 1.5rem; }
+    
+    .mall-bg { padding-top: 120px; }
+
+    .portal-section { padding-top: 0; }
+
+    /* App Layout Mobile */
+    .app-body {
+        flex-direction: column;
+        overflow-y: auto;
     }
 
     .side-bar {
-        width: 100%; /* Sidebar takes full width */
-        height: auto; /* Only as tall as the content needs */
+        width: 100%;
+        height: auto;
         border-right: none;
-        border-bottom: 2px solid #d4af37; /* Move gold trim to the bottom */
+        border-bottom: 2px solid #d4af37;
         padding: 15px;
     }
 
-    .logo {
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-    }
-
-    .sections {
-        display: none; /* Hide the long list on mobile to save space */
-    }
+    .sections { display: none; }
 
     .lobby-container {
         width: 100%;
-        height: 60vh; /* Make the mall image smaller so it fits the screen */
+        height: 60vh;
     }
 
-    #gateway-overlay .gateway-content {
-        width: 90%; /* Make the 'Welcome' box fit phone screens */
-        padding: 20px;
+    /* GATEWAY MOBILE FIX - The Swap */
+    #gateway-overlay {
+        /* Automatically swaps to the tall cropped image */
+        background: url('assets/doors_mobile.png') center/cover no-repeat;
+        background-position: top center; 
+        flex-direction: column;
     }
-    
+
+    .gateway-content {
+        width: 85%;
+        margin-top: 60px; /* Pushes box down to clear the Mall Sign */
+        padding: 25px;
+        backdrop-filter: blur(10px);
+    }
+
     #open-btn {
+        width: 100%;
         font-size: 1.1rem;
+        padding: 12px;
     }
-}
-.musha-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    flex-direction: row; /* Side by side on desktop */
-}
-
-.portal-section {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transition: 0.5s all ease;
-    cursor: pointer;
-    position: relative;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-/* Backgrounds - Use your high-quality assets here */
-.mall-bg { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/lobby_v2.jpg'); background-size: cover; }
-.auto-bg { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/car-showroom.jpg'); background-size: cover; }
-
-.portal-section:hover { flex: 1.5; filter: brightness(1.2); }
-
-.portal-content h1 { color: #d4af37; font-size: 2.5rem; margin-bottom: 10px; }
-.portal-content p { color: white; margin-bottom: 20px; }
-
-/* Mobile View */
-@media (max-width: 768px) {
-    .musha-container { flex-direction: column; }
-    .portal-section:hover { flex: 1; }
-}
-
-.musha-header {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    text-align: center;
-}
-
-.main-logo {
-    width: 120px; /* Adjust size as needed */
-    height: auto;
-    filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.5)); /* Makes the 3D look stand out */
-    margin-bottom: 10px;
-}
-
-.brand-name {
-    color: #2eaf7d; /* Matching that nice green in your logo */
-    font-size: 2.5rem;
-    letter-spacing: 5px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
