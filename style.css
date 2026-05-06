@@ -277,3 +277,17 @@ body {
         padding: 20px;
     }
 }
+@media (max-width: 768px) {
+    /* This targets the Gateway Overlay (the door pic) */
+    #gateway-overlay {
+        background-attachment: scroll; /* Helps performance on mobile */
+        background-position: center bottom; /* Keeps the bottom of the doors visible */
+        background-size: contain; /* Shows the WHOLE image without zooming */
+        background-color: #050a08; /* Fills the rest with your brand black */
+    }
+
+    .gateway-content {
+        transform: scale(0.85); /* Shrinks the text box slightly to fit the door */
+        margin-top: 50px; /* Moves the button up so it's not on the floor */
+    }
+}
