@@ -279,29 +279,30 @@ body {
 }
 @media (max-width: 768px) {
     #gateway-overlay {
-        background-size: cover;
-        /* Shifts the focus so the doors stay centered on small screens */
-        background-position: center; 
+        /* This is the magic fix for the zoom/crop */
+        background-size: cover; 
+        background-position: top center; /* Shows the sign FIRST */
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Centers the box over the doors */
+        justify-content: center; 
         align-items: center;
     }
 
     .gateway-content {
         width: 85%;
-        background: rgba(0, 0, 0, 0.75); /* Darker so the text pops */
-        backdrop-filter: blur(8px); /* The "glass" effect */
-        border: 1.5px solid #2eaf7d;
-        padding: 30px 15px;
-        border-radius: 15px;
+        /* Move the box down slightly so it doesn't cover the sign */
+        margin-top: 80px; 
+        background: rgba(0, 0, 0, 0.8); 
+        backdrop-filter: blur(10px);
+        border: 1px solid #2eaf7d;
+        border-radius: 20px;
+        padding: 25px;
     }
-    
+
     #open-btn {
-        width: 90%;
-        padding: 12px;
-        font-size: 1.1rem;
-        background: #2eaf7d;
-        box-shadow: 0 0 15px rgba(46, 175, 125, 0.4);
+        width: 100%;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
     }
 }
