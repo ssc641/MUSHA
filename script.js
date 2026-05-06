@@ -1,19 +1,41 @@
 function openTheMall() {
-    // This finds the gateway and adds the class that makes it fade away
+    // Finds the gateway and triggers the CSS fade-out transition
     const gateway = document.getElementById('gateway-overlay');
-    gateway.classList.add('mall-opened');
     
-    // Optional: play a "door opening" sound if you have one!
+    if (gateway) {
+        gateway.classList.add('mall-opened');
+        
+        // After the fade finishes (1.5s), we hide it so it doesn't block clicks
+        setTimeout(() => {
+            gateway.style.display = 'none';
+        }, 1500);
+    }
+    
     console.log("SSC Grand Mall is now open.");
 }
 
-// In your script, let's make the tracker accept a "type"
+/**
+ * Logistics Tracker: Swaps icons and displays the modal
+ * @param {string} type - 'car' or 'truck'
+ */
 function openTracker(type) {
     const icon = document.querySelector('.truck-icon');
-    if (type === 'car') {
-        icon.innerHTML = '🚗'; // Change to car
-    } else {
-        icon.innerHTML = '🚚'; // Default to truck
+    const modal = document.getElementById('tracking-modal');
+
+    if (icon) {
+        // Swap icon based on whether it's Automotive or Furniture
+        icon.innerHTML = (type === 'car') ? '🚗' : '🚚'; 
     }
-    document.getElementById('tracking-modal').style.display = 'block';
+
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+/**
+ * Placeholder for section switching logic
+ */
+function showSection(sectionId) {
+    console.log("Navigating to: " + sectionId);
+    // You can add logic here to highlight tabs or change background images
 }
