@@ -197,3 +197,37 @@ body {
         font-size: 1.1rem;
     }
 }
+.musha-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    flex-direction: row; /* Side by side on desktop */
+}
+
+.portal-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: 0.5s all ease;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Backgrounds - Use your high-quality assets here */
+.mall-bg { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/lobby_v2.jpg'); background-size: cover; }
+.auto-bg { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/car-showroom.jpg'); background-size: cover; }
+
+.portal-section:hover { flex: 1.5; filter: brightness(1.2); }
+
+.portal-content h1 { color: #d4af37; font-size: 2.5rem; margin-bottom: 10px; }
+.portal-content p { color: white; margin-bottom: 20px; }
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .musha-container { flex-direction: column; }
+    .portal-section:hover { flex: 1; }
+}
