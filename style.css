@@ -557,5 +557,15 @@ body {
     }
 }
 
+.power-tag {
+    background: #ffd700;
+    color: black;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
 
 
