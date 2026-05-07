@@ -10,29 +10,31 @@
 <body class="auto-body">
 
     <nav class="main-nav">
-        <div class="logo">STA-TECH <span class="gold">AUTO</span></div>
+        <div class="logo">STA-TECH <span class="gold-text">AUTO</span></div>
         <div class="nav-links">
-            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Mall</a>
-            <a href="#" class="nav-link active"><i class="fas fa-car"></i> Showroom</a>
-            <a href="#" class="nav-link" onclick="openTracker()"><i class="fas fa-truck"></i> Logistics</a>
+            <a href="mall.html" class="nav-link"><i class="fas fa-store"></i> Mall</a>
+            <a href="auto.html" class="nav-link active"><i class="fas fa-car"></i> Showroom</a>
+            <button class="nav-link" onclick="openTracker('car')" style="background:none; border:none; cursor:pointer;">
+                <i class="fas fa-truck"></i> Logistics
+            </button>
         </div>
     </nav>
 
-    <header class="musha-header">
-        <h1>MUSHA</h1>
-        <p class="motto">Your Home, Our Home</p>
+    <header class="musha-header" style="margin-top: 20px;">
+        <h1 class="brand-name">MUSHA</h1>
+        <p class="tagline" style="color: #2eaf7d;">Your Home, Our Home</p>
     </header>
 
     <div class="main-layout">
         
         <aside class="filter-sidebar">
-            <div class="filter-header">
-                <i class="fas fa-sliders-h"></i>
-                <h3>Refine Search</h3>
+            <div class="filter-header" style="margin-bottom: 20px; border-bottom: 1px solid #2eaf7d; padding-bottom: 10px;">
+                <i class="fas fa-sliders-h" style="color: #2eaf7d;"></i>
+                <h3 style="display: inline; margin-left: 10px;">Refine Search</h3>
             </div>
             
             <div class="filter-group">
-                <label for="dealership-select">DEALERSHIP HUB</label>
+                <label>DEALERSHIP HUB</label>
                 <select id="dealership-select" onchange="filterCars()">
                     <option value="all">All Gweru & Harare Hubs</option>
                     <option value="Gweru Central Motors">Gweru Central Motors</option>
@@ -42,7 +44,7 @@
             </div>
 
             <div class="filter-group">
-                <label for="year-select">MODEL YEAR</label>
+                <label>MODEL YEAR</label>
                 <select id="year-select" onchange="filterCars()">
                     <option value="all">All Years</option>
                     <option value="2026">2026 Models</option>
@@ -52,7 +54,7 @@
             </div>
 
             <div class="filter-group">
-                <label for="brand-select">MANUFACTURER</label>
+                <label>MANUFACTURER</label>
                 <select id="brand-select" onchange="filterCars()">
                     <option value="all">All Brands</option>
                     <option value="Toyota">Toyota</option>
@@ -63,7 +65,7 @@
             </div>
 
             <div class="filter-group">
-                <label for="category-select">VEHICLE BODY</label>
+                <label>VEHICLE BODY</label>
                 <select id="category-select" onchange="filterCars()">
                     <option value="all">All Categories</option>
                     <option value="SUV">SUVs</option>
@@ -73,27 +75,26 @@
                 </select>
             </div>
 
-            <button class="reset-btn" onclick="resetFilters()">
-                <i class="fas fa-undo"></i> Clear All Filters
+            <button class="back-btn" onclick="resetFilters()">
+                <i class="fas fa-undo"></i> Reset Filters
             </button>
         </aside>
 
-        <section class="showroom-container">
-            <header class="showroom-stats">
-                <p id="car-count"><i class="fas fa-info-circle"></i> Showing all available stock</p>
+        <section class="showroom-container" style="flex: 1;">
+            <header class="showroom-stats" style="margin-bottom: 20px; padding: 10px;">
+                <p id="car-count" style="color: #aaa; font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> Loading live stock...
+                </p>
             </header>
 
-            <div id="car-results-grid" class="car-grid"></div>
+            <div id="car-results-grid" class="car-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;"></div>
         </section>
 
     </div>
 
-    <footer class="auto-footer">
-        <p>&copy; 2026 StaTech Logistics. <span>Your Home, Our Home.</span></p>
+    <footer class="auto-footer" style="text-align: center; padding: 40px; color: #555; font-size: 0.8rem; border-top: 1px solid #1a1a1a;">
+        <p>&copy; 2026 StaTech Logistics. <span style="color: #2eaf7d;">Your Home, Our Home.</span></p>
     </footer>
 
-    <script src="main.js"></script>
-    <script src="auto.js"></script>
-
-</body>
+    <script src="furniture.js"></script> <script src="auto.js"></script>      <script src="main.js"></script>      </body>
 </html>
