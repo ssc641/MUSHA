@@ -264,10 +264,11 @@ body {
     }
 
     /* GATEWAY MOBILE FIX - The Swap */
-   @media (max-width: 768px) {
+@media (max-width: 768px) {
     #gateway-overlay {
         /* 1. Use the mobile-specific image */
-        background: url('assets/doors_mobile.png') no-repeat;
+        background-image: url('assets/doors_mobile.png');
+        background-repeat: no-repeat;
         
         /* 2. FORCE the image to fit the width (100%) and auto-adjust height */
         background-size: 100% auto; 
@@ -275,28 +276,28 @@ body {
         /* 3. Keep it at the very top so the sign is visible */
         background-position: top center; 
         
-        /* 4. Fill the empty space at the bottom with black */
-        background-color: #050a08; 
+        /* 4. CHANGED TO WHITE: Fill the empty space at the bottom with white */
+        background-color: #ffffff; 
 
         display: flex;
         flex-direction: column;
-        justify-content: flex-end; /* Pushes the box to the black area */
+        justify-content: flex-end; 
         padding-bottom: 50px;
     }
 
     .gateway-content {
         width: 90%;
         margin: 0 auto;
-        /* This keeps the box away from the door image */
-        background: rgba(0, 0, 0, 0.9); 
+        /* Slightly darker background for the box to look sharp against white */
+        background: rgba(0, 0, 0, 0.95); 
         border: 1.5px solid #2eaf7d;
+        border-radius: 15px; /* Adding a nice curve to match the branding */
+        padding: 20px;
     }
-}
-
 
     #open-btn {
         width: 100%;
         font-size: 1.1rem;
         padding: 12px;
     }
-}
+} /* Only ONE bracket needed here to close the media query */
