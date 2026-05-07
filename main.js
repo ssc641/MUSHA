@@ -305,6 +305,42 @@ function approveItem(id) {
 
 // Run on load
 document.addEventListener('DOMContentLoaded', loadPendingItems);
+/* =========================================
+   STATHECH PAYMENT & ORDER FINALIZATION
+   ========================================= */
+
+function openPayment() {
+    document.getElementById('payment-modal').style.display = 'flex';
+}
+
+function submitOrderFinal() {
+    const proof = document.getElementById('payment-proof').files[0];
+    
+    if (!proof) {
+        alert("Please upload your EcoCash confirmation screenshot first.");
+        return;
+    }
+
+    // Generate the Real Order ID
+    const orderId = "MSH-" + Math.floor(1000 + Math.random() * 9000);
+    
+    // Add to your God Mode list for manual verification
+    activeOrders[orderId] = {
+        item: "Pending Verification",
+        status: "Awaiting Payment Approval",
+        paymentStatus: "Pending Review",
+        driver: "Waiting...",
+        eta: "TBD"
+    };
+
+    alert(`PAYMENT SUBMITTED!\nYour Order ID is: ${orderId}\nStaTech will verify your payment and start the delivery soon.`);
+    
+    // Clear cart and redirect
+    mushaCart = [];
+    localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
+    location.href = 'mall.html';
+}
+
 
 
 
