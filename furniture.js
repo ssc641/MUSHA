@@ -162,3 +162,83 @@ document.addEventListener('DOMContentLoaded', () => {
     displayFurniture(furnitureInventory);
     updateCartCount();
 });
+/* =========================================
+   6. PRICE COMPARISON SYSTEM
+   ========================================= */
+function comparePrices(productType) {
+    // 1. Find all products that match the same type (e.g., all 'Sofa' or all 'Stove')
+    const matches = furnitureInventory.filter(item => item.type === productType);
+    
+    // 2. Sort them from cheapest to most expensive
+    matches.sort((a, b) => a.price - b.price);
+
+    // 3. Create the Comparison UI
+    const overlay = document.createElement('div');
+    overlay.className = 'compare-overlay';
+    
+    overlay.innerHTML = `
+        <div class="compare-modal">
+            <div class="compare-header">
+                <h3>Compare Prices: ${productType}s</h3>
+                <button onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Supplier</th>
+                        <th>Condition</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${matches.map(m => `
+                        <tr>
+                            <td>${m.store} ${m.isVerified ? '✅' : ''}</td>
+                            <td>${m.condition}</td>
+                            <td class="gold-text">$${m.price}</td>
+                            <td><button onclick="viewStore('${m.store}')">View</button></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <p class="compare-note">Prices verified by StaTech Logistics</p>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+}
+/* =========================================
+   7. THE CART ENGINE
+   ========================================= */
+function openCart() {
+    const cartContainer = document.getElementById('cart-display-area');
+    if (mushaCart.length === 0) {
+        alert("Your Musha Cart is empty!");
+        return;
+    }
+
+    let total = 0;
+    const cartHTML = mushaCart.map((item, index) => {
+        const subtotal = item.price * item.selectedQty;
+        total += subtotal;
+        return `
+            <div class="cart-item">
+                <span>${item.name} (x${item.selectedQty})</span>
+                <span class="gold-text">$${subtotal.toLocaleString()}</span>
+                <button onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+            </div>
+        `;
+    }).join('');
+
+    // This would show up in your Cart Modal or Sidebar
+    console.log("Total Musha Purchase:", total);
+}
+
+function removeFromCart(index) {
+    mushaCart.splice(index, 1);
+    localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
+    updateCartCount();
+    alert("Item removed from cart.");
+}
+
