@@ -370,16 +370,18 @@ body {
     align-items: center;
     gap: 10px;
 }
-body {
+.auto-body {
     margin: 0;
     padding: 0;
     /* This creates a dark tint (85% black) so the white text is readable */
-    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.74)), 
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.54)), 
                 url('assets/showroom-bg.jpg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed; /* Keeps the floor and windows still while you scroll */
     color: white;
+   min-height: 100vh;
+   overflow-y: visible !important;
 }
 
 /* THE NAVIGATION HEADER */
