@@ -500,4 +500,19 @@ body {
 .verification-note { font-size: 0.85rem; color: #aaa; margin: 15px 0; }
 #output-preview { width: 100%; border-radius: 10px; border: 2px solid #2eaf7d; }
 
+.admin-body { background: #0a0a0a; color: white; font-family: sans-serif; }
+.admin-nav { 
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px; border-bottom: 2px solid #2eaf7d; background: #111;
+}
+.admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+.admin-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333; }
+.admin-card img { width: 100%; height: 200px; object-fit: cover; }
+.admin-card-info { padding: 15px; }
+.admin-actions { display: flex; gap: 10px; margin-top: 15px; }
+.verify-btn { flex: 1; background: #2eaf7d; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+.ban-btn { background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+.gold-text { color: #d4af37; font-weight: bold; }
+
+
 
