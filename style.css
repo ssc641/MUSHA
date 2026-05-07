@@ -11,77 +11,43 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #050a08;
     color: white;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
-    overflow: hidden; 
+    overflow-x: hidden; 
 }
 
 /* =========================================
-   2. MUSHA LANDING PAGE (index.html)
+   2. SHARED COMPONENTS (Buttons, Tags, Nav)
    ========================================= */
-.musha-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    flex-direction: row;
-    background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%); 
-}
+.gold-text { color: #d4af37; font-weight: bold; }
 
-.musha-header {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    text-align: center;
-    width: 100%;
-}
-
-.main-logo {
-    width: 80px;
-    height: auto;
-    margin-bottom: 5px;
-}
-
-.brand-name {
-    color: #2eaf7d; 
-    font-size: 2rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-
-.tagline {
-    color: #333;
-    font-size: 0.9rem;
+.power-tag {
+    background: #ffd700;
+    color: black;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
     font-weight: bold;
+    margin-left: 5px;
 }
 
-.portal-section {
-    flex: 1;
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    transition: 0.5s all ease;
+.menu-toggle {
+    display: none; /* Hidden on Desktop */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 10001;
+    background: #2eaf7d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1.2rem;
     cursor: pointer;
-    border: 1px solid rgba(0,0,0,0.1);
-    padding-top: 100px;
-}
-
-.portal-content h1 {
-    color: #d4af37;
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
-
-.portal-content p {
-    color: #eee;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
 }
 
 /* =========================================
-   3. SIDEBAR & NAVIGATION
+   3. SIDEBAR NAVIGATION (Desktop Default)
    ========================================= */
 .app-body {
     display: flex;
@@ -98,6 +64,7 @@ body {
     border-right: 2px solid #d4af37;
     box-shadow: 5px 0 20px rgba(0,0,0,0.6);
     z-index: 10;
+    transition: 0.4s ease-in-out;
 }
 
 .logo {
@@ -106,30 +73,7 @@ body {
     text-align: center;
     margin-bottom: 40px;
     text-shadow: 0px 4px 4px rgba(0,0,0,0.4);
-}
-
-.tabs {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 30px;
-}
-
-.tab-btn {
-    width: 100%;
-    padding: 12px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-
-.tab-btn.active, .tab-btn:hover {
-    background: white;
-    color: #004d33;
 }
 
 .sections {
@@ -138,11 +82,17 @@ body {
 }
 
 .sections li {
-    padding: 12px 0;
+    padding: 15px 0;
     border-bottom: 1px solid rgba(255,255,255,0.1);
     cursor: pointer;
     font-size: 0.95rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
+.sections li i { color: #d4af37; }
 
 .sections li:hover {
     color: #d4af37;
@@ -150,450 +100,68 @@ body {
     transition: 0.3s;
 }
 
-.logistics-tag {
-    padding: 15px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 5px;
-    font-size: 0.8rem;
-    text-align: center;
-    border: 1px dashed #d4af37;
-}
-
 /* =========================================
-   4. CONTENT CONTAINERS
+   4. PAGE SPECIFIC SECTIONS (Mall, Auto, Admin)
    ========================================= */
-.lobby-container {
-    flex-grow: 1;
-    height: 100vh;
-    position: relative;
-    background-color: #000;
-}
 
-.main-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+/* Mall Lobby */
+.lobby-container { flex-grow: 1; height: 100vh; position: relative; background-color: #000; }
+.main-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* =========================================
-   5. GATEWAY OVERLAY (PC DEFAULT)
-   ========================================= */
-#gateway-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    /* Uses the wide PC image */
-    background: url('assets/doors_closed.png') center/cover no-repeat;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1.5s ease, visibility 1.5s;
-}
-
-/* Class added via JS to fade the doors */
-.mall-opened {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.gateway-content {
-    text-align: center;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    padding: 40px;
-    border-radius: 15px;
-    border: 2px solid #2eaf7d;
-}
-
-#open-btn {
-    padding: 15px 35px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    background: #2eaf7d;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    box-shadow: 0 0 20px rgba(46, 175, 125, 0.6);
-    transition: 0.3s;
-}
-
-#open-btn:hover {
-    transform: scale(1.05);
-    background: white;
-    color: #004d33;
-}
-
-/* =========================================
-   6. RESPONSIVE DESIGN (MOBILE FIXES)
-   ========================================= */
-@media (max-width: 768px) {
-    /* Musha Landing Mobile */
-    .musha-container { flex-direction: column; }
-    
-    .brand-name { font-size: 1.5rem; }
-    
-    .mall-bg { padding-top: 120px; }
-
-    .portal-section { padding-top: 0; }
-
-    /* App Layout Mobile */
-    .app-body {
-        flex-direction: column;
-        overflow-y: auto;
-    }
-
-    .side-bar {
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 2px solid #d4af37;
-        padding: 15px;
-    }
-
-    .sections { display: none; }
-
-    .lobby-container {
-        width: 100%;
-        height: 60vh;
-    }
-
-    /* GATEWAY MOBILE FIX - The Swap */
-    #gateway-overlay {
-        background-color: #ffffff; /* Sets the empty space to White */
-        background-image: url('assets/doors_mobile.png');
-        background-repeat: no-repeat;
-        
-        /* Stop the zoom: Fit width, auto-scale height */
-        background-size: 100% auto; 
-        background-position: top center; 
-
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end; 
-        padding-bottom: 50px;
-    }
-
-    .gateway-content {
-        width: 90%;
-        margin: 0 auto;
-        background: rgba(0, 0, 0, 0.95); 
-        border: 1.5px solid #2eaf7d;
-        border-radius: 15px;
-        padding: 20px;
-    }
-
-    #open-btn {
-        width: 100%;
-        font-size: 1.1rem;
-        padding: 12px;
-    }
-} /* Ends the mobile media query */
-
-/* 1. THE LAYOUT CONTAINER */
-.main-layout {
-    display: flex;
-    flex-direction: column; /* Stack filters on top of cars for mobile */
-    padding: 15px;
-    background-color: #050505;
-    min-height: 100vh;
-}
-
-/* 2. THE FILTER BOX (Make it look like a control panel) */
-.filter-sidebar {
-    background: #111;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #2eaf7d;
-    margin-bottom: 20px;
-}
-
-.filter-group {
-    margin-bottom: 15px;
-}
-
-.filter-group label {
-    display: block;
-    color: #2eaf7d;
-    font-size: 0.8rem;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-
-.filter-group select {
-    width: 100%;
-    padding: 10px;
-    background: #222;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 6px;
-}
-
-/* 3. THE CAR CARD (Fixing the bunching) */
-.car-card {
-    background: #1a1a1a;
-    border-radius: 15px;
-    overflow: hidden;
-    margin-bottom: 25px;
-    border: 1px solid #333;
-}
-
-.car-details {
-    padding: 15px;
-}
-
-.car-title {
-    font-size: 1.4rem;
-    color: white;
-    margin: 10px 0;
-}
-
-.price-badge {
-    color: #d4af37; /* That premium gold */
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-.safety-alert {
-    background: rgba(255, 0, 0, 0.1);
-    border: 1px solid #ff4d4d;
-    color: #ff4d4d;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+/* Auto Showroom */
 .auto-body {
-    margin: 0;
-    padding: 0;
-    /* This creates a dark tint (85% black) so the white text is readable */
-    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.54)), 
-                url('assets/showroom-bg.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* Keeps the floor and windows still while you scroll */
-    color: white;
-   min-height: 100vh;
-   overflow-y: visible !important;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.54)), url('assets/showroom-bg.jpg'); 
+    background-size: cover; background-position: center; background-attachment: fixed;
 }
 
-/* THE NAVIGATION HEADER */
-.main-nav {
-    display: flex;
-    justify-content: space-around;
-    padding: 15px 0;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(46, 175, 125, 0.3); /* Green border */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-/* THE BUTTONS */
-.nav-link {
-    text-decoration: none;
-    color: #bbb;
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-/* THE ACTIVE/HOVER STATE */
-.nav-link:hover, .nav-link.active {
-    color: #2eaf7d; /* Musha Green */
-    background: rgba(46, 175, 125, 0.1);
-    border: 1px solid #2eaf7d;
-}
-
-/* ICON SPACING */
-.nav-link i {
-    margin-right: 5px;
-}
-.tracker-container {
-    display: flex;
-    justify-content: center;
-    padding: 40px 20px;
-}
-
-.tracker-card {
-    background: rgba(20, 20, 20, 0.9);
-    border: 1px solid #2eaf7d; /* SSC Green */
-    border-radius: 15px;
-    padding: 25px;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.status-pill {
-    background: #2eaf7d;
-    color: black;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.driver-profile {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border-radius: 10px;
-}
-
-.tracker-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-.back-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin-top: 15px;
-    background: transparent;
-    border: 1px solid #2eaf7d; /* Matching that SSC Green */
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.back-btn:hover {
-    background: #2eaf7d;
-    color: black;
-}
-.sell-container { padding: 20px; max-width: 500px; margin: auto; }
-.camera-upload-zone {
-    border: 2px dashed #2eaf7d;
-    border-radius: 15px;
-    padding: 40px;
-    text-align: center;
-    margin-bottom: 20px;
-    background: rgba(46, 175, 125, 0.05);
-}
-.camera-trigger { cursor: pointer; color: #2eaf7d; display: flex; flex-direction: column; gap: 10px; }
-.input-group { margin-bottom: 15px; }
-.input-group input, .input-group select, .input-group textarea {
-    width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: white;
-}
-.list-now-btn {
-    width: 100%; padding: 15px; background: #2eaf7d; border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer;
-}
-.verification-note { font-size: 0.85rem; color: #aaa; margin: 15px 0; }
-#output-preview { width: 100%; border-radius: 10px; border: 2px solid #2eaf7d; }
-
-.admin-body { background: #0a0a0a; color: white; font-family: sans-serif; }
-.admin-nav { 
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 20px; border-bottom: 2px solid #2eaf7d; background: #111;
-}
+/* Admin Dashboard */
+.admin-nav { display: flex; justify-content: space-between; padding: 20px; border-bottom: 2px solid #2eaf7d; background: #111; }
 .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-.admin-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333; }
-.admin-card img { width: 100%; height: 200px; object-fit: cover; }
-.admin-card-info { padding: 15px; }
-.admin-actions { display: flex; gap: 10px; margin-top: 15px; }
-.verify-btn { flex: 1; background: #2eaf7d; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
-.ban-btn { background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
-.gold-text { color: #d4af37; font-weight: bold; }
 
-/* 1. The Toggle Button Styling */
-.menu-toggle {
-    display: none; /* Hidden on Desktop */
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 3000;
-    background: #2eaf7d;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
+/* Sell/Upload Zone */
+.camera-upload-zone {
+    border: 2px dashed #2eaf7d; padding: 40px; text-align: center; background: rgba(46, 175, 125, 0.05); border-radius: 15px;
 }
 
-/* 2. Mobile Media Query */
+/* =========================================
+   5. RESPONSIVE DESIGN (MOBILE FIXES)
+   ========================================= */
 @media (max-width: 768px) {
-    .menu-toggle {
-        display: block; /* Show on Mobile */
-    }
+    .menu-toggle { display: block; }
 
-    /* Sidebar Visibility & Layout Fix */
-@media (max-width: 768px) {
     .side-bar {
         position: fixed;
-        left: -100%; /* Hidden by default */
+        left: -100%; /* Hidden off-screen */
         top: 0;
         width: 280px;
         height: 100vh;
-        background: #111111 !important; /* Force Black Background */
+        background: #111111 !important; /* Solid black for mobile */
         z-index: 10000;
-        transition: 0.4s ease-in-out;
-        display: flex !important; /* Ensure it doesn't stay hidden */
-        flex-direction: column;
-        padding: 20px;
+        padding: 60px 20px 20px 20px;
+        border-right: 1px solid #2eaf7d;
     }
 
-    .side-bar.active {
-        left: 0; /* Slide in */
-    }
+    .side-bar.active { left: 0; } /* Slide in when active */
 
-    /* Force the Buttons/Text to be White and Visible */
     .sections li {
         color: #ffffff !important; 
-        display: block !important;
-        padding: 15px 10px;
-        border-bottom: 1px solid #333;
+        display: flex !important;
         font-size: 1.1rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .sections li i {
-        color: #2eaf7d !important; /* Your SSC Green for Icons */
-        margin-right: 10px;
+        padding: 18px 10px;
+        border-bottom: 1px solid #333;
     }
 
     .logo {
         color: #2eaf7d !important;
-        font-weight: bold;
-        margin-bottom: 30px;
-        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .lobby-container { margin-left: 0 !important; width: 100%; }
+
+    /* Gateway Mobile Adjustments */
+    #gateway-overlay {
+        background-image: url('assets/doors_mobile.png');
+        background-size: 100% auto;
+        background-position: top center;
     }
 }
-    
-    .lobby-container {
-        margin-left: 0 !important; /* Center lobby on mobile */
-    }
-}
-
-.power-tag {
-    background: #ffd700;
-    color: black;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-
-
