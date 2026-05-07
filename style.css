@@ -264,19 +264,35 @@ body {
     }
 
     /* GATEWAY MOBILE FIX - The Swap */
+   @media (max-width: 768px) {
     #gateway-overlay {
-        /* Automatically swaps to the tall cropped image */
-        background: url('assets/doors_mobile.png') center/cover no-repeat;
+        /* 1. Use the mobile-specific image */
+        background: url('assets/doors_mobile.png') no-repeat;
+        
+        /* 2. FORCE the image to fit the width (100%) and auto-adjust height */
+        background-size: 100% auto; 
+        
+        /* 3. Keep it at the very top so the sign is visible */
         background-position: top center; 
+        
+        /* 4. Fill the empty space at the bottom with black */
+        background-color: #050a08; 
+
+        display: flex;
         flex-direction: column;
+        justify-content: flex-end; /* Pushes the box to the black area */
+        padding-bottom: 50px;
     }
 
     .gateway-content {
-        width: 85%;
-        margin-top: 60px; /* Pushes box down to clear the Mall Sign */
-        padding: 25px;
-        backdrop-filter: blur(10px);
+        width: 90%;
+        margin: 0 auto;
+        /* This keeps the box away from the door image */
+        background: rgba(0, 0, 0, 0.9); 
+        border: 1.5px solid #2eaf7d;
     }
+}
+
 
     #open-btn {
         width: 100%;
