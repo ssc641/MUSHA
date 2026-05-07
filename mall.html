@@ -3,58 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSC Grand Mall | Premium Furniture Logistics</title>
+    <title>SSC Grand Mall | Musha Premium Logistics</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="app-body"> <!-- Added class to help Sidebar/Lobby layout -->
+<body class="app-body">
 
-    <!-- 1. The Gateway Overlay (Entrance) -->
     <div id="gateway-overlay">
         <div class="gateway-content">
-            <h1 class="brand-name">MUSHA</h1> <!-- Added brand name for consistency -->
+            <h1 class="brand-name">MUSHA</h1>
             <h2>WELCOME TO THE MALL</h2>
+            <p>Your Home, Our Home.</p>
             <button id="open-btn" onclick="openTheMall()">ENTER SHOWROOM</button>
         </div>
     </div>
 
-    <!-- 2. The Interactive Showroom Sidebar -->
     <nav class="side-bar">
         <div class="logo">SSC GRAND MALL</div>
         
+        <div class="cart-status" onclick="location.href='cart.html'">
+            <i class="fas fa-shopping-bag"></i> 
+            MY CART: <span id="cart-count-display">0</span>
+        </div>
+
         <div class="tabs">
-            <button class="tab-btn active">Premium Quality</button>
-            <button class="tab-btn">Standard Quality</button>
+            <button class="tab-btn active" onclick="filterByQuality('Premium')">Premium</button>
+            <button class="tab-btn" onclick="filterByQuality('Standard')">Standard</button>
         </div>
 
         <ul class="sections">
-            <li>Lounge & Living</li>
-            <li>Bedroom Suite</li>
-            <li>Office & Study</li>
-            <li>Kitchen & Dining</li>
-            <li>Outdoor Living</li>
+            <li onclick="filterFurnitureByRoom('Living Room')"><i class="fas fa-couch"></i> Lounge & Living</li>
+            <li onclick="filterFurnitureByRoom('Bedroom')"><i class="fas fa-bed"></i> Bedroom Suite</li>
+            <li onclick="filterFurnitureByRoom('Kitchen')"><i class="fas fa-utensils"></i> Kitchen & Dining</li>
+            <li onclick="filterFurnitureByRoom('Office')"><i class="fas fa-briefcase"></i> Office & Study</li>
+            <li onclick="filterFurnitureByRoom('Outdoor')"><i class="fas fa-tree"></i> Outdoor Living</li>
         </ul>
 
+        <div class="logistics-box">
+            <label>TRACK DELIVERY</label>
+            <div class="search-input">
+                <input type="text" id="track-id" placeholder="Order ID (e.g. MSH-101)">
+                <button onclick="trackOrder()"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
         <div class="logistics-tag">
-            <p>SSC Logistics: Delivery Guaranteed</p>
+            <p><i class="fas fa-shield-alt"></i> SSC Logistics: Vetted</p>
         </div>
     </nav>
 
-    <!-- 3. The Main Visual Lobby -->
-    <main class="lobby-container">
-        <div class="fountain-wrapper">
-            <!-- The Master Image -->
+    <main class="lobby-container" id="main-content">
+        <div class="fountain-wrapper" id="lobby-view">
             <img src="assets/lobby_v2.png" class="main-img" usemap="#mallmap" alt="SSC Grand Mall Lobby">
 
-            <!-- Clickable hotspots -->
             <map name="mallmap">
-                <area shape="rect" coords="0,0,300,1000" href="#" onclick="showSection('standard')" alt="Standard Furniture">
-                <area shape="rect" coords="700,0,1000,1000" href="#" onclick="showSection('premium')" alt="Premium Furniture">
-                <area shape="circle" coords="500,600,150" href="#" onclick="showSection('logistics')" alt="SSC Logistics">
+                <area shape="rect" coords="0,0,300,1000" href="javascript:void(0)" onclick="showFurnitureSection('standard')" alt="Standard Furniture">
+                <area shape="rect" coords="700,0,1000,1000" href="javascript:void(0)" onclick="showFurnitureSection('premium')" alt="Premium Furniture">
+                <area shape="circle" coords="500,600,150" href="javascript:void(0)" onclick="location.href='auto.html'" alt="Automotive">
             </map>
         </div>
+
+        <div id="furniture-results-grid" class="car-grid" style="display:none;"></div>
     </main>
 
     <script src="main.js"></script>
+    <script src="furniture.js"></script>
+    <script src="auto.js"></script>
 
 </body>
 </html>
