@@ -1,10 +1,10 @@
 /* =========================================
-   1. RESTORE ORIGINAL BRANDING & COLORS
+   1. BRAND RESTORATION (The SSC Identity)
    ========================================= */
 :root {
-    --musha-green: #2eaf7d;
-    --musha-dark: #050a08;
-    --gold: #d4af37;
+    --ssc-green: #2eaf7d;
+    --ssc-gold: #d4af37;
+    --dark-overlay: rgba(0, 0, 0, 0.7);
 }
 
 * {
@@ -14,119 +14,121 @@
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: var(--musha-dark);
+    background-color: #000;
     color: white;
+    font-family: 'Segoe UI', sans-serif;
     overflow-x: hidden;
 }
 
 /* =========================================
-   2. DESKTOP LAYOUT (The "Laptop Look")
+   2. THE MALL LOBBY (As seen in 1000142732.jpg)
    ========================================= */
 .app-body {
     display: flex;
+    flex-direction: row;
     height: 100vh;
 }
 
 .side-bar {
     width: 300px;
-    height: 100vh;
-    background: linear-gradient(145deg, #004d33 0%, var(--musha-green) 50%, #002e1f 100%);
+    background: linear-gradient(180deg, #004d33 0%, #0a0a0a 100%);
+    border-right: 2px solid var(--ssc-gold);
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    padding: 25px;
-    border-right: 2px solid var(--gold);
+    z-index: 100;
+}
+
+.lobby-container {
+    flex: 1;
+    position: relative;
+    /* This ensures the fountain image fills the right side */
+    background: url('assets/lobby-fountain.jpg') center/cover no-repeat;
+}
+
+/* =========================================
+   3. THE SHOWROOM (As seen in 1000142143.jpg)
+   ========================================= */
+.auto-body {
+    background: linear-gradient(var(--dark-overlay), var(--dark-overlay)), 
+                url('assets/showroom-bg.jpg') center/cover no-repeat fixed;
+    min-height: 100vh;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.85);
+    border-bottom: 1px solid var(--ssc-green);
     position: sticky;
     top: 0;
 }
 
-.lobby-container {
-    flex-grow: 1;
-    position: relative;
-    background: #000;
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
 }
 
-.main-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.nav-link.active {
+    color: var(--ssc-green);
+    border: 1px solid var(--ssc-green);
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
 /* =========================================
-   3. MOBILE FIX (The "Black Screen" Rescue)
+   4. THE GATEWAY (As seen in 1000143172.jpg)
+   ========================================= */
+#gateway-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom, #ffffff 50%, #888 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.gateway-content h1 {
+    color: var(--ssc-gold);
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+#open-btn {
+    background: #fff;
+    border: 1px solid #000;
+    padding: 5px 15px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* =========================================
+   5. MOBILE FIX (The "No Black Screen" Rule)
    ========================================= */
 @media (max-width: 768px) {
     .app-body {
-        flex-direction: column; /* Stack sidebar above image */
-        height: auto;
-        overflow-y: auto;
+        flex-direction: column;
     }
 
     .side-bar {
         width: 100%;
         height: auto;
-        position: relative; /* Don't float over content */
-        border-right: none;
-        border-bottom: 2px solid var(--gold);
-        padding: 15px;
-    }
-
-    /* Keep the menu visible but compact */
-    .sections {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin: 15px 0;
-    }
-
-    .sections li {
-        font-size: 0.8rem;
-        padding: 8px;
-        background: rgba(0,0,0,0.2);
-        border-radius: 4px;
-        list-style: none;
+        position: relative;
     }
 
     .lobby-container {
+        height: 50vh;
         width: 100%;
-        height: 50vh; /* Show the fountain clearly below the menu */
     }
-    
-    /* Center the Gateway buttons */
-    .gateway-content {
-        width: 90%;
-        margin: auto;
+
+    #gateway-overlay {
+        background: #f0f0f0;
     }
-}
-
-/* =========================================
-   4. SHOWROOM GRIDS (Prevent Stacking)
-   ========================================= */
-.car-grid, #furniture-results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.car-card, .furniture-card {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-/* UI Elements */
-.tab-btn {
-    background: rgba(255,255,255,0.1);
-    color: white;
-    border: 1px solid var(--gold);
-    padding: 10px;
-    margin: 5px 0;
-    cursor: pointer;
-}
-
-.tab-btn.active {
-    background: white;
-    color: #004d33;
 }
