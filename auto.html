@@ -9,22 +9,30 @@
 </head>
 <body class="auto-body">
 
-    <nav class="auto-nav">
+    <nav class="main-nav">
         <div class="logo">STA-TECH <span class="gold">AUTO</span></div>
         <div class="nav-links">
-            <a href="index.html">Back to Mall</a>
-            <a href="#" class="active">Showroom</a>
-            <a href="#">Logistics</a>
+            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Mall</a>
+            <a href="#" class="nav-link active"><i class="fas fa-car"></i> Showroom</a>
+            <a href="#" class="nav-link" onclick="openTracker()"><i class="fas fa-truck"></i> Logistics</a>
         </div>
     </nav>
+
+    <header class="musha-header">
+        <h1>MUSHA</h1>
+        <p class="motto">Your Home, Our Home</p>
+    </header>
 
     <div class="main-layout">
         
         <aside class="filter-sidebar">
-            <h3>Refine Search</h3>
+            <div class="filter-header">
+                <i class="fas fa-sliders-h"></i>
+                <h3>Refine Search</h3>
+            </div>
             
             <div class="filter-group">
-                <label for="dealership-select">Dealership Hub</label>
+                <label for="dealership-select">DEALERSHIP HUB</label>
                 <select id="dealership-select" onchange="filterCars()">
                     <option value="all">All Gweru & Harare Hubs</option>
                     <option value="Gweru Central Motors">Gweru Central Motors</option>
@@ -34,7 +42,7 @@
             </div>
 
             <div class="filter-group">
-                <label for="year-select">Model Year</label>
+                <label for="year-select">MODEL YEAR</label>
                 <select id="year-select" onchange="filterCars()">
                     <option value="all">All Years</option>
                     <option value="2026">2026 Models</option>
@@ -44,7 +52,7 @@
             </div>
 
             <div class="filter-group">
-                <label for="brand-select">Manufacturer</label>
+                <label for="brand-select">MANUFACTURER</label>
                 <select id="brand-select" onchange="filterCars()">
                     <option value="all">All Brands</option>
                     <option value="Toyota">Toyota</option>
@@ -55,7 +63,7 @@
             </div>
 
             <div class="filter-group">
-                <label for="category-select">Vehicle Body</label>
+                <label for="category-select">VEHICLE BODY</label>
                 <select id="category-select" onchange="filterCars()">
                     <option value="all">All Categories</option>
                     <option value="SUV">SUVs</option>
@@ -65,22 +73,23 @@
                 </select>
             </div>
 
-            <button class="reset-btn" onclick="resetFilters()">Clear All Filters</button>
+            <button class="reset-btn" onclick="resetFilters()">
+                <i class="fas fa-undo"></i> Clear All Filters
+            </button>
         </aside>
 
         <section class="showroom-container">
             <header class="showroom-stats">
-                <p id="car-count">Showing all available stock</p>
+                <p id="car-count"><i class="fas fa-info-circle"></i> Showing all available stock</p>
             </header>
 
-            <div id="car-results-grid" class="car-grid">
-                </div>
+            <div id="car-results-grid" class="car-grid"></div>
         </section>
 
     </div>
 
     <footer class="auto-footer">
-        <p>&copy; 2026 StaTech Logistics. Built for Musha Virtual Mall.</p>
+        <p>&copy; 2026 StaTech Logistics. <span>Your Home, Our Home.</span></p>
     </footer>
 
     <script src="main.js"></script>
