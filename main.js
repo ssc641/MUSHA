@@ -163,6 +163,29 @@ function completePurchase() {
     localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
     location.reload(); 
 }
+/* =========================================
+   VENDOR PORTAL: ADD NEW ITEM
+   ========================================= */
+function vendorAddProduct(event) {
+    event.preventDefault(); // Stop page from refreshing
+
+    const newProduct = {
+        id: Date.now(), // Unique ID based on time
+        name: document.getElementById('v-name').value,
+        price: Number(document.getElementById('v-price').value),
+        category: document.getElementById('v-category').value,
+        condition: document.getElementById('v-condition').value,
+        store: "Vendor Partner", // This would be the logged-in store name
+        isVerified: true,
+        image: "assets/placeholder.jpg" // They can paste a link later
+    };
+
+    // Add to our main list
+    furnitureInventory.push(newProduct);
+    
+    alert("Success! " + newProduct.name + " is now live in the Mall.");
+    displayFurniture(furnitureInventory); // Refresh the grid
+}
 
 
 
