@@ -1,51 +1,64 @@
 /* =========================================
-   1. FURNITURE INVENTORY (The Database)
+   1. MASTER INVENTORY (The Database)
    ========================================= */
 const furnitureInventory = [
     {
         id: 1001,
         name: "Royal Velvet L-Shape",
+        quality: "premium",
         category: "Living Room",
         type: "Sofa",
         material: "Velvet & Oak",
         condition: "Brand New",
-        price: 1200, // Number for math/cart logic
+        price: 1200,
         store: "Musha Home Gweru",
         storeId: "musha-gweru-01",
         isVerified: true,
         whatsapp: "263771111111",
-        email: "sales@mushahome.co.zw",
         image: "assets/furniture/sofa1.jpg"
     },
     {
         id: 1002,
-        name: "Vintage Mahogany Table",
-        category: "Dining",
+        name: "Standard Pine Coffee Table",
+        quality: "standard",
+        category: "Living Room",
         type: "Table",
-        material: "Solid Wood",
-        condition: "Pre-owned",
-        price: 450,
+        material: "Pine Wood",
+        condition: "New",
+        price: 150,
         store: "Midlands Decor",
         storeId: "mid-decor-02",
         isVerified: false,
         whatsapp: "263782222222",
-        email: "info@midlandsdecor.zw",
         image: "assets/furniture/table1.jpg"
     },
     {
-        id: 1003,
-        name: "Defy 4-Plate Stove",
-        category: "Kitchen",
-        type: "Appliance",
+        id: 2001,
+        name: "Samsung Double-Door Fridge",
+        quality: "premium",
+        category: "Appliances",
+        type: "Kitchen",
         material: "Stainless Steel",
         condition: "Brand New",
-        price: 550,
+        price: 950,
         store: "Gweru Power Hub",
-        storeId: "power-hub-03",
         isVerified: true,
-        whatsapp: "263773333333",
-        email: "power@hub.co.zw",
-        image: "assets/furniture/stove1.jpg"
+        whatsapp: "263771111111",
+        image: "assets/appliances/fridge1.jpg"
+    },
+    {
+        id: 2002,
+        name: "Defy 9kg Washing Machine",
+        quality: "standard",
+        category: "Appliances",
+        type: "Laundry",
+        material: "Metal/Plastic",
+        condition: "Brand New",
+        price: 420,
+        store: "Midlands Electronics",
+        isVerified: true,
+        whatsapp: "263772222222",
+        image: "assets/appliances/washer1.jpg"
     }
 ];
 
@@ -56,16 +69,15 @@ let mushaCart = JSON.parse(localStorage.getItem('mushaCart')) || [];
 
 function addToCart(productId) {
     const product = furnitureInventory.find(p => p.id === productId);
-    const quantity = parseInt(document.getElementById(`qty-${productId}`).value) || 1;
+    const qtyInput = document.getElementById(`qty-${productId}`);
+    const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
     
     const cartItem = { ...product, selectedQty: quantity };
     mushaCart.push(cartItem);
     
-    // Save to local storage so it stays if they refresh
     localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
-    
-    alert(`Musha Mall: Added ${quantity} x ${product.name} to your cart.`);
     updateCartCount();
+    alert(`Musha Mall: ${product.name} added to cart.`);
 }
 
 function updateCartCount() {
@@ -73,30 +85,25 @@ function updateCartCount() {
     if (countElement) countElement.innerText = mushaCart.length;
 }
 
-/* =========================================
-   3. FILTERING ENGINE
-   ========================================= */
-function filterFurniture() {
-    const roomVal = document.getElementById('room-select').value;
-    const condVal = document.getElementById('condition-select').value;
-    const storeVal = document.getElementById('store-select').value;
-
-    const filtered = furnitureInventory.filter(item => {
-        const matchesRoom = (roomVal === "all" || item.category === roomVal);
-        const matchesCond = (condVal === "all" || item.condition === condVal);
-        const matchesStore = (storeVal === "all" || item.store === storeVal);
-        return matchesRoom && matchesCond && matchesStore;
-    });
-
-    displayFurniture(filtered);
+function removeFromCart(index) {
+    mushaCart.splice(index, 1);
+    localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
+    updateCartCount();
+    // If on cart page, refresh the view
+    if(typeof renderCartPage === "function") renderCartPage();
 }
 
 /* =========================================
-   4. RENDER ENGINE (UI Generator)
+   3. RENDER ENGINE (UI Generator)
    ========================================= */
 function displayFurniture(items) {
     const grid = document.getElementById('furniture-results-grid');
     if (!grid) return;
+
+    if (items.length === 0) {
+        grid.innerHTML = `<p class='no-results'>No items found in this category.</p>`;
+        return;
+    }
 
     grid.innerHTML = items.map(item => `
         <div class="furniture-card ${item.isVerified ? 'verified-card' : 'unverified-card'}">
@@ -113,7 +120,9 @@ function displayFurniture(items) {
             </div>
 
             <div class="details">
-                <span class="meta">${item.condition} | ${item.category}</span>
+                <span class="meta">${item.condition} | ${item.category} 
+                    ${item.category === 'Appliances' ? `<span class="power-tag"><i class="fas fa-bolt"></i> Low Energy</span>` : ''}
+                </span>
                 <h3 class="title">${item.name}</h3>
                 <p class="material-text">Material: ${item.material}</p>
                 <p class="store-text" onclick="viewStore('${item.store}')">
@@ -139,54 +148,42 @@ function displayFurniture(items) {
 }
 
 /* =========================================
-   5. CONTACT & UTILITY
+   4. UTILITY & NAVIGATION
    ========================================= */
 function negotiateWA(itemName, phone) {
-    const msg = `Hi, I saw the ${itemName} on Musha Home Mall. Is the price negotiable for a cash purchase?`;
+    const msg = `Hi, I saw the ${itemName} on Musha Home Mall. Is it available for delivery?`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 function viewStore(storeName) {
     const storeItems = furnitureInventory.filter(i => i.store === storeName);
     displayFurniture(storeItems);
-    document.getElementById('furniture-count-header').innerText = `Viewing all products from ${storeName}`;
+    const header = document.getElementById('furniture-count-header');
+    if (header) header.innerText = `Viewing all products from ${storeName}`;
 }
 
-function resetFurnitureFilters() {
-    document.querySelectorAll('select').forEach(s => s.value = 'all');
-    displayFurniture(furnitureInventory);
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    displayFurniture(furnitureInventory);
-    updateCartCount();
-});
 /* =========================================
-   6. PRICE COMPARISON SYSTEM
+   5. PRICE COMPARISON SYSTEM
    ========================================= */
 function comparePrices(productType) {
-    // 1. Find all products that match the same type (e.g., all 'Sofa' or all 'Stove')
     const matches = furnitureInventory.filter(item => item.type === productType);
-    
-    // 2. Sort them from cheapest to most expensive
+    if (matches.length < 2) return alert("No other similar items to compare at this time.");
+
     matches.sort((a, b) => a.price - b.price);
 
-    // 3. Create the Comparison UI
     const overlay = document.createElement('div');
     overlay.className = 'compare-overlay';
     
     overlay.innerHTML = `
         <div class="compare-modal">
             <div class="compare-header">
-                <h3>Compare Prices: ${productType}s</h3>
-                <button onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+                <h3>Compare: ${productType}s</h3>
+                <button onclick="this.closest('.compare-overlay').remove()">×</button>
             </div>
             <table class="compare-table">
                 <thead>
                     <tr>
                         <th>Supplier</th>
-                        <th>Condition</th>
                         <th>Price</th>
                         <th>Action</th>
                     </tr>
@@ -194,97 +191,23 @@ function comparePrices(productType) {
                 <tbody>
                     ${matches.map(m => `
                         <tr>
-                            <td>${m.store} ${m.isVerified ? '✅' : ''}</td>
-                            <td>${m.condition}</td>
+                            <td>${m.store}</td>
                             <td class="gold-text">$${m.price}</td>
                             <td><button onclick="viewStore('${m.store}')">View</button></td>
                         </tr>
                     `).join('')}
                 </tbody>
             </table>
-            <p class="compare-note">Prices verified by StaTech Logistics</p>
         </div>
     `;
-    
     document.body.appendChild(overlay);
 }
-/* =========================================
-   7. THE CART ENGINE
-   ========================================= */
-function openCart() {
-    const cartContainer = document.getElementById('cart-display-area');
-    if (mushaCart.length === 0) {
-        alert("Your Musha Cart is empty!");
-        return;
+
+// Initializer
+document.addEventListener('DOMContentLoaded', () => {
+    // Only display if we are on the results grid page
+    if (document.getElementById('furniture-results-grid')) {
+        displayFurniture(furnitureInventory);
     }
-
-    let total = 0;
-    const cartHTML = mushaCart.map((item, index) => {
-        const subtotal = item.price * item.selectedQty;
-        total += subtotal;
-        return `
-            <div class="cart-item">
-                <span>${item.name} (x${item.selectedQty})</span>
-                <span class="gold-text">$${subtotal.toLocaleString()}</span>
-                <button onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
-            </div>
-        `;
-    }).join('');
-
-    // This would show up in your Cart Modal or Sidebar
-    console.log("Total Musha Purchase:", total);
-}
-
-function removeFromCart(index) {
-    mushaCart.splice(index, 1);
-    localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
     updateCartCount();
-    alert("Item removed from cart.");
-}
-
-const furnitureInventory = [
-    {
-        id: 1001,
-        name: "Royal Velvet L-Shape",
-        quality: "premium", // ADD THIS
-        category: "Living Room",
-        // ... rest of the item data
-    },// Add these to your furnitureInventory array
-{
-    id: 2001,
-    name: "Samsung Double-Door Fridge",
-    category: "Appliances",
-    type: "Kitchen",
-    material: "Stainless Steel",
-    condition: "Brand New",
-    price: 950,
-    store: "Gweru Power Hub",
-    isVerified: true,
-    whatsapp: "263771111111",
-    image: "assets/appliances/fridge1.jpg"
-},
-{
-    id: 2002,
-    name: "Defy 9kg Washing Machine",
-    category: "Appliances",
-    type: "Laundry",
-    material: "Metal/Plastic",
-    condition: "Brand New",
-    price: 420,
-    store: "Midlands Electronics",
-    isVerified: true,
-    whatsapp: "263772222222",
-    image: "assets/appliances/washer1.jpg"
-}
-    {
-        id: 1002,
-        name: "Standard Pine Coffee Table",
-        quality: "standard", // ADD THIS
-        category: "Living Room",
-        // ... rest of the item data
-    }
-];
-// Inside your .map() function where you build the HTML cards:
-${item.category === 'Appliances' ? `<span class="power-tag"><i class="fas fa-bolt"></i> Low Energy</span>` : ''}
-
-
+});
