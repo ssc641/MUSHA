@@ -1,6 +1,13 @@
 /* =========================================
-   1. GLOBAL RESET & FOUNDATION
+   1. GLOBAL RESET & BRAND FOUNDATION
    ========================================= */
+:root {
+    --musha-green: #2eaf7d;
+    --musha-dark: #050a08;
+    --gold: #d4af37;
+    --sidebar-width: 300px;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,88 +15,55 @@
 }
 
 body {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #050a08;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--musha-dark);
     color: white;
     min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden; /* Prevents horizontal shaking on mobile */
+    overflow-x: hidden;
 }
 
 /* =========================================
-   2. MUSHA LANDING PAGE (index.html)
+   2. APP LAYOUT ENGINE (Fixes the Bunching)
    ========================================= */
-.musha-container {
+.app-body, .auto-body {
     display: flex;
-    min-height: 100vh;
-    width: 100%;
     flex-direction: row;
-    background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%); 
 }
 
-.musha-header {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    text-align: center;
-    width: 90%;
-}
-
-.brand-name {
-    color: #2eaf7d; 
-    font-size: 2.2rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    font-weight: 900;
-}
-
-.portal-section {
-    flex: 1;
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    transition: 0.4s all ease;
-    cursor: pointer;
-    border: 1px solid rgba(0,0,0,0.05);
-    padding: 20px;
-    text-align: center;
-}
-
-.portal-section:hover {
-    background: rgba(46, 175, 125, 0.1);
-    flex: 1.2;
+/* Main content area pushes away from sidebar on PC */
+.lobby-container, .main-layout {
+    flex-grow: 1;
+    margin-left: var(--sidebar-width); 
+    min-height: 100vh;
+    position: relative;
+    transition: margin 0.3s ease;
 }
 
 /* =========================================
-   3. SIDEBAR & NAVIGATION (THE ENGINE)
+   3. THE BRANDED SIDEBAR
    ========================================= */
-.app-body {
-    display: flex;
-    flex-direction: row;
-    min-height: 100vh;
-}
-
 .side-bar {
-    width: 280px;
-    background: #0a0a0a;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: linear-gradient(145deg, #004d33 0%, var(--musha-green) 50%, #002e1f 100%);
     display: flex;
     flex-direction: column;
     padding: 25px;
-    border-right: 1px solid #2eaf7d;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-    z-index: 1000;
+    border-right: 2px solid var(--gold);
+    box-shadow: 5px 0 20px rgba(0,0,0,0.6);
+    position: fixed; /* Keeps it locked to the left */
+    left: 0;
+    top: 0;
+    z-index: 2000;
 }
 
 .logo {
-    color: #2eaf7d;
-    font-size: 1.6rem;
-    font-weight: 800;
+    font-size: 1.4rem;
+    font-weight: 900;
     text-align: center;
     margin-bottom: 40px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 20px;
+    text-shadow: 0px 4px 4px rgba(0,0,0,0.4);
+    color: white;
 }
 
 .sections {
@@ -98,61 +72,46 @@ body {
 }
 
 .sections li {
-    padding: 15px 10px;
-    margin-bottom: 5px;
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     cursor: pointer;
-    border-radius: 8px;
+    font-size: 0.95rem;
+    color: white;
     transition: 0.3s;
-    color: #ccc;
-    display: flex;
-    align-items: center;
-    gap: 12px;
 }
 
 .sections li:hover {
-    background: rgba(46, 175, 125, 0.1);
-    color: #2eaf7d;
-}
-
-.sections li.active {
-    background: #2eaf7d;
-    color: white;
+    color: var(--gold);
+    padding-left: 20px;
+    background: rgba(0,0,0,0.1);
 }
 
 /* =========================================
-   4. CONTENT & CAR CARDS
+   4. SHOWROOM & AUTO GRID (Fixed Bunching)
    ========================================= */
-.lobby-container {
-    flex-grow: 1;
+#car-results-grid, #furniture-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
     padding: 20px;
-    background: #050505;
-    overflow-y: auto;
 }
 
-.car-card {
-    background: #141414;
+.car-card, .furniture-card {
+    background: #111;
     border-radius: 12px;
+    border: 1px solid #333;
     overflow: hidden;
-    margin-bottom: 25px;
-    border: 1px solid #222;
-    transition: transform 0.3s ease;
+    position: relative;
 }
-
-.car-card:hover {
-    border-color: #2eaf7d;
-    transform: translateY(-5px);
-}
-
-.car-details { padding: 20px; }
 
 .price-badge {
-    color: #d4af37;
+    color: var(--gold);
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 /* =========================================
-   5. GATEWAY (DOORS)
+   5. GATEWAY OVERLAY (The Welcome Screen)
    ========================================= */
 #gateway-overlay {
     position: fixed;
@@ -162,90 +121,73 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: opacity 1.5s ease;
+}
+
+.mall-opened {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
 }
 
 .gateway-content {
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 20px;
-    border: 1px solid #2eaf7d;
     text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 40px;
+    border-radius: 15px;
+    border: 2px solid var(--musha-green);
 }
 
 /* =========================================
-   6. MOBILE RESPONSIVE FIXES
+   6. MOBILE RESPONSIVE FIX (The "Showroom" Fix)
    ========================================= */
 @media (max-width: 768px) {
-    /* Stack landing page sections */
-    .musha-container { flex-direction: column; }
-    
-    /* Sidebar becomes a slide-over drawer */
-    .side-bar {
-        position: fixed;
-        left: -100%;
-        top: 0;
-        height: 100vh;
-        width: 80%; /* Takes most of screen but shows a bit of content */
-        transition: 0.4s ease-in-out;
-        background: #0f0f0f !important;
+    /* Side-by-side isn't for phones */
+    .app-body, .auto-body {
+        flex-direction: column;
     }
 
-    .side-bar.active { left: 0; }
+    /* Push content back to full width on phones */
+    .lobby-container, .main-layout {
+        margin-left: 0;
+        width: 100%;
+    }
 
-    /* Fix image zoom on mobile gateway */
+    /* Hide Sidebar off-canvas */
+    .side-bar {
+        left: -100%;
+        transition: 0.4s ease-in-out;
+        width: 80%;
+        background: #000 !important; /* Premium dark mode for mobile sidebar */
+    }
+
+    .side-bar.active {
+        left: 0;
+    }
+
+    /* Show the hamburger menu icon */
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+        background: var(--musha-green);
+        border-radius: 5px;
+        padding: 10px;
+    }
+
     #gateway-overlay {
         background-image: url('assets/doors_mobile.png');
-        background-size: cover;
-        align-items: flex-end;
-        padding-bottom: 60px;
-    }
-
-    .gateway-content {
-        width: 90%;
-        padding: 25px;
-    }
-
-    /* Grid for car cards on mobile */
-    .admin-grid {
-        grid-template-columns: 1fr;
+        background-size: 100% auto;
+        background-position: top center;
     }
 }
 
 /* =========================================
-   7. UTILS & BUTTONS
+   7. UTILITY CLASSES
    ========================================= */
-.list-now-btn, .verify-btn {
-    background: #2eaf7d;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.list-now-btn:hover { background: #248f66; filter: brightness(1.2); }
-
-.gold-text { color: #d4af37; font-weight: bold; }
-
-.menu-toggle {
-    display: block;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 5000;
-    background: #2eaf7d;
-    color: white;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    border: none;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-}
-
-@media (min-width: 769px) {
-    .menu-toggle { display: none; }
-}
+.gold-text { color: var(--gold); font-weight: bold; }
+.power-tag { background: #ffd700; color: black; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+.verified-card { border-left: 4px solid var(--musha-green); }
