@@ -232,6 +232,33 @@ function universalUpload(event) {
         alert("Furniture listed! Waiting for verification.");
     }
 }
+// Show the photo immediately after they take it
+function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        const output = document.getElementById('output-preview');
+        output.src = reader.result;
+        output.style.display = 'block';
+        document.querySelector('.camera-trigger').style.display = 'none';
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+// Handle the upload
+function handlePublicUpload(event) {
+    event.preventDefault();
+    
+    const category = document.getElementById('p-category').value;
+    const itemName = document.getElementById('p-name').value;
+    
+    // In a real app, this would go to a database. 
+    // For now, we'll alert the success and you can see it in God Mode.
+    alert(`Musha: ${itemName} has been submitted! StaTech will review the photo for verification.`);
+    
+    // Redirect back to Mall
+    window.location.href = 'mall.html';
+}
+
 
 
 
