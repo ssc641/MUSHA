@@ -1,11 +1,10 @@
 /* =========================================
-   1. GLOBAL RESET & BRAND FOUNDATION
+   1. RESTORE ORIGINAL BRANDING & COLORS
    ========================================= */
 :root {
     --musha-green: #2eaf7d;
     --musha-dark: #050a08;
     --gold: #d4af37;
-    --sidebar-width: 300px;
 }
 
 * {
@@ -15,179 +14,119 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background-color: var(--musha-dark);
     color: white;
-    min-height: 100vh;
     overflow-x: hidden;
 }
 
 /* =========================================
-   2. APP LAYOUT ENGINE (Fixes the Bunching)
+   2. DESKTOP LAYOUT (The "Laptop Look")
    ========================================= */
-.app-body, .auto-body {
+.app-body {
     display: flex;
-    flex-direction: row;
+    height: 100vh;
 }
 
-/* Main content area pushes away from sidebar on PC */
-.lobby-container, .main-layout {
-    flex-grow: 1;
-    margin-left: var(--sidebar-width); 
-    min-height: 100vh;
-    position: relative;
-    transition: margin 0.3s ease;
-}
-
-/* =========================================
-   3. THE BRANDED SIDEBAR
-   ========================================= */
 .side-bar {
-    width: var(--sidebar-width);
+    width: 300px;
     height: 100vh;
     background: linear-gradient(145deg, #004d33 0%, var(--musha-green) 50%, #002e1f 100%);
     display: flex;
     flex-direction: column;
     padding: 25px;
     border-right: 2px solid var(--gold);
-    box-shadow: 5px 0 20px rgba(0,0,0,0.6);
-    position: fixed; /* Keeps it locked to the left */
-    left: 0;
+    position: sticky;
     top: 0;
-    z-index: 2000;
 }
 
-.logo {
-    font-size: 1.4rem;
-    font-weight: 900;
-    text-align: center;
-    margin-bottom: 40px;
-    text-shadow: 0px 4px 4px rgba(0,0,0,0.4);
-    color: white;
-}
-
-.sections {
-    list-style: none;
+.lobby-container {
     flex-grow: 1;
+    position: relative;
+    background: #000;
 }
 
-.sections li {
-    padding: 12px 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    cursor: pointer;
-    font-size: 0.95rem;
-    color: white;
-    transition: 0.3s;
-}
-
-.sections li:hover {
-    color: var(--gold);
-    padding-left: 20px;
-    background: rgba(0,0,0,0.1);
+.main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* =========================================
-   4. SHOWROOM & AUTO GRID (Fixed Bunching)
+   3. MOBILE FIX (The "Black Screen" Rescue)
    ========================================= */
-#car-results-grid, #furniture-results-grid {
+@media (max-width: 768px) {
+    .app-body {
+        flex-direction: column; /* Stack sidebar above image */
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .side-bar {
+        width: 100%;
+        height: auto;
+        position: relative; /* Don't float over content */
+        border-right: none;
+        border-bottom: 2px solid var(--gold);
+        padding: 15px;
+    }
+
+    /* Keep the menu visible but compact */
+    .sections {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .sections li {
+        font-size: 0.8rem;
+        padding: 8px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 4px;
+        list-style: none;
+    }
+
+    .lobby-container {
+        width: 100%;
+        height: 50vh; /* Show the fountain clearly below the menu */
+    }
+    
+    /* Center the Gateway buttons */
+    .gateway-content {
+        width: 90%;
+        margin: auto;
+    }
+}
+
+/* =========================================
+   4. SHOWROOM GRIDS (Prevent Stacking)
+   ========================================= */
+.car-grid, #furniture-results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     padding: 20px;
 }
 
 .car-card, .furniture-card {
     background: #111;
-    border-radius: 12px;
     border: 1px solid #333;
+    border-radius: 10px;
     overflow: hidden;
-    position: relative;
 }
 
-.price-badge {
-    color: var(--gold);
-    font-weight: bold;
-    font-size: 1.2rem;
+/* UI Elements */
+.tab-btn {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid var(--gold);
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
 }
 
-/* =========================================
-   5. GATEWAY OVERLAY (The Welcome Screen)
-   ========================================= */
-#gateway-overlay {
-    position: fixed;
-    inset: 0;
-    background: url('assets/doors_closed.png') center/cover no-repeat;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1.5s ease;
+.tab-btn.active {
+    background: white;
+    color: #004d33;
 }
-
-.mall-opened {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-}
-
-.gateway-content {
-    text-align: center;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    padding: 40px;
-    border-radius: 15px;
-    border: 2px solid var(--musha-green);
-}
-
-/* =========================================
-   6. MOBILE RESPONSIVE FIX (The "Showroom" Fix)
-   ========================================= */
-@media (max-width: 768px) {
-    /* Side-by-side isn't for phones */
-    .app-body, .auto-body {
-        flex-direction: column;
-    }
-
-    /* Push content back to full width on phones */
-    .lobby-container, .main-layout {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    /* Hide Sidebar off-canvas */
-    .side-bar {
-        left: -100%;
-        transition: 0.4s ease-in-out;
-        width: 80%;
-        background: #000 !important; /* Premium dark mode for mobile sidebar */
-    }
-
-    .side-bar.active {
-        left: 0;
-    }
-
-    /* Show the hamburger menu icon */
-    .menu-toggle {
-        display: block;
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 3000;
-        background: var(--musha-green);
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-    #gateway-overlay {
-        background-image: url('assets/doors_mobile.png');
-        background-size: 100% auto;
-        background-position: top center;
-    }
-}
-
-/* =========================================
-   7. UTILITY CLASSES
-   ========================================= */
-.gold-text { color: var(--gold); font-weight: bold; }
-.power-tag { background: #ffd700; color: black; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
-.verified-card { border-left: 4px solid var(--musha-green); }
