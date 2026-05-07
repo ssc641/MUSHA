@@ -385,6 +385,19 @@ function submitOrderFinal() {
     location.href = 'mall.html';
 }
 
+function toggleSidebar() {
+    const sidebar = document.querySelector('.side-bar');
+    sidebar.classList.toggle('active');
+}
+
+// Close sidebar automatically when a link is clicked (Optional)
+document.querySelectorAll('.sections li').forEach(item => {
+    item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            toggleSidebar();
+        }
+    });
+});
 
 
 
