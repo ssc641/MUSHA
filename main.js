@@ -206,6 +206,33 @@ function blockVendor(vendorId) {
         displayFurniture(furnitureInventory); // Update the Mall live
     }
 }
+/* =========================================
+   UNIVERSAL VENDOR UPLOAD (Cars + Furniture)
+   ========================================= */
+function universalUpload(event) {
+    event.preventDefault();
+
+    const categoryType = document.getElementById('listing-type').value; // 'car' or 'furniture'
+    
+    const newListing = {
+        id: "PENDING-" + Date.now(),
+        name: document.getElementById('p-name').value,
+        price: document.getElementById('p-price').value,
+        // CRITICAL: New listings are ALWAYS false by default
+        isVerified: false, 
+        seller: "Public User", 
+        image: "assets/pending-review.jpg" 
+    };
+
+    if (categoryType === 'car') {
+        carInventory.push(newListing);
+        alert("Car listed! It will appear as 'Unverified' until StaTech reviews it.");
+    } else {
+        furnitureInventory.push(newListing);
+        alert("Furniture listed! Waiting for verification.");
+    }
+}
+
 
 
 
