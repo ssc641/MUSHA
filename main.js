@@ -77,4 +77,65 @@ function filterFurnitureByRoom(roomName) {
     const filtered = furnitureInventory.filter(item => item.category === roomName);
     displayFurniture(filtered);
 }
+/* =========================================
+   STATHECH LOGISTICS: TRACKING SYSTEM
+   ========================================= */
+
+// Dummy data for testing (In a real app, this comes from a database)
+const activeOrders = {
+    "MSH-101": {
+        item: "Royal Velvet Sofa",
+        status: "Out for Delivery",
+        driver: "Tinashe M.",
+        vehicle: "White Toyota Hilux (ABW-1234)",
+        eta: "14:45 PM",
+        location: "Riverside, Gweru"
+    },
+    "MSH-202": {
+        item: "Defy 4-Plate Stove",
+        status: "Processing at Hub",
+        driver: "Pending",
+        vehicle: "StaTech Logistics Van",
+        eta: "Tomorrow",
+        location: "Harare Main Hub"
+    }
+};
+
+function trackOrder() {
+    const id = document.getElementById('track-id').value.toUpperCase();
+    const resultGrid = document.getElementById('main-content'); // We'll hijack the main area to show the status
+    const order = activeOrders[id];
+
+    if (!order) {
+        alert("Order ID not found. Please check your receipt.");
+        return;
+    }
+
+    // Hide the lobby/grid and show the tracker
+    resultGrid.innerHTML = `
+        <div class="tracker-container">
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <h3>ORDER #${id}</h3>
+                    <span class="status-pill">${order.status}</span>
+                </div>
+                <div class="tracker-body">
+                    <p><strong>Product:</strong> ${order.item}</p>
+                    <p><strong>Current Location:</strong> ${order.location}</p>
+                    <hr>
+                    <div class="driver-profile">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                        <div class="driver-details">
+                            <p><strong>Driver:</strong> ${order.driver}</p>
+                            <p><strong>Vehicle:</strong> ${order.vehicle}</p>
+                            <p><strong>Estimated Arrival:</strong> ${order.eta}</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="reset-btn" onclick="location.reload()">Back to Mall</button>
+            </div>
+        </div>
+    `;
+}
+
 
