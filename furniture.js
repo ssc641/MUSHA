@@ -249,7 +249,33 @@ const furnitureInventory = [
         quality: "premium", // ADD THIS
         category: "Living Room",
         // ... rest of the item data
-    },
+    },// Add these to your furnitureInventory array
+{
+    id: 2001,
+    name: "Samsung Double-Door Fridge",
+    category: "Appliances",
+    type: "Kitchen",
+    material: "Stainless Steel",
+    condition: "Brand New",
+    price: 950,
+    store: "Gweru Power Hub",
+    isVerified: true,
+    whatsapp: "263771111111",
+    image: "assets/appliances/fridge1.jpg"
+},
+{
+    id: 2002,
+    name: "Defy 9kg Washing Machine",
+    category: "Appliances",
+    type: "Laundry",
+    material: "Metal/Plastic",
+    condition: "Brand New",
+    price: 420,
+    store: "Midlands Electronics",
+    isVerified: true,
+    whatsapp: "263772222222",
+    image: "assets/appliances/washer1.jpg"
+}
     {
         id: 1002,
         name: "Standard Pine Coffee Table",
