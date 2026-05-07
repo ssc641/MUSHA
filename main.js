@@ -138,4 +138,31 @@ function trackOrder() {
     `;
 }
 
+/* =========================================
+   GENERATE REAL ORDERS
+   ========================================= */
+function completePurchase() {
+    if (mushaCart.length === 0) return alert("Cart is empty!");
+
+    // 1. Generate a random ID like MSH-552
+    const newOrderId = "MSH-" + Math.floor(100 + Math.random() * 900);
+    
+    // 2. Add it to our "Active Orders" database
+    activeOrders[newOrderId] = {
+        item: mushaCart[0].name + (mushaCart.length > 1 ? " & more" : ""),
+        status: "Processing",
+        driver: "Assigning...",
+        vehicle: "StaTech Fleet",
+        eta: "Calculating...",
+        location: "Musha Sorting Hub"
+    };
+
+    // 3. Clear cart and show the ID to the user
+    alert("SUCCESS! Your Order ID is: " + newOrderId + "\nWrite this down to track your delivery!");
+    mushaCart = [];
+    localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
+    location.reload(); 
+}
+
+
 
