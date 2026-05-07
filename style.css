@@ -374,7 +374,7 @@ body {
     margin: 0;
     padding: 0;
     /* This creates a dark tint (85% black) so the white text is readable */
-    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.74)), 
                 url('assets/showroom-bg.jpg'); 
     background-size: cover;
     background-position: center;
@@ -382,3 +382,41 @@ body {
     color: white;
 }
 
+/* THE NAVIGATION HEADER */
+.main-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(46, 175, 125, 0.3); /* Green border */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* THE BUTTONS */
+.nav-link {
+    text-decoration: none;
+    color: #bbb;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* THE ACTIVE/HOVER STATE */
+.nav-link:hover, .nav-link.active {
+    color: #2eaf7d; /* Musha Green */
+    background: rgba(46, 175, 125, 0.1);
+    border: 1px solid #2eaf7d;
+}
+
+/* ICON SPACING */
+.nav-link i {
+    margin-right: 5px;
+}
