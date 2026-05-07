@@ -284,5 +284,7 @@ const furnitureInventory = [
         // ... rest of the item data
     }
 ];
+// Inside your .map() function where you build the HTML cards:
+${item.category === 'Appliances' ? `<span class="power-tag"><i class="fas fa-bolt"></i> Low Energy</span>` : ''}
 
 
