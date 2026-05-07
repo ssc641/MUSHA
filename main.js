@@ -258,6 +258,54 @@ function handlePublicUpload(event) {
     // Redirect back to Mall
     window.location.href = 'mall.html';
 }
+/* =========================================
+   GOD MODE: ADMIN ACTIONS
+   ========================================= */
+
+function loadPendingItems() {
+    const list = document.getElementById('pending-list');
+    if (!list) return;
+
+    // Combine cars and furniture to see everything pending
+    const allItems = [...carInventory, ...furnitureInventory];
+    const pending = allItems.filter(item => item.isVerified === false);
+
+    document.getElementById('pending-count').innerText = pending.length;
+
+    list.innerHTML = pending.map(item => `
+        <div class="admin-card">
+            <img src="${item.image}" alt="Preview">
+            <div class="admin-card-info">
+                <h4>${item.name}</h4>
+                <p class="gold-text">$${item.price}</p>
+                <p>Seller: ${item.seller || 'Public User'}</p>
+                
+                <div class="admin-actions">
+                    <button class="verify-btn" onclick="approveItem(${item.id})">
+                        <i class="fas fa-check"></i> VERIFY
+                    </button>
+                    <button class="ban-btn" onclick="deleteItem(${item.id})">
+                        <i class="fas fa-trash"></i> DELETE
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function approveItem(id) {
+    // Find item and set isVerified to true
+    let item = carInventory.find(i => i.id === id) || furnitureInventory.find(i => i.id === id);
+    if (item) {
+        item.isVerified = true;
+        alert("ITEM VERIFIED: It is now live with the StaTech Badge!");
+        loadPendingItems(); // Refresh the list
+    }
+}
+
+// Run on load
+document.addEventListener('DOMContentLoaded', loadPendingItems);
+
 
 
 
