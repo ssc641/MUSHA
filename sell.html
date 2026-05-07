@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell on Musha | Snap & List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="app-body">
+
+    <div class="sell-container">
+        <header class="sell-header">
+            <button onclick="window.location.href='mall.html'"><i class="fas fa-arrow-left"></i></button>
+            <h1>List a Product</h1>
+        </header>
+
+        <form id="public-upload-form" onsubmit="handlePublicUpload(event)">
+            
+            <div class="camera-upload-zone">
+                <label for="camera-input" class="camera-trigger">
+                    <i class="fas fa-camera fa-2x"></i>
+                    <span>TAP TO SNAP PHOTO</span>
+                </label>
+                <input type="file" id="camera-input" accept="image/*" capture="environment" onchange="previewImage(event)" hidden>
+                
+                <div id="preview-box">
+                    <img id="output-preview" src="" style="display:none;">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>What are you selling?</label>
+                <select id="p-category" required>
+                    <option value="car">Automotive / Vehicle</option>
+                    <option value="furniture">Furniture / Home Decor</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="p-name" placeholder="Item Name (e.g. 2018 Toyota Vitz)" required>
+            </div>
+
+            <div class="input-group">
+                <input type="number" id="p-price" placeholder="Price ($)" required>
+            </div>
+
+            <div class="input-group">
+                <textarea id="p-desc" placeholder="Brief description (Condition, Location, etc.)"></textarea>
+            </div>
+
+            <p class="verification-note">
+                <i class="fas fa-info-circle"></i> 
+                All new listings appear as <strong>Unverified</strong> until reviewed by StaTech.
+            </p>
+
+            <button type="submit" class="list-now-btn">SUBMIT FOR REVIEW</button>
+        </form>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
