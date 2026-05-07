@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StaTech Automotive | Musha Virtual Lot</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auto-body">
+
+    <nav class="auto-nav">
+        <div class="logo">STA-TECH <span class="gold">AUTO</span></div>
+        <div class="nav-links">
+            <a href="index.html">Back to Mall</a>
+            <a href="#" class="active">Showroom</a>
+            <a href="#">Logistics</a>
+        </div>
+    </nav>
+
+    <div class="main-layout">
+        
+        <aside class="filter-sidebar">
+            <h3>Refine Search</h3>
+            
+            <div class="filter-group">
+                <label for="dealership-select">Dealership Hub</label>
+                <select id="dealership-select" onchange="filterCars()">
+                    <option value="all">All Gweru & Harare Hubs</option>
+                    <option value="Gweru Central Motors">Gweru Central Motors</option>
+                    <option value="Harare Luxury Auto">Harare Luxury Auto</option>
+                    <option value="Midlands Car Mart">Midlands Car Mart</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="year-select">Model Year</label>
+                <select id="year-select" onchange="filterCars()">
+                    <option value="all">All Years</option>
+                    <option value="2026">2026 Models</option>
+                    <option value="2025">2025 Models</option>
+                    <option value="2024">2024 Models</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="brand-select">Manufacturer</label>
+                <select id="brand-select" onchange="filterCars()">
+                    <option value="all">All Brands</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Volkswagen">Volkswagen</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="category-select">Vehicle Body</label>
+                <select id="category-select" onchange="filterCars()">
+                    <option value="all">All Categories</option>
+                    <option value="SUV">SUVs</option>
+                    <option value="Sedan">Sedans</option>
+                    <option value="Hatchback">Hatchbacks</option>
+                    <option value="Truck">Trucks/Pickups</option>
+                </select>
+            </div>
+
+            <button class="reset-btn" onclick="resetFilters()">Clear All Filters</button>
+        </aside>
+
+        <section class="showroom-container">
+            <header class="showroom-stats">
+                <p id="car-count">Showing all available stock</p>
+            </header>
+
+            <div id="car-results-grid" class="car-grid">
+                </div>
+        </section>
+
+    </div>
+
+    <footer class="auto-footer">
+        <p>&copy; 2026 StaTech Logistics. Built for Musha Virtual Mall.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
