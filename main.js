@@ -186,6 +186,26 @@ function vendorAddProduct(event) {
     alert("Success! " + newProduct.name + " is now live in the Mall.");
     displayFurniture(furnitureInventory); // Refresh the grid
 }
+/* =========================================
+   GOD MODE: VENDOR MANAGEMENT
+   ========================================= */
+const registeredVendors = [
+    { id: "V-01", name: "Gweru Furniture King", status: "Active" },
+    { id: "V-02", name: "Budget Beds Hub", status: "Active" }
+];
+
+function blockVendor(vendorId) {
+    const vendor = registeredVendors.find(v => v.id === vendorId);
+    if (vendor) {
+        vendor.status = "BLOCKED";
+        
+        // Logic: Remove all their products from the mall instantly
+        furnitureInventory = furnitureInventory.filter(item => item.storeId !== vendorId);
+        
+        alert(`GOD MODE: ${vendor.name} has been banned. All products removed.`);
+        displayFurniture(furnitureInventory); // Update the Mall live
+    }
+}
 
 
 
