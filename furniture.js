@@ -242,3 +242,21 @@ function removeFromCart(index) {
     alert("Item removed from cart.");
 }
 
+const furnitureInventory = [
+    {
+        id: 1001,
+        name: "Royal Velvet L-Shape",
+        quality: "premium", // ADD THIS
+        category: "Living Room",
+        // ... rest of the item data
+    },
+    {
+        id: 1002,
+        name: "Standard Pine Coffee Table",
+        quality: "standard", // ADD THIS
+        category: "Living Room",
+        // ... rest of the item data
+    }
+];
+
+
