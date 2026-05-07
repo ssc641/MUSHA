@@ -1,167 +1,189 @@
 /* =========================================
-   1. GLOBAL RESET & FOUNDATION
+   1. CORE BRANDING (MUSHA GREEN & GOLD)
    ========================================= */
+:root {
+    --musha-green: #2eaf7d;
+    --musha-dark: #0a0a0a;
+    --gold: #d4af37;
+    --white: #ffffff;
+    --sidebar-width: 260px;
+}
+
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #050a08;
-    color: white;
+    background-color: var(--musha-dark);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+/* =========================================
+   2. LAYOUT ENGINE (Side-by-Side)
+   ========================================= */
+.app-body, .auto-body {
+    display: flex; /* Forces Sidebar and Content to sit side-by-side */
     min-height: 100vh;
-    width: 100vw;
-    overflow-x: hidden; 
+}
+
+.main-layout, .lobby-container {
+    flex: 1;
+    margin-left: var(--sidebar-width); /* Keeps content from hiding under sidebar */
+    padding: 20px;
+    transition: margin 0.3s ease;
 }
 
 /* =========================================
-   2. SHARED COMPONENTS (Buttons, Tags, Nav)
+   3. THE PREMIUM SIDEBAR
    ========================================= */
-.gold-text { color: #d4af37; font-weight: bold; }
-
-.power-tag {
-    background: #ffd700;
-    color: black;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-.menu-toggle {
-    display: none; /* Hidden on Desktop */
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 10001;
-    background: #2eaf7d;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-/* =========================================
-   3. SIDEBAR NAVIGATION (Desktop Default)
-   ========================================= */
-.app-body {
-    display: flex;
-    flex-direction: row;
-}
-
 .side-bar {
-    width: 300px;
+    width: var(--sidebar-width);
     height: 100vh;
-    background: linear-gradient(145deg, #004d33 0%, #2eaf7d 50%, #002e1f 100%);
+    background: linear-gradient(180deg, #1a1a1a 0%, var(--musha-dark) 100%);
+    border-right: 1px solid var(--musha-green);
+    position: fixed;
+    left: 0;
+    top: 0;
     display: flex;
     flex-direction: column;
-    padding: 25px;
-    border-right: 2px solid #d4af37;
-    box-shadow: 5px 0 20px rgba(0,0,0,0.6);
-    z-index: 10;
-    transition: 0.4s ease-in-out;
+    padding: 20px;
+    z-index: 1000;
 }
 
 .logo {
-    font-size: 1.4rem;
-    font-weight: 900;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--white);
     text-align: center;
-    margin-bottom: 40px;
-    text-shadow: 0px 4px 4px rgba(0,0,0,0.4);
-    color: white;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
 }
+
+.gold-text { color: var(--gold); }
 
 .sections {
     list-style: none;
-    flex-grow: 1;
+    margin-top: 20px;
 }
 
 .sections li {
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 15px;
+    margin-bottom: 5px;
     cursor: pointer;
-    font-size: 0.95rem;
-    color: white;
+    border-radius: 8px;
+    transition: 0.3s;
+    color: #ccc;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.sections li i { color: #d4af37; }
-
 .sections li:hover {
-    color: #d4af37;
-    padding-left: 10px;
+    background: rgba(46, 175, 125, 0.2);
+    color: var(--musha-green);
+}
+
+/* =========================================
+   4. SHOWROOM & GRIDS
+   ========================================= */
+.car-grid, #furniture-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.furniture-card, .admin-card {
+    background: #151515;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #222;
     transition: 0.3s;
 }
 
+.furniture-card:hover {
+    border-color: var(--musha-green);
+    transform: translateY(-5px);
+}
+
+.price-badge {
+    background: var(--gold);
+    color: black;
+    font-weight: bold;
+    padding: 5px 15px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 20px;
+}
+
 /* =========================================
-   4. PAGE SPECIFIC SECTIONS (Mall, Auto, Admin)
+   5. GATEWAY (WELCOME SCREEN)
    ========================================= */
-
-/* Mall Lobby */
-.lobby-container { flex-grow: 1; height: 100vh; position: relative; background-color: #000; }
-.main-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* Auto Showroom */
-.auto-body {
-    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.54)), url('assets/showroom-bg.jpg'); 
-    background-size: cover; background-position: center; background-attachment: fixed;
+#gateway-overlay {
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-/* Admin Dashboard */
-.admin-nav { display: flex; justify-content: space-between; padding: 20px; border-bottom: 2px solid #2eaf7d; background: #111; }
-.admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+#gateway-overlay.mall-opened {
+    opacity: 0;
+    pointer-events: none;
+    transition: 1.5s;
+}
 
-/* Sell/Upload Zone */
-.camera-upload-zone {
-    border: 2px dashed #2eaf7d; padding: 40px; text-align: center; background: rgba(46, 175, 125, 0.05); border-radius: 15px;
+.brand-name {
+    font-size: 4rem;
+    color: var(--white);
+    margin-bottom: 10px;
 }
 
 /* =========================================
-   5. RESPONSIVE DESIGN (MOBILE FIXES)
+   6. MOBILE RESPONSIVE (THE FIX)
    ========================================= */
 @media (max-width: 768px) {
-    .menu-toggle { display: block; }
+    .app-body, .auto-body {
+        flex-direction: column; /* Stack vertically on phones */
+    }
 
     .side-bar {
+        transform: translateX(-100%); /* Hide sidebar off-screen */
+        transition: 0.4s;
+    }
+
+    .side-bar.active {
+        transform: translateX(0); /* Slide in when menu clicked */
+    }
+
+    .main-layout, .lobby-container {
+        margin-left: 0; /* Content takes full width on phones */
+        padding: 10px;
+    }
+
+    .menu-toggle {
+        display: block;
         position: fixed;
-        left: -100%; /* Hidden off-screen */
-        top: 0;
-        width: 280px;
-        height: 100vh;
-        background: #111111 !important; /* Solid black for mobile */
-        z-index: 10000;
-        padding: 60px 20px 20px 20px;
-        border-right: 1px solid #2eaf7d;
+        top: 15px;
+        left: 15px;
+        z-index: 1100;
+        background: var(--musha-green);
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
     }
+}
 
-    .side-bar.active { left: 0; } /* Slide in when active */
-
-    .sections li {
-        color: #ffffff !important; 
-        display: flex !important;
-        font-size: 1.1rem;
-        padding: 18px 10px;
-        border-bottom: 1px solid #333;
-    }
-
-    .logo {
-        color: #2eaf7d !important;
-        margin-bottom: 20px;
-    }
-
-    .lobby-container { margin-left: 0 !important; width: 100%; }
-
-    /* Gateway Mobile Adjustments */
-    #gateway-overlay {
-        background-image: url('assets/doors_mobile.png');
-        background-size: 100% auto;
-        background-position: top center;
-    }
+/* Desktop Menu Toggle Hidden */
+@media (min-width: 769px) {
+    .menu-toggle { display: none; }
 }
