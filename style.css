@@ -514,5 +514,48 @@ body {
 .ban-btn { background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
 .gold-text { color: #d4af37; font-weight: bold; }
 
+/* 1. The Toggle Button Styling */
+.menu-toggle {
+    display: none; /* Hidden on Desktop */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 3000;
+    background: #2eaf7d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* 2. Mobile Media Query */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Show on Mobile */
+    }
+
+    .side-bar {
+        position: fixed;
+        left: -260px; /* Hide sidebar off-screen */
+        top: 0;
+        height: 100%;
+        width: 250px;
+        transition: 0.3s;
+        z-index: 2500;
+        background: #111;
+    }
+
+    /* When the sidebar is toggled open */
+    .side-bar.active {
+        left: 0;
+    }
+    
+    .lobby-container {
+        margin-left: 0 !important; /* Center lobby on mobile */
+    }
+}
+
 
 
