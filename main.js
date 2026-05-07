@@ -340,6 +340,15 @@ function submitOrderFinal() {
     localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
     location.href = 'mall.html';
 }
+function requestVerification(itemId) {
+    const item = furnitureInventory.find(i => i.id === itemId) || carInventory.find(i => i.id === itemId);
+    
+    // Show them the payment instructions
+    const msg = `To get the "Verified" badge for ${item.name}, please pay $5 to Ecocash Merchant 123456. Use Reference: VERIFY-${item.id}`;
+    
+    alert(msg);
+    // In God Mode, this item will now highlight as "Payment Pending"
+}
 
 
 
