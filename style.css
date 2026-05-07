@@ -370,4 +370,15 @@ body {
     align-items: center;
     gap: 10px;
 }
+body {
+    margin: 0;
+    padding: 0;
+    /* This creates a dark tint (85% black) so the white text is readable */
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
+                url('assets/showroom-bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps the floor and windows still while you scroll */
+    color: white;
+}
 
