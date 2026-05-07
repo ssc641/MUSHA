@@ -536,21 +536,49 @@ body {
         display: block; /* Show on Mobile */
     }
 
+    /* Sidebar Visibility & Layout Fix */
+@media (max-width: 768px) {
     .side-bar {
         position: fixed;
-        left: -260px; /* Hide sidebar off-screen */
+        left: -100%; /* Hidden by default */
         top: 0;
-        height: 100%;
-        width: 250px;
-        transition: 0.3s;
-        z-index: 2500;
-        background: #111;
+        width: 280px;
+        height: 100vh;
+        background: #111111 !important; /* Force Black Background */
+        z-index: 10000;
+        transition: 0.4s ease-in-out;
+        display: flex !important; /* Ensure it doesn't stay hidden */
+        flex-direction: column;
+        padding: 20px;
     }
 
-    /* When the sidebar is toggled open */
     .side-bar.active {
-        left: 0;
+        left: 0; /* Slide in */
     }
+
+    /* Force the Buttons/Text to be White and Visible */
+    .sections li {
+        color: #ffffff !important; 
+        display: block !important;
+        padding: 15px 10px;
+        border-bottom: 1px solid #333;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .sections li i {
+        color: #2eaf7d !important; /* Your SSC Green for Icons */
+        margin-right: 10px;
+    }
+
+    .logo {
+        color: #2eaf7d !important;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+}
     
     .lobby-container {
         margin-left: 0 !important; /* Center lobby on mobile */
