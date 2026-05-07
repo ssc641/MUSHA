@@ -422,3 +422,44 @@ body {
 .nav-link i {
     margin-right: 5px;
 }
+.tracker-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.tracker-card {
+    background: rgba(20, 20, 20, 0.9);
+    border: 1px solid #2eaf7d; /* SSC Green */
+    border-radius: 15px;
+    padding: 25px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.status-pill {
+    background: #2eaf7d;
+    color: black;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.driver-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
