@@ -38,7 +38,13 @@ function openTheMall() {
     
     console.log("SSC System: Showroom active.");
 }
-
+function openTheMall() {
+    const overlay = document.getElementById('mall-gateway');
+    if(overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => { overlay.style.display = 'none'; }, 800);
+    }
+}
 /* =========================================
    2. FURNITURE & CAR SYNC
    ========================================= */
