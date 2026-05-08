@@ -3,34 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MUSHA | Welcome Home</title>
+    <title>MUSHA | Your Gateway to Gweru's Best</title>
     <link rel="stylesheet" href="style.css">
-    <link rel
 </head>
 <body>
-    <header class="musha-header">
-    <img src="assets/musha.png" alt="Musha Logo" class="main-logo">
-    <h1 class="brand-name">MUSHA</h1>
-    <p class="tagline">Your Gateway to Gweru's Best</p>
-</header>
-    <div class="musha-container">
-        <!-- Left Side: Furniture -->
-        <div class="portal-section mall-bg" onclick="location.href='mall.html'">
-            <div class="portal-content">
-                <h1>SSC GRAND MALL</h1>
-                <p>Luxury Furniture & Interior Design</p>
-                <button class="portal-btn">Enter Showroom</button>
-            </div>
-        </div>
 
-        <!-- Right Side: Cars -->
-        <div class="portal-section auto-bg" onclick="location.href='auto.html'">
-            <div class="portal-content">
-                <h1>SSC AUTOMOTIVE</h1>
+    <div id="gateway-overlay">
+        <header class="gateway-header">
+            <div class="musha-icon">🏠</div>
+            <h1 class="brand-name">MUSHA</h1>
+            <p class="tagline">Your Gateway to Gweru's Best</p>
+        </header>
+
+        <main class="gateway-choices">
+            <section class="choice-card mall-card">
+                <h2 class="gold-text">SSC GRAND MALL</h2>
+                <p>Luxury Furniture & Interior Design</p>
+                <a href="mall.html" class="enter-btn">Enter Showroom</a>
+            </section>
+
+            <section class="choice-card auto-card">
+                <h2 class="gold-text">SSC AUTOMOTIVE</h2>
                 <p>Verified Quality Second-Hand Vehicles</p>
-                <button class="portal-btn">View Dealership</button>
-            </div>
-        </div>
+                <a href="auto.html" class="enter-btn">View Dealership</a>
+            </section>
+        </main>
     </div>
+
 </body>
 </html>
