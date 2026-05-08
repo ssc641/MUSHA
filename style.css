@@ -51,7 +51,7 @@ body {
     position: fixed;
     inset: 0;
     /* DEFAULT PC DOORS */
-    background: url('1000142249.png') no-repeat center center/cover;
+    background: url('assets/lobby_v2.png') no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,7 +62,7 @@ body {
 /* THE SWAP SYSTEM - Mobile Doors */
 @media (max-width: 768px) {
     #mall-gateway {
-        background: url('doors_mobile.png') no-repeat center center/cover;
+        background: url('assets/doors_mobile.png') no-repeat center center/cover;
     }
 }
 
