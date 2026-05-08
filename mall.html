@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSC Grand Mall | Musha Premium Logistics</title>
+    <title>SSC Grand Mall | Showroom</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* Force White Background for the glitch */
         .app-body {
             background-color: white !important;
-            margin-top: 50px; /* Space for the top nav */
+            margin: 0;
+            padding: 0;
         }
 
-        /* The Door Overlay */
         #gateway-overlay {
             position: fixed;
             top: 0;
@@ -25,35 +24,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 3000;
-            transition: opacity 0.5s ease;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
         }
 
-        .gateway-content {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            color: white;
-            max-width: 80%;
-        }
-
-        /* Professional Buttons */
         .action-btn {
-            background: #28a745;
-            color: white;
+            background: #d4af37;
+            color: black;
             border: none;
-            padding: 12px 25px;
+            padding: 18px 40px;
             font-weight: bold;
-            border-radius: 5px;
+            text-transform: uppercase;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 5px;
-            display: inline-block;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        #open-btn { background: #d4af37; color: black; }
-
-        /* Top Navigation Bar */
         .top-nav {
             position: fixed;
             top: 0;
@@ -61,88 +49,89 @@
             background: #fff;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
             z-index: 2000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .nav-item {
             text-decoration: none;
             color: #333;
             font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
+            font-size: 13px;
         }
     </style>
 </head>
 <body class="app-body">
 
     <nav class="top-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home" style="margin-right:5px;"></i> HOME</a>
-        <a href="auto.html" class="nav-item"><i class="fas fa-car" style="margin-right:5px;"></i> AUTO</a>
-        <a href="sell.html" class="nav-item" style="color: #28a745;"><i class="fas fa-plus-circle" style="margin-right:5px;"></i> SELL</a>
+        <a href="index.html" class="nav-item">BACK TO SELECTION</a>
+        <a href="auto.html" class="nav-item">AUTO DEALERSHIP</a>
     </nav>
 
     <div id="gateway-overlay">
         <div class="gateway-content">
-            <img src="1000141369.png" alt="Musha Logo" style="width: 80px; margin-bottom: 10px;">
-            <h1 class="brand-name">MUSHA</h1>
-            <h2>WELCOME TO THE MALL</h2>
-            <p>Your Home, Our Home.</p>
-            <button id="open-btn" class="action-btn" onclick="openTheMall()">ENTER SHOWROOM</button>
-            <button class="action-btn" onclick="location.href='auto.html'">AUTO DEALERSHIP</button>
+            <button id="open-btn" class="action-btn" onclick="openTheMall()">Enter Showroom</button>
         </div>
     </div>
 
-    <button class="menu-toggle" id="menu-toggle-btn" onclick="toggleSidebar()">
+    <button class="menu-toggle" id="menu-toggle-btn" onclick="toggleSidebar()" style="z-index: 2100;">
         <i class="fas fa-bars"></i>
     </button>
 
     <nav class="side-bar" id="mall-sidebar">
         <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
-        <div class="logo">SSC GRAND MALL</div>
-        <div class="cart-status" onclick="location.href='cart.html'">
-            <i class="fas fa-shopping-bag"></i> 
-            MY CART: <span id="cart-count-display">0</span>
-        </div>
-        <div class="tabs">
-            <button class="tab-btn active" id="tab-premium" onclick="showFurnitureSection('premium')">Premium</button>
-            <button class="tab-btn" id="tab-standard" onclick="showFurnitureSection('standard')">Standard</button>
-        </div>
+        <div class="logo" style="color: #d4af37; padding: 20px;">SSC GRAND MALL</div>
         <ul class="sections">
-            <li onclick="filterFurnitureByRoom('Appliances')"><i class="fas fa-plug"></i> Home Appliances</li>
-            <li onclick="filterFurnitureByRoom('Living Room')"><i class="fas fa-couch"></i> Lounge & Living</li>
-            <li onclick="filterFurnitureByRoom('Bedroom')"><i class="fas fa-bed"></i> Bedroom Suite</li>
-            <li onclick="filterFurnitureByRoom('Kitchen')"><i class="fas fa-utensils"></i> Kitchen & Dining</li>
-            <li onclick="filterFurnitureByRoom('Office')"><i class="fas fa-briefcase"></i> Office & Study</li>
-            <li onclick="filterFurnitureByRoom('Outdoor')"><i class="fas fa-tree"></i> Outdoor Living</li>
+            <li onclick="filterFurnitureByRoom('Appliances')">Home Appliances</li>
+            <li onclick="filterFurnitureByRoom('Living Room')">Lounge & Living</li>
+            <li onclick="filterFurnitureByRoom('Bedroom')">Bedroom Suite</li>
+            <li onclick="filterFurnitureByRoom('Kitchen')">Kitchen & Dining</li>
         </ul>
     </nav>
 
-    <main class="lobby-container" id="main-content">
-        <div class="fountain-wrapper" id="lobby-view">
-            <img src="assets/lobby_v2.png" class="main-img" usemap="#mallmap" alt="SSC Grand Mall Lobby">
+    <main class="lobby-container" id="main-content" style="margin-top: 60px;">
+        <div class="fountain-wrapper">
+            <img id="responsive-lobby-img" src="assets/lobby_v2.png" class="main-img" usemap="#mallmap" style="width: 100%;">
             <map name="mallmap">
                 <area shape="rect" coords="0,0,300,1000" href="javascript:void(0)" onclick="showFurnitureSection('standard')">
                 <area shape="rect" coords="700,0,1000,1000" href="javascript:void(0)" onclick="showFurnitureSection('premium')">
                 <area shape="circle" coords="500,600,150" href="javascript:void(0)" onclick="location.href='auto.html'">
             </map>
         </div>
-        <div id="furniture-results-grid" class="car-grid" style="display:none;"></div>
     </main>
 
     <script>
+        // THE SWAPPER MECHANIC
+        function updateLobbyImage() {
+            const lobbyImg = document.getElementById('responsive-lobby-img');
+            if (window.innerWidth <= 768) {
+                // Mobile version - use your mobile-optimized pic
+                lobbyImg.src = 'assets/lobby_v2_mobile.png'; 
+            } else {
+                // Desktop version
+                lobbyImg.src = 'assets/lobby_v2.png';
+            }
+        }
+
+        // Run on load
+        window.addEventListener('load', updateLobbyImage);
+        // Run on resize
+        window.addEventListener('resize', updateLobbyImage);
+
         function openTheMall() {
-            document.getElementById('gateway-overlay').style.display = 'none';
+            const overlay = document.getElementById('gateway-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 800);
+            updateLobbyImage(); // Ensure correct pic is there when doors open
         }
     </script>
-
+    
     <script src="furniture.js"></script> 
     <script src="main.js"></script>  
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
-  </body>
+</body>
 </html>
