@@ -1,149 +1,598 @@
-/* =========================================
-   1. GLOBAL & SHARED STYLES
-   ========================================= */
-:root {
-    --musha-green: #2eaf7d;
-    --musha-gold: #d4af37;
-    --dark-bg: #050a08;
-}
+This is the css file y said u fixed ok this time fix it and let it work and dont loose the brand but make the updates        
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* =========================================
+   1. GLOBAL RESET & FOUNDATION
+   ========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
-    background-color: var(--dark-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #050a08;
     color: white;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; 
 }
 
 /* =========================================
-   2. LANDING & GATEWAY (index.html)
+   2. MUSHA LANDING PAGE (index.html)
+   ========================================= */
+.musha-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: row;
+    background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%); 
+}
+
+.musha-header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    text-align: center;
+    width: 100%;
+}
+
+.main-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.brand-name {
+    color: #2eaf7d; 
+    font-size: 2rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.tagline {
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.portal-section {
+    flex: 1;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    transition: 0.5s all ease;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.1);
+    padding-top: 100px;
+}
+
+.portal-content h1 {
+    color: #d4af37;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.portal-content p {
+    color: #eee;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   3. SIDEBAR & NAVIGATION
+   ========================================= */
+.app-body {
+    display: flex;
+    flex-direction: row;
+}
+
+.side-bar {
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(145deg, #004d33 0%, #2eaf7d 50%, #002e1f 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    border-right: 2px solid #d4af37;
+    box-shadow: 5px 0 20px rgba(0,0,0,0.6);
+    z-index: 10;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 0px 4px 4px rgba(0,0,0,0.4);
+}
+
+.tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.tab-btn {
+    width: 100%;
+    padding: 12px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: white;
+    color: #004d33;
+}
+
+.sections {
+    list-style: none;
+    flex-grow: 1;
+}
+
+.sections li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.sections li:hover {
+    color: #d4af37;
+    padding-left: 10px;
+    transition: 0.3s;
+}
+
+.logistics-tag {
+    padding: 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 1px dashed #d4af37;
+}
+
+/* =========================================
+   4. CONTENT CONTAINERS
+   ========================================= */
+.lobby-container {
+    flex-grow: 1;
+    height: 100vh;
+    position: relative;
+    background-color: #000;
+}
+
+.main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* =========================================
+   5. GATEWAY OVERLAY (PC DEFAULT)
    ========================================= */
 #gateway-overlay {
     position: fixed;
-    inset: 0;
-    background: linear-gradient(to bottom, #ffffff 50%, #888 100%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    /* Uses the wide PC image */
+    background: url('assets/doors_closed.png') center/cover no-repeat;
     z-index: 9999;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: opacity 1.5s ease, visibility 1.5s;
 }
 
-.brand-name { color: var(--musha-green); font-size: 2rem; letter-spacing: 3px; text-transform: uppercase; }
+/* Class added via JS to fade the doors */
+.mall-opened {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.gateway-content {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    padding: 40px;
+    border-radius: 15px;
+    border: 2px solid #2eaf7d;
+}
+
+#open-btn {
+    padding: 15px 35px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: #2eaf7d;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(46, 175, 125, 0.6);
+    transition: 0.3s;
+}
+
+#open-btn:hover {
+    transform: scale(1.05);
+    background: white;
+    color: #004d33;
+}
 
 /* =========================================
-   3. MALL LOBBY & SIDEBAR (mall.html)
+   6. RESPONSIVE DESIGN (MOBILE FIXES)
    ========================================= */
-.app-body { display: flex; flex-direction: row; }
+@media (max-width: 768px) {
+    /* Musha Landing Mobile */
+    .musha-container { flex-direction: column; }
+    
+    .brand-name { font-size: 1.5rem; }
+    
+    .mall-bg { padding-top: 120px; }
 
-.side-bar {
-    width: 280px;
-    height: 100vh;
-    background: linear-gradient(180deg, #004d33 0%, var(--dark-bg) 100%);
-    border-right: 2px solid var(--musha-gold);
-    padding: 20px;
-    position: fixed;
-    left: 0; top: 0;
-}
+    .portal-section { padding-top: 0; }
 
-.lobby-container {
-    flex: 1;
-    margin-left: 280px;
-    height: 100vh;
-    background: url('assets/lobby-fountain.jpg') center/cover no-repeat;
-}
+    /* App Layout Mobile */
+    .app-body {
+        flex-direction: column;
+        overflow-y: auto;
+    }
 
-/* =========================================
-   4. AUTOMOTIVE SHOWROOM (auto.html)
-   ========================================= */
-.auto-body {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('assets/showroom-bg.jpg') center/cover no-repeat fixed;
-}
+    .side-bar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 2px solid #d4af37;
+        padding: 15px;
+    }
 
-.main-nav {
+    .sections { display: none; }
+
+    .lobby-container {
+        width: 100%;
+        height: 60vh;
+    }
+
+    /* GATEWAY MOBILE FIX - The Swap */
+    #gateway-overlay {
+        background-color: #ffffff; /* Sets the empty space to White */
+        background-image: url('assets/doors_mobile.png');
+        background-repeat: no-repeat;
+        
+        /* Stop the zoom: Fit width, auto-scale height */
+        background-size: 100% auto; 
+        background-position: top center; 
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end; 
+        padding-bottom: 50px;
+    }
+
+    .gateway-content {
+        width: 90%;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.95); 
+        border: 1.5px solid #2eaf7d;
+        border-radius: 15px;
+        padding: 20px;
+    }
+
+    #open-btn {
+        width: 100%;
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+} /* Ends the mobile media query */
+
+/* 1. THE LAYOUT CONTAINER */
+.main-layout {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column; /* Stack filters on top of cars for mobile */
     padding: 15px;
-    background: rgba(0,0,0,0.85);
-    border-bottom: 2px solid var(--musha-green);
-    position: sticky; top: 0;
+    background-color: #050505;
+    min-height: 100vh;
 }
 
-/* Filter Box Styles */
+/* 2. THE FILTER BOX (Make it look like a control panel) */
 .filter-sidebar {
     background: #111;
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid var(--musha-green);
-    margin: 20px;
+    border: 1px solid #2eaf7d;
+    margin-bottom: 20px;
 }
 
-/* =========================================
-   5. SELL & ADMIN PAGES (sell.html / admin.html)
-   ========================================= */
-.sell-container { padding: 20px; max-width: 600px; margin: auto; }
+.filter-group {
+    margin-bottom: 15px;
+}
 
+.filter-group label {
+    display: block;
+    color: #2eaf7d;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 6px;
+}
+
+/* 3. THE CAR CARD (Fixing the bunching) */
+.car-card {
+    background: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    border: 1px solid #333;
+}
+
+.car-details {
+    padding: 15px;
+}
+
+.car-title {
+    font-size: 1.4rem;
+    color: white;
+    margin: 10px 0;
+}
+
+.price-badge {
+    color: #d4af37; /* That premium gold */
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.safety-alert {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.auto-body {
+    margin: 0;
+    padding: 0;
+    /* This creates a dark tint (85% black) so the white text is readable */
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.54)), 
+                url('assets/showroom-bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps the floor and windows still while you scroll */
+    color: white;
+   min-height: 100vh;
+   overflow-y: visible !important;
+}
+
+/* THE NAVIGATION HEADER */
+.main-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(46, 175, 125, 0.3); /* Green border */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* THE BUTTONS */
+.nav-link {
+    text-decoration: none;
+    color: #bbb;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* THE ACTIVE/HOVER STATE */
+.nav-link:hover, .nav-link.active {
+    color: #2eaf7d; /* Musha Green */
+    background: rgba(46, 175, 125, 0.1);
+    border: 1px solid #2eaf7d;
+}
+
+/* ICON SPACING */
+.nav-link i {
+    margin-right: 5px;
+}
+.tracker-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.tracker-card {
+    background: rgba(20, 20, 20, 0.9);
+    border: 1px solid #2eaf7d; /* SSC Green */
+    border-radius: 15px;
+    padding: 25px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.status-pill {
+    background: #2eaf7d;
+    color: black;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.driver-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.back-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: transparent;
+    border: 1px solid #2eaf7d; /* Matching that SSC Green */
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.back-btn:hover {
+    background: #2eaf7d;
+    color: black;
+}
+.sell-container { padding: 20px; max-width: 500px; margin: auto; }
 .camera-upload-zone {
-    border: 2px dashed var(--musha-green);
-    background: rgba(46, 175, 125, 0.05);
+    border: 2px dashed #2eaf7d;
+    border-radius: 15px;
     padding: 40px;
     text-align: center;
-    border-radius: 15px;
+    margin-bottom: 20px;
+    background: rgba(46, 175, 125, 0.05);
 }
-
+.camera-trigger { cursor: pointer; color: #2eaf7d; display: flex; flex-direction: column; gap: 10px; }
 .input-group { margin-bottom: 15px; }
 .input-group input, .input-group select, .input-group textarea {
     width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: white;
 }
+.list-now-btn {
+    width: 100%; padding: 15px; background: #2eaf7d; border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer;
+}
+.verification-note { font-size: 0.85rem; color: #aaa; margin: 15px 0; }
+#output-preview { width: 100%; border-radius: 10px; border: 2px solid #2eaf7d; }
 
-.admin-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-    gap: 20px; 
-    padding: 20px; 
+.admin-body { background: #0a0a0a; color: white; font-family: sans-serif; }
+.admin-nav { 
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px; border-bottom: 2px solid #2eaf7d; background: #111;
+}
+.admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+.admin-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333; }
+.admin-card img { width: 100%; height: 200px; object-fit: cover; }
+.admin-card-info { padding: 15px; }
+.admin-actions { display: flex; gap: 10px; margin-top: 15px; }
+.verify-btn { flex: 1; background: #2eaf7d; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+.ban-btn { background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+.gold-text { color: #d4af37; font-weight: bold; }
+
+/* 1. The Toggle Button Styling */
+.menu-toggle {
+    display: none; /* Hidden on Desktop */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 3000;
+    background: #2eaf7d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
 }
 
-.admin-card { background: #1a1a1a; border-radius: 12px; border: 1px solid #333; overflow: hidden; }
-
-/* =========================================
-   6. SHARED COMPONENTS (Cards & Buttons)
-   ========================================= */
-.car-card, .furniture-card {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-.price-badge { color: var(--musha-gold); font-weight: bold; font-size: 1.2rem; }
-
-.tab-btn, .list-now-btn, .verify-btn {
-    width: 100%; padding: 12px; background: var(--musha-green); 
-    color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;
-}
-
-/* =========================================
-   7. MOBILE RESPONSIVE (Global Fix)
-   ========================================= */
+/* 2. Mobile Media Query */
 @media (max-width: 768px) {
-    .app-body { flex-direction: column; }
-    
+    .menu-toggle {
+        display: block; /* Show on Mobile */
+    }
+
+    /* Sidebar Visibility & Layout Fix */
+@media (max-width: 768px) {
     .side-bar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 2px solid var(--musha-gold);
+        position: fixed;
+        left: -100%; /* Hidden by default */
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        background: #111111 !important; /* Force Black Background */
+        z-index: 10000;
+        transition: 0.4s ease-in-out;
+        display: flex !important; /* Ensure it doesn't stay hidden */
+        flex-direction: column;
+        padding: 20px;
     }
 
-    .lobby-container {
-        margin-left: 0;
-        height: 50vh;
-        background-size: cover;
+    .side-bar.active {
+        left: 0; /* Slide in */
     }
 
-    .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    /* Force the Buttons/Text to be White and Visible */
+    .sections li {
+        color: #ffffff !important; 
+        display: block !important;
+        padding: 15px 10px;
+        border-bottom: 1px solid #333;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .sections li i {
+        color: #2eaf7d !important; /* Your SSC Green for Icons */
+        margin-right: 10px;
+    }
+
+    .logo {
+        color: #2eaf7d !important;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+    }
 }
+    
+    .lobby-container {
+        margin-left: 0 !important; /* Center lobby on mobile */
+    }
+}
+
+.power-tag {
+    background: #ffd700;
+    color: black;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-left: 5px;
+       }
