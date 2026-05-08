@@ -211,5 +211,18 @@ body {
         width: 100vw;
     }
 }
+.admin-body {
+    background: #0a0a0a; /* Darker than the showroom */
+    color: #eee;
+}
+
+.admin-nav {
+    background: #111;
+    border-bottom: 2px solid #ff4b2b; /* Red line to indicate 'Warning/Admin' mode */
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
 
 
