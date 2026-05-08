@@ -173,3 +173,43 @@ body {
     margin-bottom: 10px;
 }
 
+/* Layout Sync */
+.app-body {
+    display: flex; /* Puts sidebar and lobby side-by-side */
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+}
+
+.side-bar {
+    width: 280px;
+    min-width: 280px;
+    transition: all 0.3s ease; /* Smooth slide */
+    z-index: 1000;
+}
+
+/* THE FIX: When we add this class via JS, the sidebar disappears */
+.side-bar.hidden {
+    margin-left: -280px;
+}
+
+.lobby-container {
+    flex-grow: 1; /* Automatically fills the remaining space */
+    width: 100%;
+    position: relative;
+    overflow-y: auto;
+}
+
+/* Mobile Fix: Prevent the squashed image */
+@media (max-width: 768px) {
+    .side-bar {
+        position: absolute; /* Overlays the content instead of squashing it */
+        height: 100%;
+    }
+    .lobby-container {
+        width: 100vw;
+    }
+}
+
+
