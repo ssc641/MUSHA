@@ -2,33 +2,45 @@
    1. CORE ENGINE & NAVIGATION
    ========================================= */
 
-// Handles the opening fade effect for the main entrance
-function openTheMall() {
-    const gateway = document.getElementById('gateway-overlay');
-    if (gateway) {
-        gateway.classList.add('mall-opened');
-        setTimeout(() => {
-            gateway.style.display = 'none';
-        }, 1500);
-    }
-    console.log("SSC Grand Mall: System Online.");
-}
-
-// Mobile Sidebar Toggle
+// Fixed Toggle: Uses ONE logic for the whole system
 function toggleSidebar() {
     const sidebar = document.querySelector('.side-bar');
-    if (sidebar) sidebar.classList.toggle('active');
+    const mainContent = document.getElementById('main-content');
+    const icon = document.querySelector('.menu-toggle i');
+
+    if (sidebar) {
+        // Toggle the 'hidden' class
+        sidebar.classList.toggle('hidden');
+        
+        // Sync the main content margin so it doesn't get squashed
+        if (mainContent) {
+            mainContent.classList.toggle('expanded');
+        }
+
+        // Switch Icon between Bars and X
+        if (icon) {
+            if (sidebar.classList.contains('hidden')) {
+                icon.classList.replace('fa-times', 'fa-bars');
+            } else {
+                icon.classList.replace('fa-bars', 'fa-times');
+            }
+        }
+    }
 }
 
-// Auto-close sidebar on mobile after clicking a link
-document.querySelectorAll('.sections li').forEach(item => {
-    item.addEventListener('click', () => {
-        if (window.innerWidth <= 768) toggleSidebar();
-    });
-});
+// Handles the transition from Gateway to Showroom
+function openTheMall() {
+    const gateway = document.getElementById('gateway-overlay');
+    const mainContent = document.getElementById('main-content');
+    
+    if (gateway) gateway.style.display = 'none';
+    if (mainContent) mainContent.style.display = 'block';
+    
+    console.log("SSC System: Showroom active.");
+}
 
 /* =========================================
-   2. PRODUCT FILTERING & DISPLAY
+   2. FURNITURE & CAR SYNC
    ========================================= */
 
 function showFurnitureSection(quality) {
@@ -36,25 +48,21 @@ function showFurnitureSection(quality) {
     const furnitureGrid = document.getElementById('furniture-results-grid');
 
     if (lobbyView) lobbyView.style.display = 'none';
-    if (furnitureGrid) furnitureGrid.style.display = 'grid';
-
-    // Filters by quality (Premium/Standard)
-    const filtered = furnitureInventory.filter(item => 
-        item.quality === quality || quality === 'all'
-    );
-
-    displayFurniture(filtered);
+    if (furnitureGrid) {
+        furnitureGrid.style.display = 'grid';
+        // Ensure furniture.js data is loaded
+        if (typeof furnitureInventory !== 'undefined') {
+            const filtered = furnitureInventory.filter(item => 
+                item.quality === quality || quality === 'all'
+            );
+            displayFurniture(filtered);
+        }
+    }
     window.scrollTo(0,0);
 }
 
-function filterFurnitureByRoom(roomName) {
-    showFurnitureSection('all');
-    const filtered = furnitureInventory.filter(item => item.category === roomName);
-    displayFurniture(filtered);
-}
-
 /* =========================================
-   3. STATHECH LOGISTICS: TRACKING SYSTEM
+   3. STATHECH LOGISTICS (EcoCash & Tracking)
    ========================================= */
 
 const activeOrders = {
@@ -63,151 +71,74 @@ const activeOrders = {
         status: "Out for Delivery",
         driver: "Tinashe M.",
         vehicle: "White Toyota Hilux",
-        eta: "14:45 PM",
         location: "Riverside, Gweru"
     }
 };
 
 function trackOrder() {
     const idInput = document.getElementById('track-id');
-    if (!idInput) return;
-    
-    const id = idInput.value.toUpperCase();
-    const resultGrid = document.getElementById('main-content');
+    const id = idInput ? idInput.value.toUpperCase() : "";
     const order = activeOrders[id];
 
-    if (!order) return alert("Order ID not found. Please check your receipt.");
+    if (!order) return alert("Order ID not found. Check your EcoCash receipt.");
 
+    const resultGrid = document.getElementById('main-content');
     resultGrid.innerHTML = `
         <div class="tracker-container">
             <div class="tracker-card">
-                <div class="tracker-header">
-                    <h3>ORDER #${id}</h3>
-                    <span class="status-pill">${order.status}</span>
-                </div>
-                <div class="tracker-body">
-                    <p><strong>Product:</strong> ${order.item}</p>
-                    <p><strong>Location:</strong> ${order.location}</p>
-                    <div class="driver-profile">
-                        <i class="fas fa-user-circle fa-3x"></i>
-                        <div class="driver-details">
-                            <p><strong>Driver:</strong> ${order.driver}</p>
-                            <p><strong>Vehicle:</strong> ${order.vehicle}</p>
-                        </div>
-                    </div>
-                </div>
-                <button class="back-btn" onclick="location.reload()">Back to Mall</button>
+                <h3>ORDER #${id}</h3>
+                <span class="status-pill">${order.status}</span>
+                <p><strong>Item:</strong> ${order.item}</p>
+                <p><strong>Driver:</strong> ${order.driver}</p>
+                <button onclick="location.reload()" class="back-btn">Return to Mall</button>
             </div>
         </div>
     `;
 }
 
 /* =========================================
-   4. VENDOR & PUBLIC UPLOADS (Marketplace)
+   4. MARKETPLACE UPLOADS (Snap & List)
    ========================================= */
 
 function previewImage(event) {
     const reader = new FileReader();
+    const file = event.target.files[0];
+    
     reader.onload = function() {
         const output = document.getElementById('output-preview');
         if (output) {
             output.src = reader.result;
             output.style.display = 'block';
-            document.querySelector('.camera-trigger').style.display = 'none';
+            // Hide the 'Tap to Snap' icon once photo is taken
+            const trigger = document.querySelector('.camera-trigger');
+            if (trigger) trigger.style.display = 'none';
         }
     }
-    reader.readAsDataURL(event.target.files[0]);
+    if (file) reader.readAsDataURL(file);
 }
 
 function handlePublicUpload(event) {
     event.preventDefault();
     const itemName = document.getElementById('p-name').value;
-    alert(`Musha: ${itemName} submitted! StaTech God Mode will review the listing.`);
-    window.location.href = 'mall.html';
+    alert(`SUBMITTED: ${itemName} is now in God Mode for verification.`);
+    window.location.href = 'index.html';
 }
 
 /* =========================================
-   5. GOD MODE: ADMIN & VERIFICATION
+   5. ADMIN & INITIALIZATION
    ========================================= */
 
-function loadPendingItems() {
-    const list = document.getElementById('pending-list');
-    if (!list) return;
-
-    const allItems = [...carInventory, ...furnitureInventory];
-    const pending = allItems.filter(item => item.isVerified === false);
-
-    document.getElementById('pending-count').innerText = pending.length;
-
-    list.innerHTML = pending.map(item => `
-        <div class="admin-card">
-            <img src="${item.image}" alt="Preview">
-            <div class="admin-card-info">
-                <h4>${item.name}</h4>
-                <div class="admin-actions">
-                    <button class="verify-btn" onclick="approveItem(${item.id})">VERIFY</button>
-                    <button class="ban-btn" onclick="deleteItem(${item.id})">DELETE</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function approveItem(id) {
-    let item = carInventory.find(i => i.id === id) || furnitureInventory.find(i => i.id === id);
-    if (item) {
-        item.isVerified = true;
-        alert("ITEM VERIFIED: Badge added.");
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Check for Admin Desk
+    if (document.getElementById('pending-list')) {
         loadPendingItems();
     }
-}
-
-/* =========================================
-   6. PAYMENTS (EcoCash Portal)
-   ========================================= */
-
-function openPayment() {
-    const modal = document.getElementById('payment-modal');
-    if (modal) modal.style.display = 'flex';
-}
-
-function submitOrderFinal() {
-    const proof = document.getElementById('payment-proof').files[0];
-    if (!proof) return alert("Please upload EcoCash confirmation screenshot.");
-
-    const orderId = "MSH-" + Math.floor(1000 + Math.random() * 9000);
-    alert(`PAYMENT SUBMITTED! Order ID: ${orderId}`);
     
-    // Reset Cart
-    localStorage.setItem('mushaCart', JSON.stringify([]));
-    location.href = 'mall.html';
-}
-
-// Initializer
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('pending-list')) loadPendingItems();
+    // 2. Auto-close sidebar on mobile after clicks
+    const listItems = document.querySelectorAll('.sections li');
+    listItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) toggleSidebar();
+        });
+    });
 });
-
-// main.js
-
-function openTheMall() {
-    // Hide the landing overlay
-    document.getElementById('gateway-overlay').style.display = 'none';
-    // Make sure the main content is visible
-    document.getElementById('main-content').style.display = 'block';
-}
-
-function toggleSidebar() {
-    const sidebar = document.querySelector('.side-bar');
-    // This toggles the 'hidden' class we made in CSS
-    sidebar.classList.toggle('hidden');
-    
-    // Optional: Change the menu icon from bars to an 'X'
-    const icon = document.querySelector('.menu-toggle i');
-    if (sidebar.classList.contains('hidden')) {
-        icon.classList.replace('fa-times', 'fa-bars');
-    } else {
-        icon.classList.replace('fa-bars', 'fa-times');
-    }
-}
-
