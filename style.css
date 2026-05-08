@@ -147,3 +147,29 @@ body {
 
     .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 }
+
+#gateway-overlay {
+    position: fixed;
+    inset: 0;
+    /* Matches your screenshot's white-to-grey look */
+    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 9999;
+}
+.gold-text {
+    color: #d4af37; /* Original SSC Gold */
+    font-size: 1.8rem;
+    margin: 10px 0;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.musha-icon-img {
+    width: 80px; /* Adjust to fit your design */
+    height: auto;
+    margin-bottom: 10px;
+}
+
