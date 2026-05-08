@@ -11,7 +11,7 @@ const carInventory = [
         trim: "GR-Sport",
         dealership: "Gweru Central Motors",
         price: "$120,000",
-        isVerified: true, // Tier 1 Seller
+        isVerified: true, 
         phone: "263771111111", 
         image: "assets/lc300.jpg"
     },
@@ -37,7 +37,7 @@ const carInventory = [
         trim: "TSI",
         dealership: "Independent Seller",
         price: "$12,500",
-        isVerified: false, // Tier 2 Seller (Shows Warning)
+        isVerified: false,
         phone: "263782222222",
         image: "assets/golf.jpg"
     }
@@ -47,6 +47,7 @@ const carInventory = [
    2. THE FILTERING ENGINE
    ========================================= */
 function filterCars() {
+    // Get values from our synced auto.html IDs
     const dealerVal = document.getElementById('dealership-select').value;
     const yearVal = document.getElementById('year-select').value;
     const brandVal = document.getElementById('brand-select').value;
@@ -71,14 +72,18 @@ function displayCars(cars) {
     const grid = document.getElementById('car-results-grid');
     const countDisplay = document.getElementById('car-count');
 
-    if (!grid) return; // Safety check
+    if (!grid) return; 
 
-    countDisplay.innerText = `Found ${cars.length} vehicles matching your search`;
+    // Update the counter
+    if (countDisplay) {
+        countDisplay.innerHTML = `<i class="fas fa-car"></i> Showing ${cars.length} Verified Vehicles`;
+    }
 
     if (cars.length === 0) {
         grid.innerHTML = `
-            <div class="empty-lot">
-                <p>No vehicles found. Try adjusting your filters.</p>
+            <div class="empty-lot" style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <i class="fas fa-search fa-3x" style="color: #444;"></i>
+                <p style="margin-top: 15px;">No vehicles found. Try adjusting your filters.</p>
             </div>`;
         return;
     }
@@ -94,7 +99,7 @@ function displayCars(cars) {
             <div class="price-badge">${car.price}</div>
             
             <div class="car-img-container">
-                <img src="${car.image}" alt="${car.model}" onerror="this.src='assets/placeholder.jpg'">
+                <img src="${car.image}" alt="${car.brand} ${car.model}" onerror="this.src='assets/musha.png'">
             </div>
 
             <div class="car-details">
@@ -103,15 +108,15 @@ function displayCars(cars) {
                 <p class="car-location"><i class="fas fa-map-marker-alt"></i> ${car.dealership}</p>
                 
                 ${!car.isVerified ? 
-                    `<p class="safety-warning">Safety Tip: Meet in a public place. No deposits.</p>` : 
-                    `<p class="safety-verified">Vetted by StaTech Logistics.</p>`
+                    `<p class="safety-warning"><b>Safety Tip:</b> Meet in public. No deposits.</p>` : 
+                    `<p class="safety-verified"><i class="fas fa-shield-alt"></i> Vetted by StaTech Logistics.</p>`
                 }
 
                 <div class="action-buttons">
                     <button class="negotiate-wa" onclick="negotiateWhatsApp('${car.brand} ${car.model}', '${car.phone}')">
-                        <i class="fab fa-whatsapp"></i> Negotiate
+                        <i class="fab fa-whatsapp"></i> WhatsApp
                     </button>
-                    <button class="view-btn" onclick="makeOffer('${car.model}')">
+                    <button class="view-btn" onclick="makeOffer('${car.brand} ${car.model}')">
                         Make Offer
                     </button>
                 </div>
@@ -121,28 +126,31 @@ function displayCars(cars) {
 }
 
 /* =========================================
-   4. INTERACTION FUNCTIONS
+   4. INTERACTION & UTILITY
    ========================================= */
 function negotiateWhatsApp(carName, phone) {
-    const msg = `Hi, I saw the ${carName} on Musha Virtual Mall. Is it still available for negotiation?`;
+    const msg = `Hi StaTech, I am interested in the ${carName}. Is it available at the Hub?`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 function makeOffer(carName) {
     const offer = prompt(`Enter your cash offer for the ${carName}:`);
     if (offer) {
-        alert(`Offer of ${offer} received! The seller will be notified.`);
+        alert(`Your offer of ${offer} has been sent to the hub for review!`);
     }
 }
 
 function resetFilters() {
-    document.querySelectorAll('select').forEach(s => s.value = 'all');
+    document.getElementById('dealership-select').value = 'all';
+    document.getElementById('year-select').value = 'all';
+    document.getElementById('brand-select').value = 'all';
+    document.getElementById('category-select').value = 'all';
     displayCars(carInventory);
 }
 
-/* =========================================
-   5. INITIALIZE
-   ========================================= */
+// Initial Load
 document.addEventListener('DOMContentLoaded', () => {
-    displayCars(carInventory);
+    if (document.getElementById('car-results-grid')) {
+        displayCars(carInventory);
+    }
 });
