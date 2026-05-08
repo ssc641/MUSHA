@@ -7,52 +7,64 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="app-body">
+<body class="sell-body">
 
     <div class="sell-container">
         <header class="sell-header">
-            <button onclick="window.location.href='mall.html'"><i class="fas fa-arrow-left"></i></button>
-            <h1>List a Product</h1>
+            <button class="back-nav" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="header-text">
+                <h1 class="brand-name">MUSHA</h1>
+                <p>Snap. List. Sell.</p>
+            </div>
         </header>
 
-        <form id="public-upload-form" onsubmit="handlePublicUpload(event)">
+        <form id="public-upload-form" class="sell-form" onsubmit="handlePublicUpload(event)">
             
             <div class="camera-upload-zone">
                 <label for="camera-input" class="camera-trigger">
-                    <i class="fas fa-camera fa-2x"></i>
+                    <div class="icon-circle">
+                        <i class="fas fa-camera fa-2x"></i>
+                    </div>
                     <span>TAP TO SNAP PHOTO</span>
                 </label>
                 <input type="file" id="camera-input" accept="image/*" capture="environment" onchange="previewImage(event)" hidden>
                 
                 <div id="preview-box">
-                    <img id="output-preview" src="" style="display:none;">
+                    <img id="output-preview" src="" alt="Listing Preview" style="display:none; width: 100%; border-radius: 8px; margin-top: 15px;">
                 </div>
             </div>
 
-            <div class="input-group">
-                <label>What are you selling?</label>
-                <select id="p-category" required>
-                    <option value="car">Automotive / Vehicle</option>
-                    <option value="furniture">Furniture / Home Decor</option>
-                </select>
+            <div class="input-fields">
+                <div class="input-group">
+                    <label>Category</label>
+                    <select id="p-category" required>
+                        <option value="auto">Automotive / Vehicle</option>
+                        <option value="furniture">Furniture / Home Decor</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Item Name</label>
+                    <input type="text" id="p-name" placeholder="e.g. 2024 Toyota Land Cruiser" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Asking Price ($)</label>
+                    <input type="number" id="p-price" placeholder="Enter amount" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Description & Location</label>
+                    <textarea id="p-desc" rows="3" placeholder="Condition, Gweru/Harare Hub, etc."></textarea>
+                </div>
             </div>
 
-            <div class="input-group">
-                <input type="text" id="p-name" placeholder="Item Name (e.g. 2018 Toyota Vitz)" required>
+            <div class="verification-note">
+                <i class="fas fa-shield-alt"></i> 
+                <p>All listings are <b>Unverified</b> until vetted by the <b>StaTech Admin Team</b>.</p>
             </div>
-
-            <div class="input-group">
-                <input type="number" id="p-price" placeholder="Price ($)" required>
-            </div>
-
-            <div class="input-group">
-                <textarea id="p-desc" placeholder="Brief description (Condition, Location, etc.)"></textarea>
-            </div>
-
-            <p class="verification-note">
-                <i class="fas fa-info-circle"></i> 
-                All new listings appear as <strong>Unverified</strong> until reviewed by StaTech.
-            </p>
 
             <button type="submit" class="list-now-btn">SUBMIT FOR REVIEW</button>
         </form>
@@ -61,3 +73,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
