@@ -187,3 +187,27 @@ function submitOrderFinal() {
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('pending-list')) loadPendingItems();
 });
+
+// main.js
+
+function openTheMall() {
+    // Hide the landing overlay
+    document.getElementById('gateway-overlay').style.display = 'none';
+    // Make sure the main content is visible
+    document.getElementById('main-content').style.display = 'block';
+}
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.side-bar');
+    // This toggles the 'hidden' class we made in CSS
+    sidebar.classList.toggle('hidden');
+    
+    // Optional: Change the menu icon from bars to an 'X'
+    const icon = document.querySelector('.menu-toggle i');
+    if (sidebar.classList.contains('hidden')) {
+        icon.classList.replace('fa-times', 'fa-bars');
+    } else {
+        icon.classList.replace('fa-bars', 'fa-times');
+    }
+}
+
