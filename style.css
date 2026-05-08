@@ -1,10 +1,13 @@
 /* =========================================
-   1. GLOBAL & SHARED STYLES
+   1. CORE ENGINE & BRANDING
    ========================================= */
 :root {
     --musha-green: #2eaf7d;
     --musha-gold: #d4af37;
     --dark-bg: #050a08;
+    --card-bg: #111111;
+    --sidebar-width: 280px;
+    --transition: all 0.3s ease;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -12,217 +15,197 @@
 body {
     background-color: var(--dark-bg);
     color: white;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
     min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.gold-text {
+    color: var(--musha-gold);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 /* =========================================
-   2. LANDING & GATEWAY (index.html)
+   2. THE GATEWAY (index.html)
    ========================================= */
 #gateway-overlay {
     position: fixed;
     inset: 0;
-    background: linear-gradient(to bottom, #ffffff 50%, #888 100%);
-    z-index: 9999;
+    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    text-align: center;
+    transition: var(--transition);
 }
 
-.brand-name { color: var(--musha-green); font-size: 2rem; letter-spacing: 3px; text-transform: uppercase; }
+.musha-icon-img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.2));
+}
+
+.brand-name { 
+    color: var(--musha-green); 
+    font-size: 2.5rem; 
+    letter-spacing: 4px; 
+    font-weight: 900;
+}
 
 /* =========================================
-   3. MALL LOBBY & SIDEBAR (mall.html)
+   3. THE MALL LAYOUT (mall.html)
    ========================================= */
-.app-body { display: flex; flex-direction: row; }
+.app-body {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
 
 .side-bar {
-    width: 280px;
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
     height: 100vh;
     background: linear-gradient(180deg, #004d33 0%, var(--dark-bg) 100%);
     border-right: 2px solid var(--musha-gold);
     padding: 20px;
-    position: fixed;
-    left: 0; top: 0;
+    transition: var(--transition);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+/* THE SIDEBAR SLIDE FIX */
+.side-bar.hidden {
+    margin-left: calc(var(--sidebar-width) * -1);
 }
 
 .lobby-container {
-    flex: 1;
-    margin-left: 280px;
+    flex-grow: 1;
     height: 100vh;
-    background: url('assets/lobby-fountain.jpg') center/cover no-repeat;
+    position: relative;
+    overflow-y: auto;
+    background: var(--dark-bg);
+}
+
+.main-img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* =========================================
-   4. AUTOMOTIVE SHOWROOM (auto.html)
+   4. NAVIGATION & BUTTONS
    ========================================= */
-.auto-body {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('assets/showroom-bg.jpg') center/cover no-repeat fixed;
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    background: var(--musha-green);
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .main-nav {
     display: flex;
     justify-content: space-around;
     padding: 15px;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.9);
     border-bottom: 2px solid var(--musha-green);
-    position: sticky; top: 0;
+    position: sticky;
+    top: 0;
+    z-index: 900;
 }
 
-/* Filter Box Styles */
-.filter-sidebar {
-    background: #111;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--musha-green);
-    margin: 20px;
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
 }
+
+.nav-link.active { color: var(--musha-green); font-weight: bold; }
 
 /* =========================================
-   5. SELL & ADMIN PAGES (sell.html / admin.html)
+   5. SHOWROOM GRIDS & CARDS
    ========================================= */
-.sell-container { padding: 20px; max-width: 600px; margin: auto; }
-
-.camera-upload-zone {
-    border: 2px dashed var(--musha-green);
-    background: rgba(46, 175, 125, 0.05);
-    padding: 40px;
-    text-align: center;
-    border-radius: 15px;
+.car-grid, .admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 30px;
 }
 
-.input-group { margin-bottom: 15px; }
-.input-group input, .input-group select, .input-group textarea {
-    width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: white;
-}
-
-.admin-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-    gap: 20px; 
-    padding: 20px; 
-}
-
-.admin-card { background: #1a1a1a; border-radius: 12px; border: 1px solid #333; overflow: hidden; }
-
-/* =========================================
-   6. SHARED COMPONENTS (Cards & Buttons)
-   ========================================= */
 .car-card, .furniture-card {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 10px;
+    background: var(--card-bg);
+    border: 1px solid #222;
+    border-radius: 15px;
     overflow: hidden;
-    margin-bottom: 20px;
+    transition: transform 0.2s;
 }
 
-.price-badge { color: var(--musha-gold); font-weight: bold; font-size: 1.2rem; }
+.car-card:hover { transform: translateY(-5px); border-color: var(--musha-green); }
 
-.tab-btn, .list-now-btn, .verify-btn {
-    width: 100%; padding: 12px; background: var(--musha-green); 
-    color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;
+.price-badge {
+    background: var(--musha-gold);
+    color: black;
+    padding: 5px 15px;
+    font-weight: bold;
+    border-radius: 0 0 10px 0;
+    display: inline-block;
 }
 
 /* =========================================
-   7. MOBILE RESPONSIVE (Global Fix)
+   6. ADMIN & SELL MODES
    ========================================= */
-@media (max-width: 768px) {
-    .app-body { flex-direction: column; }
-    
-    .side-bar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 2px solid var(--musha-gold);
-    }
-
-    .lobby-container {
-        margin-left: 0;
-        height: 50vh;
-        background-size: cover;
-    }
-
-    .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-}
-
-#gateway-overlay {
-    position: fixed;
-    inset: 0;
-    /* Matches your screenshot's white-to-grey look */
-    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    z-index: 9999;
-}
-.gold-text {
-    color: #d4af37; /* Original SSC Gold */
-    font-size: 1.8rem;
-    margin: 10px 0;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-.musha-icon-img {
-    width: 80px; /* Adjust to fit your design */
-    height: auto;
-    margin-bottom: 10px;
-}
-
-/* Layout Sync */
-.app-body {
-    display: flex; /* Puts sidebar and lobby side-by-side */
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    margin: 0;
-}
-
-.side-bar {
-    width: 280px;
-    min-width: 280px;
-    transition: all 0.3s ease; /* Smooth slide */
-    z-index: 1000;
-}
-
-/* THE FIX: When we add this class via JS, the sidebar disappears */
-.side-bar.hidden {
-    margin-left: -280px;
-}
-
-.lobby-container {
-    flex-grow: 1; /* Automatically fills the remaining space */
-    width: 100%;
-    position: relative;
-    overflow-y: auto;
-}
-
-/* Mobile Fix: Prevent the squashed image */
-@media (max-width: 768px) {
-    .side-bar {
-        position: absolute; /* Overlays the content instead of squashing it */
-        height: 100%;
-    }
-    .lobby-container {
-        width: 100vw;
-    }
-}
-.admin-body {
-    background: #0a0a0a; /* Darker than the showroom */
-    color: #eee;
-}
+.admin-body { background: #080808; }
 
 .admin-nav {
     background: #111;
-    border-bottom: 2px solid #ff4b2b; /* Red line to indicate 'Warning/Admin' mode */
+    border-bottom: 2px solid #ff4b2b;
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
 }
+
+.camera-upload-zone {
+    border: 3px dashed var(--musha-green);
+    background: rgba(46, 175, 125, 0.05);
+    padding: 50px 20px;
+    text-align: center;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* =========================================
+   7. RESPONSIVE DESIGN (The Mobile Fix)
+   ========================================= */
+@media (max-width: 768px) {
+    .side-bar {
+        position: absolute;
+        height: 100%;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    }
+
+    .lobby-container {
+        width: 100vw;
+    }
+
+    .sections li {
+        padding: 15px;
+        background: rgba(255,255,255,0.05);
+        margin-bottom: 8px;
+        border-radius: 8px;
+    }
+}
+
 
 
 
