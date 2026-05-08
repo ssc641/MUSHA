@@ -9,15 +9,12 @@ function toggleSidebar() {
     const icon = document.querySelector('.menu-toggle i');
 
     if (sidebar) {
-        // Toggle the 'hidden' class
         sidebar.classList.toggle('hidden');
         
-        // Sync the main content margin so it doesn't get squashed
         if (mainContent) {
             mainContent.classList.toggle('expanded');
         }
 
-        // Switch Icon between Bars and X
         if (icon) {
             if (sidebar.classList.contains('hidden')) {
                 icon.classList.replace('fa-times', 'fa-bars');
@@ -28,23 +25,29 @@ function toggleSidebar() {
     }
 }
 
-// Handles the transition from Gateway to Showroom
-function openTheMall() {
-    const gateway = document.getElementById('gateway-overlay');
-    const mainContent = document.getElementById('main-content');
-    
-    if (gateway) gateway.style.display = 'none';
-    if (mainContent) mainContent.style.display = 'block';
-    
-    console.log("SSC System: Showroom active.");
-}
+/**
+ * Handles the transition from Gateway to Showroom.
+ * Uses the ID 'mall-gateway' to match your updated CSS swap system.
+ */
 function openTheMall() {
     const overlay = document.getElementById('mall-gateway');
-    if(overlay) {
+    const mainContent = document.getElementById('main-content');
+    
+    if (overlay) {
+        // Start the fade out (Transition set in style.css)
         overlay.style.opacity = '0';
-        setTimeout(() => { overlay.style.display = 'none'; }, 800);
+        
+        // Ensure main content is visible behind the overlay
+        if (mainContent) mainContent.style.display = 'block';
+
+        // Physically remove overlay after fade to allow clicks
+        setTimeout(() => { 
+            overlay.style.display = 'none'; 
+            console.log("SSC System: MushaHub Showroom active.");
+        }, 800);
     }
 }
+
 /* =========================================
    2. FURNITURE & CAR SYNC
    ========================================= */
@@ -56,7 +59,6 @@ function showFurnitureSection(quality) {
     if (lobbyView) lobbyView.style.display = 'none';
     if (furnitureGrid) {
         furnitureGrid.style.display = 'grid';
-        // Ensure furniture.js data is loaded
         if (typeof furnitureInventory !== 'undefined') {
             const filtered = furnitureInventory.filter(item => 
                 item.quality === quality || quality === 'all'
@@ -115,7 +117,6 @@ function previewImage(event) {
         if (output) {
             output.src = reader.result;
             output.style.display = 'block';
-            // Hide the 'Tap to Snap' icon once photo is taken
             const trigger = document.querySelector('.camera-trigger');
             if (trigger) trigger.style.display = 'none';
         }
@@ -135,12 +136,10 @@ function handlePublicUpload(event) {
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Check for Admin Desk
     if (document.getElementById('pending-list')) {
         loadPendingItems();
     }
     
-    // 2. Auto-close sidebar on mobile after clicks
     const listItems = document.querySelectorAll('.sections li');
     listItems.forEach(item => {
         item.addEventListener('click', () => {
