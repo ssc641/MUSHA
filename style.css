@@ -178,5 +178,146 @@ body {
         position: absolute;
         height: 100%;
         box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+       
     }
+}
+
+/* =========================================
+   AUTOMOTIVE SHOWROOM (auto.html)
+   ========================================= */
+
+/* Main Layout Fix */
+.auto-body .main-layout {
+    display: flex;
+    margin-top: 20px;
+    min-height: calc(100vh - 160px);
+}
+
+/* Sidebar / Filters */
+.auto-body .filter-sidebar {
+    width: var(--sidebar-width);
+    background: var(--card-bg);
+    border-right: 1px solid #222;
+    padding: 25px;
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--musha-gold);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Car Cards - The "Virtual Lot" Look */
+.car-grid {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    padding: 0 30px 30px 30px;
+}
+
+.car-card {
+    background: var(--card-bg);
+    border: 1px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+}
+
+.car-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--musha-gold);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.car-image-container {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.car-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.verified-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--musha-green);
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.car-info {
+    padding: 20px;
+}
+
+.car-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.car-specs {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.car-price {
+    font-size: 1.4rem;
+    color: var(--musha-gold);
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Action Buttons */
+.car-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.negotiate-wa {
+    flex: 1;
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.view-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }
