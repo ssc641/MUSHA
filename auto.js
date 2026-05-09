@@ -154,3 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Add this logic to your display function
+const liveAutoInventory = [
+    ...carInventory, // Your hardcoded master list
+    ...JSON.parse(localStorage.getItem('musha_vendor_inventory')) || []
+].filter(item => item.status === 'active' && item.placementTag === 'lot');
+
+// Now call displayCars with this filtered list
+displayCars(liveAutoInventory);
