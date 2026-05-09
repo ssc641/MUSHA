@@ -142,3 +142,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+/* =========================================
+   CORE ENGINE: GATEWAY NAVIGATION (RECTIFIED)
+   ========================================= */
+
+/**
+ * Handles the transition from the Mall Entrance to the Main Showroom.
+ * Fixed: Uses the specific 'mall-gateway' ID to avoid conflicts.
+ */
+function openTheMall() {
+    const gateway = document.getElementById('mall-gateway');
+    const mainContent = document.getElementById('main-content');
+    
+    if (gateway) {
+        gateway.style.display = 'none';
+    }
+    if (mainContent) {
+        mainContent.style.display = 'block';
+        // Force a scroll to top to ensure the CEO sees the full showroom
+        window.scrollTo(0, 0); 
+    }
+    console.log("Musha System: Showroom Active.");
+}
+
+/**
+ * Sidebar Toggle logic for Mall and Auto pages.
+ */
+function toggleSidebar() {
+    const sidebar = document.querySelector('.side-bar');
+    const icon = document.querySelector('.menu-toggle i');
+
+    if (sidebar) {
+        sidebar.classList.toggle('hidden');
+        
+        // Sync icon state if it exists
+        if (icon) {
+            if (sidebar.classList.contains('hidden')) {
+                icon.className = 'fas fa-bars';
+            } else {
+                icon.className = 'fas fa-times';
+            }
+        }
+    }
+}
+
+/**
+ * FIX FOR GET ISSUE: Initialization
+ * Ensures the system checks for gateways only after the page is ready.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Musha Engine: Online.");
+    
+    // Auto-fix: if the user is on index.html, we don't want mall logic firing
+    if (document.getElementById('landing-gateway')) {
+        console.log("Musha Landing: Tiny Logo Loaded.");
+    }
+});
