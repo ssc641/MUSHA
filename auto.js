@@ -186,3 +186,17 @@ const liveAutoInventory = [
 
 // Now call displayCars with this filtered list
 displayCars(liveAutoInventory);
+
+// Inside the .map() for your car cards
+<div class="car-card">
+    <div class="car-details">
+        <h3 class="car-title">${car.brand} ${car.model}</h3>
+        <p class="vendor-tag"><i class="fas fa-store"></i> ${car.vendorName}</p>
+        
+        <div class="action-buttons">
+            <button class="negotiate-wa" onclick="negotiateWhatsApp('${car.brand} ${car.model}', '${car.phone}')">
+                <i class="fab fa-whatsapp"></i> CONTACT SHOP
+            </button>
+        </div>
+    </div>
+</div>
