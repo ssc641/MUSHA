@@ -28,7 +28,7 @@ body {
 }
 
 /* =========================================
-   RESIRECTED GATEWAY SYSTEM
+   2. RECTIFIED GATEWAY SYSTEM
    ========================================= */
 
 /* GLOBAL GATEWAY BASE */
@@ -49,10 +49,32 @@ body {
     color: #333;
 }
 
-#landing-gateway .brand-name { color: #000; }
+/* Tiny Logo size fix for index.html */
+.musha-logo-container {
+    width: 60px; /* Small branding size */
+    margin-bottom: 10px;
+}
 
-/* System Buttons for Landing */
-.enter-btn {
+.musha-icon-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+#landing-gateway .brand-name { 
+    color: #000; 
+    font-size: 2rem;
+    letter-spacing: 4px;
+}
+
+/* --- DESIGN 2: THE MALL ENTRANCE (mall.html) --- */
+#mall-gateway {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('assets/doors_closed.png') no-repeat center center/cover;
+}
+
+/* System Buttons */
+.enter-btn, #open-btn {
     background: transparent;
     color: var(--musha-gold);
     border: 1.5px solid var(--musha-gold);
@@ -65,35 +87,19 @@ body {
     margin-top: 10px;
 }
 
-.enter-btn:hover {
-    background: var(--musha-gold);
-    color: #000;
-}
-
-/* --- DESIGN 2: THE MALL ENTRANCE (mall.html) --- */
-#mall-gateway {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                url('assets/doors_closed.png') no-repeat center center/cover;
-}
-
-/* 'Open' Button for Mall Doors */
 #open-btn {
-    background: rgba(0, 0, 0, 0.5);
-    color: var(--musha-gold);
-    border: 1px solid var(--musha-gold);
     padding: 18px 50px;
     font-size: 1.1rem;
     letter-spacing: 3px;
-    cursor: pointer;
     backdrop-filter: blur(5px);
-    transition: var(--transition);
 }
 
-#open-btn:hover {
+.enter-btn:hover, #open-btn:hover {
     background: var(--musha-gold);
     color: #000;
     letter-spacing: 5px;
 }
+
 /* =========================================
    3. THE MALL LAYOUT (mall.html)
    ========================================= */
@@ -115,7 +121,6 @@ body {
     overflow-y: auto;
 }
 
-/* THE SIDEBAR SLIDE FIX */
 .side-bar.hidden {
     margin-left: calc(var(--sidebar-width) * -1);
 }
@@ -135,7 +140,7 @@ body {
 }
 
 /* =========================================
-   4. NAVIGATION & BUTTONS
+   4. NAVIGATION & GRIDS
    ========================================= */
 .menu-toggle {
     position: fixed;
@@ -148,31 +153,8 @@ body {
     padding: 12px 15px;
     border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.main-nav {
-    display: flex;
-    justify-content: space-around;
-    padding: 15px;
-    background: rgba(0,0,0,0.9);
-    border-bottom: 2px solid var(--musha-green);
-    position: sticky;
-    top: 0;
-    z-index: 900;
-}
-
-.nav-link {
-    color: white;
-    text-decoration: none;
-    font-size: 0.9rem;
-}
-
-.nav-link.active { color: var(--musha-green); font-weight: bold; }
-
-/* =========================================
-   5. SHOWROOM GRIDS & CARDS
-   ========================================= */
 .car-grid, .admin-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -188,41 +170,8 @@ body {
     transition: transform 0.2s;
 }
 
-.car-card:hover { transform: translateY(-5px); border-color: var(--musha-green); }
-
-.price-badge {
-    background: var(--musha-gold);
-    color: black;
-    padding: 5px 15px;
-    font-weight: bold;
-    border-radius: 0 0 10px 0;
-    display: inline-block;
-}
-
 /* =========================================
-   6. ADMIN & SELL MODES
-   ========================================= */
-.admin-body { background: #080808; }
-
-.admin-nav {
-    background: #111;
-    border-bottom: 2px solid #ff4b2b;
-    padding: 15px 5%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.camera-upload-zone {
-    border: 3px dashed var(--musha-green);
-    background: rgba(46, 175, 125, 0.05);
-    padding: 50px 20px;
-    text-align: center;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-/* =========================================
-   7. RESPONSIVE DESIGN (The Mobile Fix)
+   5. RESPONSIVE DESIGN
    ========================================= */
 @media (max-width: 768px) {
     .side-bar {
@@ -230,19 +179,4 @@ body {
         height: 100%;
         box-shadow: 10px 0 30px rgba(0,0,0,0.5);
     }
-
-    .lobby-container {
-        width: 100vw;
-    }
-
-    .sections li {
-        padding: 15px;
-        background: rgba(255,255,255,0.05);
-        margin-bottom: 8px;
-        border-radius: 8px;
-    }
 }
-
-
-
-
