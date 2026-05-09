@@ -138,3 +138,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const manageTab = document.querySelector('[onclick*="manage"]');
     if (manageTab) renderMyShop();
 });
+// Add this to your shop.js file
+
+/**
+ * Save Shop Name to LocalStorage
+ */
+function saveShopIdentity() {
+    const shopName = document.getElementById('shop-name-input').value;
+    localStorage.setItem('musha_shop_name', shopName);
+    console.log("Musha System: Shop identity updated to " + shopName);
+}
+
+/**
+ * Load Shop Name on Page Load
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const savedName = localStorage.getItem('musha_shop_name');
+    if (savedName) {
+        document.getElementById('shop-name-input').value = savedName;
+    }
+});
+
+// Update your handleShopSubmission function to include the Shop Name
+// Inside handleShopSubmission:
+const newItem = {
+    // ... other properties ...
+    vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
+    // ...
+};
