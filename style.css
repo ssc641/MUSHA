@@ -28,11 +28,11 @@ body {
 }
 
 /* =========================================
-   REFINED SYSTEM GATEWAYS
+   RESIRECTED GATEWAY SYSTEM
    ========================================= */
 
-/* GLOBAL BASE (Applies to both) */
-#gateway-overlay {
+/* GLOBAL GATEWAY BASE */
+#landing-gateway, #mall-gateway {
     position: fixed;
     inset: 0;
     display: flex;
@@ -43,43 +43,26 @@ body {
     text-align: center;
 }
 
-/* 1. INDEX GATEWAY (The Choice Screen) */
-.index-body #gateway-overlay {
-    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%); /* Clean look, no image */
+/* --- DESIGN 1: THE LANDING (index.html) --- */
+#landing-gateway {
+    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%);
+    color: #333;
 }
 
-/* 2. MALL GATEWAY (The Door Entrance) */
-.mall-body #gateway-overlay {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('assets/doors_closed.png') no-repeat center center/cover;
-}
+#landing-gateway .brand-name { color: #000; }
 
-/* Mobile Image Swap for Mall only */
-@media (max-width: 768px) {
-    .mall-body #gateway-overlay {
-        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                    url('assets/doors_mobile.png') no-repeat center center/cover;
-    }
-}
-
-/* =========================================
-   BUTTON REFINEMENT (Premium Moosha Style)
-   ========================================= */
-
-/* The 'Enter Showroom' / 'View Dealership' buttons on Index */
+/* System Buttons for Landing */
 .enter-btn {
     background: transparent;
     color: var(--musha-gold);
     border: 1.5px solid var(--musha-gold);
-    padding: 12px 28px;
-    font-size: 0.85rem;
+    padding: 12px 25px;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     border-radius: 4px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .enter-btn:hover {
@@ -87,24 +70,29 @@ body {
     color: #000;
 }
 
-/* The 'Open' Button on Mall Doors */
+/* --- DESIGN 2: THE MALL ENTRANCE (mall.html) --- */
+#mall-gateway {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('assets/doors_closed.png') no-repeat center center/cover;
+}
+
+/* 'Open' Button for Mall Doors */
 #open-btn {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     color: var(--musha-gold);
     border: 1px solid var(--musha-gold);
-    padding: 16px 45px;
-    font-size: 1rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
+    padding: 18px 50px;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
     cursor: pointer;
     backdrop-filter: blur(5px);
-    transition: all 0.4s ease;
+    transition: var(--transition);
 }
 
 #open-btn:hover {
     background: var(--musha-gold);
-    color: black;
-    letter-spacing: 6px;
+    color: #000;
+    letter-spacing: 5px;
 }
 /* =========================================
    3. THE MALL LAYOUT (mall.html)
