@@ -24,7 +24,32 @@
                 <div class="header-text">
                     <h1 class="brand-name">LIST YOUR <span class="gold-text">PRODUCT</span></h1>
                     <p>Direct Submission to StaTech Hub</p>
+    <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchDashboardTab('list')">
+            <i class="fas fa-plus-circle"></i> NEW LISTING
+        </button>
+        <button class="tab-btn" onclick="switchDashboardTab('manage')">
+            <i class="fas fa-store"></i> MY SHOP
+        </button>
+    </div>
+
+    <div id="sell-form-section">
+        <form id="public-upload-form" class="sell-form" onsubmit="handleShopSubmission(event)">
+            </form>
+    </div>
+
+    <div id="my-shop-section" style="display: none;">
+        <div class="shop-header">
+            <h2 class="gold-text">MANAGE INVENTORY</h2>
+            <p id="vendor-stats">Vetting: 1 | Active: 0</p>
+        </div>
+        <div id="my-shop-grid" class="shop-grid">
+            </div>
+    </div>
+
                 </div>
+
+                
                 <div class="input-group full-width">
     <label>Listing Category</label>
     <select id="p-category" class="universal-select" required>
