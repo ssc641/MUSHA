@@ -28,78 +28,83 @@ body {
 }
 
 /* =========================================
-   1. GLOBAL GATEWAY BUTTONS (index.html)
+   REFINED SYSTEM GATEWAYS
    ========================================= */
-/* Targeting the buttons on the landing page specifically */
-.gateway-choices .enter-btn {
-    background: transparent;
-    color: var(--musha-gold); /* Using your system variable */
-    border: 1.5px solid var(--musha-gold);
-    padding: 12px 24px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: var(--transition); /* Using your system transition */
-    border-radius: 4px;
-    width: 100%;
-    max-width: 200px;
-    margin-top: 10px;
-}
 
-.gateway-choices .enter-btn:hover {
-    background: var(--musha-gold);
-    color: black;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-}
-
-/* =========================================
-   2. SHOWROOM GATEWAY (mall.html)
-   ========================================= */
-/* Respecting your background image and swap system */
+/* GLOBAL BASE (Applies to both) */
 #gateway-overlay {
     position: fixed;
     inset: 0;
-    /* Respecting the Desktop BG */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                url('assets/doors_closed.png') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 9999;
+    text-align: center;
 }
 
-/* The Mobile Swap Logic */
+/* 1. INDEX GATEWAY (The Choice Screen) */
+.index-body #gateway-overlay {
+    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%); /* Clean look, no image */
+}
+
+/* 2. MALL GATEWAY (The Door Entrance) */
+.mall-body #gateway-overlay {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                url('assets/doors_closed.png') no-repeat center center/cover;
+}
+
+/* Mobile Image Swap for Mall only */
 @media (max-width: 768px) {
-    #gateway-overlay {
-        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+    .mall-body #gateway-overlay {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
                     url('assets/doors_mobile.png') no-repeat center center/cover;
     }
 }
 
-/* Refined "OPEN" Button for the Showroom Door */
-#open-btn {
-    background: rgba(0, 0, 0, 0.6); /* Glassmorphism feel */
+/* =========================================
+   BUTTON REFINEMENT (Premium Moosha Style)
+   ========================================= */
+
+/* The 'Enter Showroom' / 'View Dealership' buttons on Index */
+.enter-btn {
+    background: transparent;
     color: var(--musha-gold);
-    border: 1px solid var(--musha-gold);
-    padding: 15px 40px;
-    font-size: 1rem;
+    border: 1.5px solid var(--musha-gold);
+    padding: 12px 28px;
+    font-size: 0.85rem;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
     cursor: pointer;
-    transition: all 0.4s ease;
-    border-radius: 0px; /* Sharp, high-end look */
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.enter-btn:hover {
+    background: var(--musha-gold);
+    color: #000;
+}
+
+/* The 'Open' Button on Mall Doors */
+#open-btn {
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--musha-gold);
+    border: 1px solid var(--musha-gold);
+    padding: 16px 45px;
+    font-size: 1rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
     backdrop-filter: blur(5px);
-    margin-top: 25px;
+    transition: all 0.4s ease;
 }
 
 #open-btn:hover {
     background: var(--musha-gold);
     color: black;
-    letter-spacing: 6px; /* Subtle premium expansion effect */
+    letter-spacing: 6px;
 }
 /* =========================================
    3. THE MALL LAYOUT (mall.html)
