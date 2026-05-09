@@ -688,3 +688,83 @@ body {
 }
 
 .vendor-id { font-size: 0.7rem; color: #666; margin-top: 5px; }
+
+/* =========================================
+   GOD MODE DASHBOARD LAYOUT
+   ========================================= */
+.admin-dashboard-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: calc(100vh - 70px);
+}
+
+.admin-sidebar {
+    background: #0d0d0d;
+    padding: 20px;
+    border-right: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-label {
+    font-size: 0.7rem;
+    color: #444;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.admin-tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #888;
+    padding: 12px 15px;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-tab:hover, .admin-tab.active {
+    background: rgba(212, 175, 55, 0.05);
+    color: var(--musha-gold);
+    border-color: rgba(212, 175, 55, 0.2);
+}
+
+.verification-desk {
+    padding: 30px;
+    background: #050a08;
+}
+
+.section-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 20px;
+}
+
+.header-title h3 {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.header-title p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Admin Grid Responsive */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.admin-placeholder {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 100px;
+    color: #444;
+}
