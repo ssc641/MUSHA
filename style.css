@@ -430,3 +430,102 @@ body {
     }
     .logo { font-size: 1rem; }
 }
+
+/* =========================================
+   SELL PAGE MODERNIZATION
+   ========================================= */
+
+.sell-body {
+    /* PLACE YOUR BACKGROUND IMAGE HERE */
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                url('assets/1000144673.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.sell-page-wrapper {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.sell-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.sell-form {
+    background: rgba(17, 17, 17, 0.85); /* Dark transparent glass */
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.sell-header .brand-name {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.sell-header p {
+    text-align: center;
+    color: #bbb;
+    margin-bottom: 30px;
+}
+
+/* Form Layout */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+.input-group label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--musha-gold);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.input-group input, .input-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    padding: 12px;
+    color: white;
+    border-radius: 8px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--musha-gold);
+}
+
+/* List Button Sync */
+.list-now-btn {
+    width: 100%;
+    background: var(--musha-green);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.list-now-btn:hover {
+    background: #36c78f;
+    transform: translateY(-2px);
+}
