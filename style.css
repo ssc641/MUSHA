@@ -333,3 +333,28 @@ body {
         margin-bottom: 20px;
     }
 }
+/* =========================================
+   AUTO SHOWROOM BACKGROUND
+   ========================================= */
+.auto-body {
+    /* Use one of your new uploads as the lot background */
+    background: linear-gradient(rgba(5, 10, 8, 0.65), rgba(5, 10, 8, 0.55)), 
+                url('assets/showroom-bg.jpg'); 
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Make the sidebar slightly transparent to show the bg */
+.auto-body .filter-sidebar {
+    background: rgba(17, 17, 17, 0.8) !important;
+    backdrop-filter: blur(10px); /* Modern glass effect */
+    border-right: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* Ensure the cards stand out against the new background */
+.car-card {
+    background: rgba(20, 20, 20, 0.9) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
