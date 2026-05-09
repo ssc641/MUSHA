@@ -2,7 +2,7 @@
    STA-TECH SHOP ENGINE: VENDOR HUB LOGIC
    ========================================= */
 
-// 1. THE STATE MANAGER (Local Storage for the Shop Owner)
+// 1. THE STATE MANAGER
 let myShopInventory = JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [];
 
 /**
@@ -28,7 +28,21 @@ function switchDashboardTab(tabName) {
 }
 
 /**
- * The Universal Submitter: Handles Placement & Priority
+ * FIXED: Save Shop Identity (Name + Phone)
+ */
+function saveShopIdentity() {
+    const shopName = document.getElementById('shop-name-input').value;
+    const shopPhone = document.getElementById('shop-whatsapp-input').value;
+    
+    localStorage.setItem('musha_shop_name', shopName);
+    localStorage.setItem('musha_shop_phone', shopPhone);
+    
+    console.log("Musha System: Identity secured for " + shopName);
+}
+
+/**
+ * FIXED: The Universal Submitter
+ * Captures Category-based placement and Vendor Identity
  */
 function handleShopSubmission(event) {
     event.preventDefault();
@@ -37,47 +51,44 @@ function handleShopSubmission(event) {
     const itemName = document.getElementById('p-name').value;
     const price = document.getElementById('p-price').value;
     
-    // PLACEMENT GUARD: Determine where this item belongs
-    // This ensures Auto parts stay in Auto and Mall stays in Mall
+    // PLACEMENT GUARD: Vehicle -> Lot | Furniture/Other -> Mall
     const placement = (category === 'Vehicle') ? 'lot' : 'mall';
 
     const newItem = {
         id: Date.now(),
-        vendorID: "STA-TECH-USER-01", // Placeholder until Auth is active
         name: itemName,
         price: parseFloat(price),
         category: category,
         placementTag: placement,
-        status: 'pending',
-        priorityScore: 0, // Default: Free listing
+        status: 'pending', // Requires God Mode Approval
+        priorityScore: 0,
         onPromotion: false,
+        vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
+        phone: localStorage.getItem('musha_shop_phone') || "263771111111", // Standard Hub Line
         image: document.getElementById('output-preview').src || 'assets/musha.png'
     };
 
     myShopInventory.push(newItem);
     localStorage.setItem('musha_vendor_inventory', JSON.stringify(myShopInventory));
 
-    // Show custom success state
     showSuccessState(itemName, placement);
 }
 
 /**
- * Promotion Engine: Adjust Price or Set Flash Sale
+ * Promotion Engine: Boosted items get priorityScore 10
  */
 function togglePromotion(itemID) {
     const item = myShopInventory.find(i => i.id === itemID);
     if (item) {
         item.onPromotion = !item.onPromotion;
-        // Logic: Promotions increase priorityScore to move it to the top
         item.priorityScore = item.onPromotion ? 10 : 0; 
         localStorage.setItem('musha_vendor_inventory', JSON.stringify(myShopInventory));
         renderMyShop();
-        console.log(`Musha System: Item ${itemID} promotion set to ${item.onPromotion}`);
     }
 }
 
 /**
- * Render the "My Shop" Dashboard
+ * Render the "My Shop" Dashboard (Vendor's Private View)
  */
 function renderMyShop() {
     const container = document.getElementById('my-shop-grid');
@@ -115,79 +126,34 @@ function renderMyShop() {
  * Logistics Shortcut: Bridge to StaTech WhatsApp
  */
 function requestLogistics(itemName) {
+    const hubPhone = "263771111111";
     const msg = `Hi StaTech, I need a mover for my ${itemName} to the Hub.`;
-    window.open(`https://wa.me/263771111111?text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(`https://wa.me/${hubPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 function showSuccessState(name, placement) {
-    const form = document.getElementById('public-upload-form');
+    const form = document.getElementById('sell-form-section');
     form.innerHTML = `
         <div class="success-box" style="text-align:center; padding:40px;">
-            <i class="fas fa-check-circle fa-4y gold-text"></i>
+            <i class="fas fa-check-circle fa-4x" style="color:var(--musha-gold);"></i>
             <h2 style="margin-top:20px;">SYNCED TO ${placement.toUpperCase()}</h2>
-            <p>Your ${name} is being vetted by StaTech.</p>
+            <p>Your ${name} is being vetted by StaTech Admin.</p>
             <button onclick="location.reload()" class="list-now-btn">List Another</button>
-            <button onclick="switchDashboardTab('manage')" class="view-btn">Go to My Shop</button>
+            <button onclick="switchDashboardTab('manage')" class="view-btn">View My Shop</button>
         </div>
     `;
 }
 
-// Initialize listeners
-document.addEventListener('DOMContentLoaded', () => {
-    // Ensure "My Shop" tab is ready if clicked
-    const manageTab = document.querySelector('[onclick*="manage"]');
-    if (manageTab) renderMyShop();
-});
-// Add this to your shop.js file
-
-/**
- * Save Shop Name to LocalStorage
- */
-function saveShopIdentity() {
-    const shopName = document.getElementById('shop-name-input').value;
-    localStorage.setItem('musha_shop_name', shopName);
-    console.log("Musha System: Shop identity updated to " + shopName);
-}
-
-/**
- * Load Shop Name on Page Load
- */
+// Initial Load: Restore Shop Info
 document.addEventListener('DOMContentLoaded', () => {
     const savedName = localStorage.getItem('musha_shop_name');
-    if (savedName) {
-        document.getElementById('shop-name-input').value = savedName;
+    const savedPhone = localStorage.getItem('musha_shop_phone');
+    
+    if (savedName) document.getElementById('shop-name-input').value = savedName;
+    if (savedPhone) document.getElementById('shop-whatsapp-input').value = savedPhone;
+    
+    // Check if we are on the manage tab
+    if (document.getElementById('my-shop-grid')) {
+        renderMyShop();
     }
 });
-
-// Update your handleShopSubmission function to include the Shop Name
-// Inside handleShopSubmission:
-const newItem = {
-    // ... other properties ...
-    vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
-    // ...
-};
-
-/**
- * Save Shop Identity (Name + Phone)
- */
-function saveShopIdentity() {
-    const shopName = document.getElementById('shop-name-input').value;
-    const shopPhone = document.getElementById('shop-whatsapp-input').value;
-    
-    localStorage.setItem('musha_shop_name', shopName);
-    localStorage.setItem('musha_shop_phone', shopPhone);
-    
-    console.log("Musha System: Identity secured for " + shopName);
-}
-
-// Update the handleShopSubmission function to use these
-// When the vendor hits 'Submit for Review', we grab these saved values
-const newItem = {
-    id: Date.now(),
-    name: itemName,
-    price: price,
-    vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
-    phone: localStorage.getItem('musha_shop_phone') || "263771111111", // Default to Hub
-    status: 'pending',
-    placementTag: (category === 'auto') ? 'lot' : 'mall'
-};
