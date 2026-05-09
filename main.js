@@ -30,19 +30,15 @@ function toggleSidebar() {
  * Uses the ID 'mall-gateway' to match your updated CSS swap system.
  */
 function openTheMall() {
-    const overlay = document.getElementById('mall-gateway');
+    const gateway = document.getElementById('gateway-overlay');
     const mainContent = document.getElementById('main-content');
     
-    if (overlay) {
-        // Start the fade out (Transition set in style.css)
-        overlay.style.opacity = '0';
+    if (gateway) {
+        gateway.style.opacity = '0'; // Starts the CSS transition
         
-        // Ensure main content is visible behind the overlay
-        if (mainContent) mainContent.style.display = 'block';
-
-        // Physically remove overlay after fade to allow clicks
         setTimeout(() => { 
-            overlay.style.display = 'none'; 
+            gateway.style.display = 'none'; 
+            if (mainContent) mainContent.style.display = 'block';
             console.log("SSC System: MushaHub Showroom active.");
         }, 800);
     }
