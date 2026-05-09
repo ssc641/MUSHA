@@ -68,3 +68,28 @@ function rejectItem(itemID) {
 
 // Initial Load
 document.addEventListener('DOMContentLoaded', renderAdminQueue);
+
+// Add this to admin.js to handle the sidebar filtering
+function filterAdmin(tag) {
+    const tabs = document.querySelectorAll('.admin-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    const allItems = JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [];
+    const queueContainer = document.getElementById('admin-pending-list');
+    
+    // Filter by 'pending' AND the specific placement tag
+    const filtered = allItems.filter(item => {
+        if (tag === 'all') return item.status === 'pending';
+        return item.status === 'pending' && item.placementTag === tag;
+    });
+
+    // Re-render only the filtered items
+    renderCustomAdminList(filtered);
+}
+
+function renderCustomAdminList(items) {
+    const container = document.getElementById('admin-pending-list');
+    // ... same mapping logic as approveItem ...
+    // (Ensure this function mimics the renderAdminQueue logic for the items passed to it)
+}
