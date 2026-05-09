@@ -199,3 +199,21 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Musha Landing: Tiny Logo Loaded.");
     }
 });
+
+function handlePublicUpload(event) {
+    event.preventDefault();
+    
+    const category = document.getElementById('p-category').value;
+    const itemName = document.getElementById('p-name').value;
+    const price = document.getElementById('p-price').value;
+
+    // Feedback that respects the system
+    if (category === "Vehicle") {
+        alert(`SUCCESS: Your ${itemName} has been sent to the Auto Hub for vetting.`);
+    } else {
+        alert(`SUCCESS: Your ${itemName} is being reviewed for the Grand Mall showroom.`);
+    }
+
+    // Redirect to index after submission
+    window.location.href = 'index.html';
+}
