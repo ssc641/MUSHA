@@ -1,122 +1,80 @@
 /* =========================================
-   1. MASTER INVENTORY (The Database)
+   1. THE MASTER MALL INVENTORY (Hardcoded)
    ========================================= */
 const furnitureInventory = [
     {
-        id: 1001,
-        name: "Royal Velvet L-Shape",
-        quality: "premium",
+        id: 101,
+        name: "Luxury L-Shape Sofa",
         category: "Living Room",
-        type: "Sofa",
-        material: "Velvet & Oak",
-        condition: "Brand New",
-        price: 1200,
-        store: "Musha Home Gweru",
-        isVerified: true,
+        price: 850,
+        image: "assets/sofa1.jpg",
         whatsapp: "263771111111",
-        image: "assets/furniture/sofa1.jpg"
+        description: "Premium velvet finish, 5-seater luxury."
     },
     {
-        id: 1002,
-        name: "Standard Pine Coffee Table",
-        quality: "standard",
-        category: "Living Room",
-        type: "Table",
-        material: "Pine Wood",
-        condition: "New",
-        price: 150,
-        store: "Midlands Decor",
-        isVerified: false,
-        whatsapp: "263782222222",
-        image: "assets/furniture/table1.jpg"
-    },
-    {
-        id: 2001,
-        name: "Samsung Double-Door Fridge",
-        quality: "premium",
-        category: "Appliances",
-        type: "Kitchen",
-        material: "Stainless Steel",
-        condition: "Brand New",
-        price: 950,
-        store: "Gweru Power Hub",
-        isVerified: true,
+        id: 102,
+        name: "Modern Kitchen Island",
+        category: "Kitchen",
+        price: 450,
+        image: "assets/island1.jpg",
         whatsapp: "263771111111",
-        image: "assets/appliances/fridge1.jpg"
+        description: "Marble top with built-in storage."
     }
 ];
 
 /* =========================================
-   2. CART LOGIC (Persistent Storage)
+   2. SYSTEM SYNC: MALL LIVE INVENTORY
    ========================================= */
-let mushaCart = JSON.parse(localStorage.getItem('mushaCart')) || [];
 
-function addToCart(productId) {
-    const product = furnitureInventory.find(p => p.id === productId);
-    const qtyInput = document.getElementById(`qty-${productId}`);
-    const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+function getLiveMallInventory() {
+    // 1. Get vendor items from local storage
+    const vendorItems = JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [];
     
-    // Check if already in cart to update qty instead of duplicating
-    const existingItem = mushaCart.find(item => item.id === productId);
-    if (existingItem) {
-        existingItem.selectedQty += quantity;
-    } else {
-        mushaCart.push({ ...product, selectedQty: quantity });
-    }
-    
-    localStorage.setItem('mushaCart', JSON.stringify(mushaCart));
-    updateCartCount();
-    alert(`Musha Mall: ${product.name} added to cart.`);
-}
+    // 2. Filter for Approved Mall items only
+    const approvedMallItems = vendorItems.filter(item => 
+        item.status === 'active' && item.placementTag === 'mall'
+    );
 
-function updateCartCount() {
-    const countElement = document.getElementById('cart-count-display');
-    if (countElement) {
-        countElement.innerText = mushaCart.length;
-    }
+    // 3. Combine with hardcoded furniture
+    return [...furnitureInventory, ...approvedMallItems];
 }
 
 /* =========================================
-   3. RENDER ENGINE (The Grid)
+   3. RENDERING THE MALL SHOWROOM
    ========================================= */
+
 function displayFurniture(items) {
-    const grid = document.getElementById('furniture-results-grid');
-    const lobby = document.getElementById('lobby-view');
+    const mallGrid = document.getElementById('mall-grid');
+    const countDisplay = document.getElementById('mall-count');
 
-    if (!grid) return;
+    if (!mallGrid) return;
 
-    // Switch views: Hide lobby, show grid
-    if (lobby) lobby.style.display = 'none';
-    grid.style.display = 'grid';
-
-    if (items.length === 0) {
-        grid.innerHTML = `<div class="no-results">No items found. Try another category!</div>`;
-        return;
+    if (countDisplay) {
+        countDisplay.innerHTML = `<i class="fas fa-store"></i> ${items.length} Items in the Grand Mall`;
     }
 
-    grid.innerHTML = items.map(item => `
-        <div class="furniture-card ${item.isVerified ? 'verified-card' : 'unverified-card'}">
-            <div class="trust-badge ${item.isVerified ? 'verified' : 'warning'}">
-                <i class="fas ${item.isVerified ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
-                ${item.isVerified ? 'Verified Hub' : 'Unverified'}
+    mallGrid.innerHTML = items.map(item => `
+        <div class="furniture-card ${item.onPromotion ? 'promo-active' : ''}">
+            <div class="f-image-container">
+                <img src="${item.image}" alt="${item.name}" onerror="this.src='assets/musha.png'">
+                ${item.onPromotion ? '<span class="promo-badge">PROMO</span>' : ''}
             </div>
             
-            <div class="img-container">
-                <img src="${item.image}" alt="${item.name}" onerror="this.src='assets/musha.png'">
-            </div>
-
-            <div class="card-details">
-                <h3 class="title">${item.name}</h3>
-                <p class="price-text">$${item.price.toLocaleString()}</p>
-                <p class="store-info"><i class="fas fa-store"></i> ${item.store}</p>
+            <div class="f-details">
+                <h3 class="f-title">${item.name}</h3>
+                <p class="f-category">${item.category}</p>
+                <p class="f-price">$${item.price}</p>
                 
-                <div class="card-actions">
-                    <div class="qty-box">
-                        <input type="number" id="qty-${item.id}" value="1" min="1">
-                    </div>
-                    <button class="add-btn" onclick="addToCart(${item.id})">ADD</button>
-                    <button class="wa-btn" onclick="negotiateWA('${item.name}', '${item.whatsapp}')">
-                        <i class="fab fa-whatsapp"></i>
+                <p class="vendor-tag">
+                    <i class="fas fa-user-tag"></i> ${item.vendorName || "Musha Official"}
+                </p>
+
+                <div class="f-actions">
+                    <button class="mall-contact-btn" onclick="negotiateWA('${item.name}', '${item.whatsapp || item.phone || '263771111111'}')">
+                        <i class="fab fa-whatsapp"></i> CONTACT
+                    </button>
+                    <button class="f-view-btn" onclick="showProductDetails(${item.id})">
+                        DETAILS
                     </button>
                 </div>
             </div>
@@ -125,46 +83,45 @@ function displayFurniture(items) {
 }
 
 /* =========================================
-   4. FILTERS & UTILITIES
+   4. UTILITIES & LOGIC
    ========================================= */
-function filterFurnitureByRoom(roomName) {
-    const filtered = furnitureInventory.filter(item => item.category === roomName);
-    displayFurniture(filtered);
-}
 
 function negotiateWA(itemName, phone) {
-    const msg = `Hi, I saw the ${itemName} on Musha. Is it still available?`;
+    const msg = `Hi Musha Mall, I'm interested in the ${itemName}. Is it still available?`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// Ensure cart count is accurate on page load
-document.addEventListener('DOMContentLoaded', updateCartCount);
+function showProductDetails(id) {
+    const allItems = getLiveMallInventory();
+    const item = allItems.find(i => i.id === id);
+    if (item) {
+        alert(`Product: ${item.name}\nCategory: ${item.category}\nPrice: $${item.price}\nSeller: ${item.vendorName || 'Musha Official'}`);
+    }
+}
 
 /* =========================================
-   MALL INVENTORY SYNC (Furniture & Home)
+   5. INITIALIZATION
    ========================================= */
 
-// 1. Combine hardcoded inventory with Vendor Hub data
-const liveFurnitureInventory = [
-    ...(typeof furnitureInventory !== 'undefined' ? furnitureInventory : []), // Your existing furniture array
-    ...(JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [])
-].filter(item => {
-    // GUARD: Only show items approved by Admin and tagged for the Mall
-    const isApproved = item.status === 'active';
-    const isMallItem = item.placementTag === 'mall';
-    
-    // Also include your original hardcoded items which might not have these tags yet
-    const isLegacyItem = !item.status; 
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('mall-grid')) {
+        const liveMall = getLiveMallInventory();
 
-    return (isApproved && isMallItem) || isLegacyItem;
+        // SORT: Boosted/Promoted items first (The Monetization Rule)
+        liveMall.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
+
+        displayFurniture(liveMall);
+
+        // Optional: Category Filter listener
+        const categoryFilter = document.getElementById('mall-category-filter');
+        if (categoryFilter) {
+            categoryFilter.addEventListener('change', (e) => {
+                const filtered = liveMall.filter(item => 
+                    e.target.value === 'all' || item.category === e.target.value
+                );
+                displayFurniture(filtered);
+            });
+        }
+    }
 });
-
-// 2. Sort by Priority (Boosted items first)
-liveFurnitureInventory.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
-
-// 3. Render the Mall
-// Replace your old display call with this:
-displayFurniture(liveFurnitureInventory);
-
-// Inside your .map() function for furniture cards:
-<div class="furniture-card ${item.onPromotion ? 'promo-active' : ''}">
+ 
