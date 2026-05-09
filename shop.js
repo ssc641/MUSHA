@@ -28,7 +28,7 @@ function switchDashboardTab(tabName) {
 }
 
 /**
- * FIXED: Save Shop Identity (Name + Phone)
+ * Save Shop Identity (Name + Phone)
  */
 function saveShopIdentity() {
     const shopName = document.getElementById('shop-name-input').value;
@@ -41,8 +41,7 @@ function saveShopIdentity() {
 }
 
 /**
- * FIXED: The Universal Submitter
- * Captures Category-based placement and Vendor Identity
+ * The Universal Submitter
  */
 function handleShopSubmission(event) {
     event.preventDefault();
@@ -51,20 +50,19 @@ function handleShopSubmission(event) {
     const itemName = document.getElementById('p-name').value;
     const price = document.getElementById('p-price').value;
     
-    // PLACEMENT GUARD: Vehicle -> Lot | Furniture/Other -> Mall
     const placement = (category === 'Vehicle') ? 'lot' : 'mall';
 
     const newItem = {
         id: Date.now(),
         name: itemName,
-        price: parseFloat(price),
+        price: parseFloat(price), 
         category: category,
         placementTag: placement,
-        status: 'pending', // Requires God Mode Approval
+        status: 'pending',
         priorityScore: 0,
         onPromotion: false,
         vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
-        phone: localStorage.getItem('musha_shop_phone') || "263771111111", // Standard Hub Line
+        phone: localStorage.getItem('musha_shop_phone') || "263771111111",
         image: document.getElementById('output-preview').src || 'assets/musha.png'
     };
 
@@ -75,7 +73,7 @@ function handleShopSubmission(event) {
 }
 
 /**
- * Promotion Engine: Boosted items get priorityScore 10
+ * Promotion Engine
  */
 function togglePromotion(itemID) {
     const item = myShopInventory.find(i => i.id === itemID);
@@ -88,80 +86,8 @@ function togglePromotion(itemID) {
 }
 
 /**
- * Render the "My Shop" Dashboard (Vendor's Private View)
+ * UNIFIED: Render the "My Shop" Dashboard (With Live Status Tracker)
  */
-function renderMyShop() {
-    const container = document.getElementById('my-shop-grid');
-    if (!container) return;
-
-    if (myShopInventory.length === 0) {
-        container.innerHTML = `<p class="empty-msg">Your shop is empty. List your first product!</p>`;
-        return;
-    }
-
-    container.innerHTML = myShopInventory.map(item => `
-        <div class="shop-item-card ${item.onPromotion ? 'promo-active' : ''}">
-            <img src="${item.image}" alt="preview">
-            <div class="shop-item-details">
-                <h4>${item.name}</h4>
-                <p class="gold-text">$${item.price}</p>
-                <div class="item-tags">
-                    <span class="tag">${item.placementTag.toUpperCase()}</span>
-                    <span class="status-${item.status}">${item.status.toUpperCase()}</span>
-                </div>
-                <div class="shop-actions">
-                    <button onclick="togglePromotion(${item.id})" class="promo-btn">
-                        ${item.onPromotion ? 'STOP PROMO' : 'BOOST SALES'}
-                    </button>
-                    <button onclick="requestLogistics('${item.name}')" class="logistics-btn">
-                        <i class="fas fa-truck"></i> MOVE
-                    </button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-/**
- * Logistics Shortcut: Bridge to StaTech WhatsApp
- */
-function requestLogistics(itemName) {
-    const hubPhone = "263771111111";
-    const msg = `Hi StaTech, I need a mover for my ${itemName} to the Hub.`;
-    window.open(`https://wa.me/${hubPhone}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-function showSuccessState(name, placement) {
-    const form = document.getElementById('sell-form-section');
-    form.innerHTML = `
-        <div class="success-box" style="text-align:center; padding:40px;">
-            <i class="fas fa-check-circle fa-4x" style="color:var(--musha-gold);"></i>
-            <h2 style="margin-top:20px;">SYNCED TO ${placement.toUpperCase()}</h2>
-            <p>Your ${name} is being vetted by StaTech Admin.</p>
-            <button onclick="location.reload()" class="list-now-btn">List Another</button>
-            <button onclick="switchDashboardTab('manage')" class="view-btn">View My Shop</button>
-        </div>
-    `;
-}
-
-// Initial Load: Restore Shop Info
-document.addEventListener('DOMContentLoaded', () => {
-    const savedName = localStorage.getItem('musha_shop_name');
-    const savedPhone = localStorage.getItem('musha_shop_phone');
-    
-    if (savedName) document.getElementById('shop-name-input').value = savedName;
-    if (savedPhone) document.getElementById('shop-whatsapp-input').value = savedPhone;
-    
-    // Check if we are on the manage tab
-    if (document.getElementById('my-shop-grid')) {
-        renderMyShop();
-    }
-});
-
-/* =========================================
-   PART 7: LIVE STATUS TRACKING
-   ========================================= */
-
 function renderMyShop() {
     const container = document.getElementById('my-shop-grid');
     if (!container) return;
@@ -172,7 +98,6 @@ function renderMyShop() {
     }
 
     container.innerHTML = myShopInventory.map(item => {
-        // Dynamic Status Styling
         let statusClass = '';
         let statusIcon = '';
 
@@ -204,6 +129,9 @@ function renderMyShop() {
                         <button onclick="togglePromotion(${item.id})" class="promo-btn">
                             ${item.onPromotion ? 'STOP PROMO' : 'BOOST SALES'}
                         </button>
+                        <button onclick="requestLogistics('${item.name}')" class="logistics-btn">
+                            <i class="fas fa-truck"></i> MOVE
+                        </button>
                         <button onclick="deleteListing(${item.id})" class="delete-btn">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -215,7 +143,16 @@ function renderMyShop() {
 }
 
 /**
- * Delete Listing: Allows vendors to manage their own inventory
+ * Logistics Shortcut
+ */
+function requestLogistics(itemName) {
+    const hubPhone = "263771111111";
+    const msg = `Hi StaTech, I need a mover for my ${itemName} to the Hub.`;
+    window.open(`https://wa.me/${hubPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+/**
+ * Delete Listing
  */
 function deleteListing(id) {
     if (confirm("Remove this listing from Musha?")) {
@@ -224,3 +161,35 @@ function deleteListing(id) {
         renderMyShop();
     }
 }
+
+function showSuccessState(name, placement) {
+    const form = document.getElementById('sell-form-section');
+    form.innerHTML = `
+        <div class="success-box" style="text-align:center; padding:40px;">
+            <i class="fas fa-check-circle fa-4x" style="color:var(--musha-gold);"></i>
+            <h2 style="margin-top:20px;">SYNCED TO ${placement.toUpperCase()}</h2>
+            <p>Your ${name} is being vetted by StaTech Admin.</p>
+            <button onclick="location.reload()" class="list-now-btn">List Another</button>
+            <button onclick="switchDashboardTab('manage')" class="view-btn">View My Shop</button>
+        </div>
+    `;
+}
+
+// Initial Load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedName = localStorage.getItem('musha_shop_name');
+    const savedPhone = localStorage.getItem('musha_shop_phone');
+    
+    if (savedName) {
+        const nameInput = document.getElementById('shop-name-input');
+        if (nameInput) nameInput.value = savedName;
+    }
+    if (savedPhone) {
+        const phoneInput = document.getElementById('shop-whatsapp-input');
+        if (phoneInput) phoneInput.value = savedPhone;
+    }
+    
+    if (document.getElementById('my-shop-grid')) {
+        renderMyShop();
+    }
+});
