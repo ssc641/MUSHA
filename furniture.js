@@ -165,3 +165,6 @@ liveFurnitureInventory.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore 
 // 3. Render the Mall
 // Replace your old display call with this:
 displayFurniture(liveFurnitureInventory);
+
+// Inside your .map() function for furniture cards:
+<div class="furniture-card ${item.onPromotion ? 'promo-active' : ''}">
