@@ -14,45 +14,55 @@
             <i class="fas fa-user-shield"></i> STATech <span class="gold-text">GOD MODE</span>
         </div>
         <div class="stats-bar">
-            <div class="stat-item">Pending: <b id="pending-count">0</b></div>
-            <div class="stat-item">Total Sales: <b id="total-revenue">$0</b></div>
-            <button class="exit-admin" onclick="location.href='index.html'">Exit</button>
+            <div class="stat-item">Queue: <b id="pending-count">0</b></div>
+            <div class="stat-item">Revenue: <b id="total-revenue">$0</b></div>
+            <button class="exit-admin" onclick="location.href='index.html'">EXIT SYSTEM</button>
         </div>
     </nav>
 
-    <main class="admin-dashboard">
+    <main class="admin-dashboard-layout">
         
         <aside class="admin-sidebar">
-            <button class="admin-tab active" onclick="filterAdmin('all')">All Requests</button>
-            <button class="admin-tab" onclick="filterAdmin('furniture')">Furniture</button>
-            <button class="admin-tab" onclick="filterAdmin('auto')">Automotive</button>
+            <div class="sidebar-label">FILTERS</div>
+            <button class="admin-tab active" onclick="filterAdmin('all')">
+                <i class="fas fa-layer-group"></i> All Requests
+            </button>
+            <button class="admin-tab" onclick="filterAdmin('mall')">
+                <i class="fas fa-store"></i> Musha Mall
+            </button>
+            <button class="admin-tab" onclick="filterAdmin('lot')">
+                <i class="fas fa-car"></i> Auto Lot
+            </button>
+            
+            <div class="sidebar-footer">
+                <p>Musha System v2.0</p>
+                <small>Secure Admin Node</small>
+            </div>
         </aside>
 
         <section class="verification-desk">
             <div class="section-header">
-                <h3><i class="fas fa-clipboard-check"></i> Verification Desk</h3>
-                <p>Approve or Reject new listings for Musha & StaTech Auto</p>
+                <div class="header-title">
+                    <h3><i class="fas fa-clipboard-check"></i> VERIFICATION DESK</h3>
+                    <p>Security Check: Approve or Reject submissions</p>
+                </div>
             </div>
             
-            <div id="pending-list" class="admin-grid">
-                <div class="admin-placeholder">Scanning for new submissions...</div>
+            <div id="admin-pending-list" class="admin-grid">
+                <div class="admin-placeholder">
+                    <i class="fas fa-sync fa-spin"></i>
+                    <p>Scanning local vault for submissions...</p>
+                </div>
             </div>
         </section>
         
     </main>
 
+    <script src="admin.js"></script>
     <script src="main.js"></script>
 
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-
     <script src="firebase-config.js"></script>
-
-    <script src="main.js"></script>
-
-  </body>
-</html>
-
-    </body>
+</body>
 </html>
