@@ -118,6 +118,29 @@ function displayCars(cars) {
     `).join('');
 }
 
+function displayCars(cars) {
+    const grid = document.getElementById('car-results-grid');
+    grid.innerHTML = cars.map(car => `
+        <div class="car-card ${car.onPromotion ? 'promo-active' : ''}">
+            <div class="card-image">
+                <img src="${car.image}" alt="${car.model}">
+                ${car.onPromotion ? '<span class="promo-badge">HOT DEAL</span>' : ''}
+            </div>
+            <div class="card-content">
+                <div class="vendor-tag"><i class="fas fa-store"></i> ${car.vendorName || 'StaTech Official'}</div>
+                <h3>${car.brand} ${car.model}</h3>
+                <p class="price-text">$${car.price}</p>
+                
+                <div class="card-actions">
+                    <button class="wa-btn" onclick="contactVendor('${car.vendorName}', '${car.model}', '${car.phone}')">
+                        <i class="fab fa-whatsapp"></i> CONTACT SHOP
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
 /* =========================================
    4. INTERACTION & UTILITY
    ========================================= */
