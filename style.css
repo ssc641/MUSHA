@@ -640,3 +640,51 @@ body {
 
 .status-pending { color: #ffa500; font-size: 0.7rem; font-weight: bold; }
 .status-active { color: var(--musha-green); font-size: 0.7rem; font-weight: bold; }
+
+/* =========================================
+   PART 4: ADMIN DESK STYLING
+   ========================================= */
+
+.admin-card {
+    background: #1a1a1a;
+    border-left: 4px solid var(--musha-gold);
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    gap: 20px;
+}
+
+.admin-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.admin-info { flex-grow: 1; }
+
+.admin-actions { display: flex; gap: 10px; }
+
+.approve-btn {
+    background: var(--musha-green);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.reject-btn {
+    background: #ff4b2b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.vendor-id { font-size: 0.7rem; color: #666; margin-top: 5px; }
