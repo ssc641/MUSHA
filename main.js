@@ -217,3 +217,15 @@ function handlePublicUpload(event) {
     // Redirect to index after submission
     window.location.href = 'index.html';
 }
+
+/**
+ * Universal Contact Logic
+ * Connects the buyer directly to the vendor's phone via WhatsApp
+ */
+function contactVendor(shopName, itemName, phone) {
+    // If no phone is provided, it defaults to the StaTech Hub Line
+    const targetPhone = phone || "263771111111"; 
+    const message = `Hi ${shopName}, I saw your listing for the ${itemName} on the Musha Virtual Mall. Is it still available?`;
+    
+    window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`, '_blank');
+}
