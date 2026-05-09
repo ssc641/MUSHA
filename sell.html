@@ -22,9 +22,18 @@
         <div class="sell-container">
             <header class="sell-header">
                 <div class="header-text">
-                    <h1 class="brand-name">LIST YOUR <span class="gold-text">VEHICLE</span></h1>
+                    <h1 class="brand-name">LIST YOUR <span class="gold-text">PRODUCT</span></h1>
                     <p>Direct Submission to StaTech Hub</p>
                 </div>
+                <div class="input-group full-width">
+    <label>Listing Category</label>
+    <select id="p-category" class="universal-select" required>
+        <option value="" disabled selected>Select what you are listing...</option>
+        <option value="Furniture">Furniture / Home Decor (Grand Mall)</option>
+        <option value="Vehicle">Vehicle / Automotive (Auto Lot)</option>
+        <option value="Appliance">Kitchen & Home Appliances</option>
+    </select>
+</div>
             </header>
 
             <form id="public-upload-form" class="sell-form" onsubmit="handlePublicUpload(event)">
