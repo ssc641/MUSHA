@@ -529,3 +529,18 @@ body {
     background: #36c78f;
     transform: translateY(-2px);
 }
+.universal-select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    padding: 12px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.universal-select option {
+    background: #111; /* Ensures dropdown options are readable */
+    color: white;
+}
