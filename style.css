@@ -768,3 +768,40 @@ body {
     padding: 100px;
     color: #444;
 }
+.vendor-identity-card {
+    background: linear-gradient(145deg, #111, #080808);
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    background: var(--dark-bg);
+    border: 2px solid var(--musha-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--musha-gold);
+}
+
+#shop-name-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #444;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%;
+    outline: none;
+}
+
+#shop-name-input:focus {
+    border-bottom-color: var(--musha-gold);
+}
