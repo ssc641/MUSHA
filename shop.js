@@ -141,7 +141,25 @@ function renderMyShop() {
         `;
     }).join('');
 }
+/**
+ * PART 8: VENDOR ANALYTICS ENGINE
+ */
+function updateVendorStats() {
+    const totalValue = myShopInventory.reduce((sum, item) => sum + (item.price || 0), 0);
+    const liveCount = myShopInventory.filter(item => item.status === 'active').length;
+    const boostedCount = myShopInventory.filter(item => item.onPromotion).length;
 
+    // Update the UI
+    const valueEl = document.getElementById('total-stock-value');
+    const liveEl = document.getElementById('live-items-count');
+    const boostEl = document.getElementById('boosted-items-count');
+
+    if (valueEl) valueEl.innerText = `$${totalValue.toLocaleString()}`;
+    if (liveEl) liveEl.innerText = liveCount;
+    if (boostEl) boostEl.innerText = boostedCount;
+}
+
+// !! IMPORTANT: Add "updateVendorStats();" inside your renderMyShop() function
 /**
  * Logistics Shortcut
  */
