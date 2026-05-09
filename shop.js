@@ -166,3 +166,28 @@ const newItem = {
     vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
     // ...
 };
+
+/**
+ * Save Shop Identity (Name + Phone)
+ */
+function saveShopIdentity() {
+    const shopName = document.getElementById('shop-name-input').value;
+    const shopPhone = document.getElementById('shop-whatsapp-input').value;
+    
+    localStorage.setItem('musha_shop_name', shopName);
+    localStorage.setItem('musha_shop_phone', shopPhone);
+    
+    console.log("Musha System: Identity secured for " + shopName);
+}
+
+// Update the handleShopSubmission function to use these
+// When the vendor hits 'Submit for Review', we grab these saved values
+const newItem = {
+    id: Date.now(),
+    name: itemName,
+    price: price,
+    vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
+    phone: localStorage.getItem('musha_shop_phone') || "263771111111", // Default to Hub
+    status: 'pending',
+    placementTag: (category === 'auto') ? 'lot' : 'mall'
+};
