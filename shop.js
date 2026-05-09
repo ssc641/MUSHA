@@ -157,3 +157,70 @@ document.addEventListener('DOMContentLoaded', () => {
         renderMyShop();
     }
 });
+
+/* =========================================
+   PART 7: LIVE STATUS TRACKING
+   ========================================= */
+
+function renderMyShop() {
+    const container = document.getElementById('my-shop-grid');
+    if (!container) return;
+
+    if (myShopInventory.length === 0) {
+        container.innerHTML = `<p class="empty-msg">Your shop is empty. List your first product!</p>`;
+        return;
+    }
+
+    container.innerHTML = myShopInventory.map(item => {
+        // Dynamic Status Styling
+        let statusClass = '';
+        let statusIcon = '';
+
+        switch(item.status) {
+            case 'pending': 
+                statusClass = 'status-pending'; 
+                statusIcon = '<i class="fas fa-clock"></i> VETTING';
+                break;
+            case 'active': 
+                statusClass = 'status-active'; 
+                statusIcon = '<i class="fas fa-check-circle"></i> LIVE';
+                break;
+            default: 
+                statusClass = 'status-other'; 
+                statusIcon = item.status.toUpperCase();
+        }
+
+        return `
+            <div class="shop-item-card ${item.onPromotion ? 'promo-active' : ''}">
+                <img src="${item.image}" alt="preview">
+                <div class="shop-item-details">
+                    <h4>${item.name}</h4>
+                    <p class="gold-text">$${item.price}</p>
+                    <div class="item-tags">
+                        <span class="tag-location">${item.placementTag === 'lot' ? 'AUTO LOT' : 'MALL'}</span>
+                        <span class="status-badge ${statusClass}">${statusIcon}</span>
+                    </div>
+                    <div class="shop-actions">
+                        <button onclick="togglePromotion(${item.id})" class="promo-btn">
+                            ${item.onPromotion ? 'STOP PROMO' : 'BOOST SALES'}
+                        </button>
+                        <button onclick="deleteListing(${item.id})" class="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Delete Listing: Allows vendors to manage their own inventory
+ */
+function deleteListing(id) {
+    if (confirm("Remove this listing from Musha?")) {
+        myShopInventory = myShopInventory.filter(i => i.id !== id);
+        localStorage.setItem('musha_vendor_inventory', JSON.stringify(myShopInventory));
+        renderMyShop();
+    }
+}
