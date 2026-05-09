@@ -124,4 +124,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// Add this inside the DOMContentLoaded block in furniture.js
+const priceSort = document.getElementById('price-sort-select');
+if (priceSort) {
+    priceSort.addEventListener('change', (e) => {
+        const currentItems = getLiveMallInventory(); // Get everything
+        
+        if (e.target.value === 'low') {
+            currentItems.sort((a, b) => a.price - b.price); // Lowest Price First
+        } else if (e.target.value === 'high') {
+            currentItems.sort((a, b) => b.price - a.price); // Highest Price First
+        }
+        
+        displayFurniture(currentItems);
+    });
+}
  
