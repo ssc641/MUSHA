@@ -47,7 +47,6 @@ const carInventory = [
    2. THE FILTERING ENGINE
    ========================================= */
 function filterCars() {
-    // Get values from our synced auto.html IDs
     const dealerVal = document.getElementById('dealership-select').value;
     const yearVal = document.getElementById('year-select').value;
     const brandVal = document.getElementById('brand-select').value;
@@ -89,35 +88,29 @@ function displayCars(cars) {
     }
 
     grid.innerHTML = cars.map(car => `
-        <div class="car-card ${car.isVerified ? 'verified-card' : 'unverified-card'}">
-            
-            <div class="trust-badge ${car.isVerified ? 'verified' : 'warning'}">
-                <i class="fas ${car.isVerified ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
-                ${car.isVerified ? 'Verified Hub' : 'Unverified Seller'}
-            </div>
-
-            <div class="price-badge">${car.price}</div>
-            
-            <div class="car-img-container">
+        <div class="car-card">
+            <div class="car-image-container">
+                ${car.isVerified ? '<span class="verified-badge"><i class="fas fa-check-circle"></i> Vetted</span>' : ''}
                 <img src="${car.image}" alt="${car.brand} ${car.model}" onerror="this.src='assets/musha.png'">
             </div>
-
-            <div class="car-details">
-                <span class="car-meta">${car.year} | ${car.category}</span>
+            <div class="car-info">
+                <span class="car-specs">${car.year} | ${car.category}</span>
                 <h3 class="car-title">${car.brand} ${car.model}</h3>
+                <span class="car-price">${car.price}</span>
+                
                 <p class="car-location"><i class="fas fa-map-marker-alt"></i> ${car.dealership}</p>
                 
                 ${!car.isVerified ? 
-                    `<p class="safety-warning"><b>Safety Tip:</b> Meet in public. No deposits.</p>` : 
-                    `<p class="safety-verified"><i class="fas fa-shield-alt"></i> Vetted by StaTech Logistics.</p>`
+                    `<p class="safety-warning" style="color: #ff4b2b; font-size: 0.8rem; margin: 10px 0;"><b>Safety:</b> Meet in public. No deposits.</p>` : 
+                    `<p class="safety-verified" style="color: var(--musha-green); font-size: 0.8rem; margin: 10px 0;"><i class="fas fa-shield-alt"></i> Hub Verified Stock</p>`
                 }
 
-                <div class="action-buttons">
+                <div class="car-actions">
                     <button class="negotiate-wa" onclick="negotiateWhatsApp('${car.brand} ${car.model}', '${car.phone}')">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
+                        <i class="fab fa-whatsapp"></i> WHATSAPP
                     </button>
                     <button class="view-btn" onclick="makeOffer('${car.brand} ${car.model}')">
-                        Make Offer
+                        OFFER
                     </button>
                 </div>
             </div>
@@ -148,9 +141,16 @@ function resetFilters() {
     displayCars(carInventory);
 }
 
-// Initial Load
+// Initial Load and Auto-Filtering Listeners
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('car-results-grid')) {
         displayCars(carInventory);
+        
+        // Add listeners to dropdowns so it filters automatically
+        const filters = ['dealership-select', 'year-select', 'brand-select', 'category-select'];
+        filters.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', filterCars);
+        });
     }
 });
