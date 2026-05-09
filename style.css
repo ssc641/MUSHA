@@ -805,3 +805,53 @@ body {
 #shop-name-input:focus {
     border-bottom-color: var(--musha-gold);
 }
+/* =========================================
+   LIVE VIEW: PRODUCT CARD ENHANCEMENTS
+   ========================================= */
+
+.vendor-tag {
+    font-size: 0.7rem;
+    color: var(--musha-gold);
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.promo-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff4b2b;
+    color: white;
+    font-size: 0.6rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.wa-btn {
+    width: 100%;
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.wa-btn:hover {
+    background: #1ebe57;
+    transform: scale(1.02);
+}
