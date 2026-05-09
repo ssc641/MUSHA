@@ -28,91 +28,79 @@ body {
 }
 
 /* =========================================
-   2.1 GLOBAL GATEWAY (index.html)
+   1. GLOBAL GATEWAY BUTTONS (index.html)
    ========================================= */
-/* Fixing those "crappy" buttons on the landing site */
+/* Targeting the buttons on the landing page specifically */
 .gateway-choices .enter-btn {
     background: transparent;
-    color: var(--musha-gold);
-    border: 2px solid var(--musha-gold);
-    padding: 15px 35px;
-    font-size: 0.9rem;
-    font-weight: bold;
+    color: var(--musha-gold); /* Using your system variable */
+    border: 1.5px solid var(--musha-gold);
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: var(--transition); /* Using your system transition */
     border-radius: 4px;
     width: 100%;
-    max-width: 220px;
-    margin-top: 15px;
+    max-width: 200px;
+    margin-top: 10px;
 }
 
 .gateway-choices .enter-btn:hover {
     background: var(--musha-gold);
-    color: #000;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-    transform: translateY(-3px);
+    color: black;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
 /* =========================================
-   2.2 SHOWROOM GATEWAY (mall.html)
+   2. SHOWROOM GATEWAY (mall.html)
    ========================================= */
-/* Respecting the Doors-Closed / Doors-Mobile Logic */
+/* Respecting your background image and swap system */
 #gateway-overlay {
     position: fixed;
     inset: 0;
-    /* Desktop Background */
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+    /* Respecting the Desktop BG */
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                 url('assets/doors_closed.png') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    transition: opacity 0.8s ease, visibility 0.8s;
 }
 
-/* Mobile Image Swap for Mall Gateway */
+/* The Mobile Swap Logic */
 @media (max-width: 768px) {
     #gateway-overlay {
-        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                     url('assets/doors_mobile.png') no-repeat center center/cover;
     }
 }
 
-/* Premium "OPEN" Label and Button for mall.html */
+/* Refined "OPEN" Button for the Showroom Door */
 #open-btn {
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent luxury feel */
+    background: rgba(0, 0, 0, 0.6); /* Glassmorphism feel */
     color: var(--musha-gold);
     border: 1px solid var(--musha-gold);
-    padding: 18px 50px;
-    font-size: 1.1rem;
-    font-weight: 300; /* Light weight for elegance */
+    padding: 15px 40px;
+    font-size: 1rem;
+    font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 5px;
+    letter-spacing: 4px;
     cursor: pointer;
-    transition: all 0.5s ease;
-    border-radius: 0; /* Sharp edges look more high-end here */
-    backdrop-filter: blur(8px);
-    margin-top: 30px;
+    transition: all 0.4s ease;
+    border-radius: 0px; /* Sharp, high-end look */
+    backdrop-filter: blur(5px);
+    margin-top: 25px;
 }
 
 #open-btn:hover {
     background: var(--musha-gold);
-    color: #000;
-    letter-spacing: 8px; /* Subtle "expanding" animation on hover */
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    color: black;
+    letter-spacing: 6px; /* Subtle premium expansion effect */
 }
-
-/* Branding sync across both gateways */
-.brand-name {
-    font-family: 'Playfair Display', serif; /* Or your preferred brand font */
-    letter-spacing: 10px;
-    color: white;
-    text-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-
 /* =========================================
    3. THE MALL LAYOUT (mall.html)
    ========================================= */
