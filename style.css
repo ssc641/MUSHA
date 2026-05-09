@@ -28,71 +28,89 @@ body {
 }
 
 /* =========================================
-   2. THE GATEWAY (index.html)
+   2.1 GLOBAL GATEWAY (index.html)
    ========================================= */
-#gateway-overlay {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    text-align: center;
-    transition: var(--transition);
-}
-
-.musha-icon-img {
-    width: 100px;
-    height: auto;
-    margin-bottom: 15px;
-    filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.2));
-}
-
-.brand-name { 
-    color: var(--musha-green); 
-    font-size: 2.5rem; 
-    letter-spacing: 4px; 
-    font-weight: 900;
-}
-/* =========================================
-   MOOSHA PREMIUM BUTTONS (index.html)
-   ========================================= */
-.enter-btn {
+/* Fixing those "crappy" buttons on the landing site */
+.gateway-choices .enter-btn {
     background: transparent;
-    color: var(--musha-gold); /* Using your existing variable */
+    color: var(--musha-gold);
     border: 2px solid var(--musha-gold);
-    padding: 14px 30px;
+    padding: 15px 35px;
     font-size: 0.9rem;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
-    transition: all 0.4s ease;
-    border-radius: 4px; /* Slight round for a modern look */
-    width: 100%; /* Makes them consistent inside the cards */
-    max-width: 250px;
-    position: relative;
-    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 220px;
+    margin-top: 15px;
 }
 
-.enter-btn:hover {
+.gateway-choices .enter-btn:hover {
     background: var(--musha-gold);
-    color: black;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-    transform: translateY(-2px);
+    color: #000;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    transform: translateY(-3px);
 }
 
-.enter-btn:active {
-    transform: translateY(0);
+/* =========================================
+   2.2 SHOWROOM GATEWAY (mall.html)
+   ========================================= */
+/* Respecting the Doors-Closed / Doors-Mobile Logic */
+#gateway-overlay {
+    position: fixed;
+    inset: 0;
+    /* Desktop Background */
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                url('assets/doors_closed.png') no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s;
 }
 
-/* Matching the Gold Text for the Card Headings */
-.choice-card h2.gold-text {
-    margin-bottom: 10px;
-    font-size: 1.4rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+/* Mobile Image Swap for Mall Gateway */
+@media (max-width: 768px) {
+    #gateway-overlay {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                    url('assets/doors_mobile.png') no-repeat center center/cover;
+    }
+}
+
+/* Premium "OPEN" Label and Button for mall.html */
+#open-btn {
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent luxury feel */
+    color: var(--musha-gold);
+    border: 1px solid var(--musha-gold);
+    padding: 18px 50px;
+    font-size: 1.1rem;
+    font-weight: 300; /* Light weight for elegance */
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    border-radius: 0; /* Sharp edges look more high-end here */
+    backdrop-filter: blur(8px);
+    margin-top: 30px;
+}
+
+#open-btn:hover {
+    background: var(--musha-gold);
+    color: #000;
+    letter-spacing: 8px; /* Subtle "expanding" animation on hover */
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+/* Branding sync across both gateways */
+.brand-name {
+    font-family: 'Playfair Display', serif; /* Or your preferred brand font */
+    letter-spacing: 10px;
+    color: white;
+    text-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 /* =========================================
