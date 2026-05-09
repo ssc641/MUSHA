@@ -139,3 +139,29 @@ function negotiateWA(itemName, phone) {
 
 // Ensure cart count is accurate on page load
 document.addEventListener('DOMContentLoaded', updateCartCount);
+
+/* =========================================
+   MALL INVENTORY SYNC (Furniture & Home)
+   ========================================= */
+
+// 1. Combine hardcoded inventory with Vendor Hub data
+const liveFurnitureInventory = [
+    ...(typeof furnitureInventory !== 'undefined' ? furnitureInventory : []), // Your existing furniture array
+    ...(JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [])
+].filter(item => {
+    // GUARD: Only show items approved by Admin and tagged for the Mall
+    const isApproved = item.status === 'active';
+    const isMallItem = item.placementTag === 'mall';
+    
+    // Also include your original hardcoded items which might not have these tags yet
+    const isLegacyItem = !item.status; 
+
+    return (isApproved && isMallItem) || isLegacyItem;
+});
+
+// 2. Sort by Priority (Boosted items first)
+liveFurnitureInventory.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
+
+// 3. Render the Mall
+// Replace your old display call with this:
+displayFurniture(liveFurnitureInventory);
