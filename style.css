@@ -855,3 +855,43 @@ body {
     background: #1ebe57;
     transform: scale(1.02);
 }
+/* =========================================
+   PART 7: STATUS BADGES
+   ========================================= */
+
+.status-badge {
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-pending {
+    background: rgba(255, 165, 0, 0.1);
+    color: #ffa500;
+    border: 1px solid #ffa500;
+}
+
+.status-active {
+    background: rgba(37, 211, 102, 0.1);
+    color: #25d366;
+    border: 1px solid #25d366;
+}
+
+.delete-btn {
+    background: #222;
+    color: #ff4b2b;
+    border: 1px solid #333;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    background: #ff4b2b;
+    color: white;
+}
