@@ -321,3 +321,15 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+@media (max-width: 992px) {
+    .auto-body .main-layout {
+        flex-direction: column;
+    }
+    .auto-body .filter-sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+    }
+}
