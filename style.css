@@ -544,3 +544,99 @@ body {
     background: #111; /* Ensures dropdown options are readable */
     color: white;
 }
+
+/* =========================================
+   PART 3: VENDOR DASHBOARD STYLING
+   ========================================= */
+
+.dashboard-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    color: #888;
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition);
+}
+
+.tab-btn.active {
+    color: var(--musha-gold);
+    border-color: var(--musha-gold);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* My Shop Inventory Cards */
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.shop-item-card {
+    background: #111;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #222;
+    position: relative;
+    transition: 0.3s;
+}
+
+/* THE PROMOTION GLOW: For items with priorityScore > 0 */
+.shop-item-card.promo-active {
+    border-color: var(--musha-gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+.promo-active::after {
+    content: "PROMOTED";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--musha-gold);
+    color: black;
+    font-size: 0.6rem;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.shop-item-details { padding: 15px; }
+
+.shop-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.promo-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.logistics-btn {
+    flex: 1;
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.status-pending { color: #ffa500; font-size: 0.7rem; font-weight: bold; }
+.status-active { color: var(--musha-green); font-size: 0.7rem; font-weight: bold; }
