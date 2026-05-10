@@ -930,3 +930,14 @@ body {
     font-size: 1.2rem;
     color: white;
 }
+
+.gold-border { border: 2px solid var(--musha-gold) !important; }
+.sold-btn {
+    background: var(--musha-green);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
