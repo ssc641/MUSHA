@@ -107,9 +107,15 @@ function handleShopSubmission(event) {
         image: document.getElementById('output-preview').src || 'assets/musha.png'
     };
 
-    myShopInventory.push(newItem);
-    localStorage.setItem('musha_vendor_inventory', JSON.stringify(myShopInventory));
+ // Replace the old myShopInventory.push and localStorage.setItem with this:
+db.collection("vendor_inventory").add(newItem)
+.then((docRef) => {
+    console.log("Document written with ID: ", docRef.id);
     showSuccessState(itemName, placement);
+})
+.catch((error) => {
+    console.error("Error adding document: ", error);
+});
 }
 
 // ... Keep your existing deleteListing, togglePromotion, and switchDashboardTab functions ...
