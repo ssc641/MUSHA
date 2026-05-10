@@ -45,7 +45,7 @@ body {
 
 /* --- DESIGN 1: THE LANDING (index.html) --- */
 #landing-gateway {
-    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 100%);
+    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 60%);
     color: #333;
 }
 
@@ -948,18 +948,33 @@ body {
 }
 
 /* THE MOBILE TOGGLE LOGIC */
-.menu-toggle {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1001;
-    background: var(--card-bg);
-    border: 1px solid var(--musha-gold);
-    color: var(--musha-gold);
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
+/* RESPONSIVENESS SYSTEM */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex !important; /* Forces hamburger to show on mobile */
+    }
+    
+    .side-bar {
+        left: -280px; /* Hide by default on mobile */
+        z-index: 2000;
+    }
+
+    /* This is the class the JavaScript will toggle */
+    .side-bar.show-sidebar {
+        left: 0 !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .menu-toggle, .close-sidebar {
+        display: none !important;
+    }
+    .side-bar {
+        left: 0 !important; /* Always visible on desktop */
+    }
+    #main-content {
+        margin-left: 280px;
+    }
 }
 
 /* VENDOR BUTTON STYLING */
