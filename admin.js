@@ -9,15 +9,31 @@ let pendingInventory = JSON.parse(localStorage.getItem('musha_vendor_inventory')
  */
 function renderAdminQueue() {
     const queueContainer = document.getElementById('admin-pending-list');
-    if (!queueContainer) return;
+    
+    // Listen to Firestore for PENDING items
+    db.collection("vendor_inventory")
+      .where("status", "==", "pending")
+      .onSnapshot((querySnapshot) => {
+          let pendingItems = [];
+          querySnapshot.forEach((doc) => {
+              pendingItems.push({ id: doc.id, ...doc.data() });
+          });
 
-    // Filter for only items that need vetting
-    const pendingItems = pendingInventory.filter(item => item.status === 'pending');
+          if (pendingItems.length === 0) {
+              queueContainer.innerHTML = `<p class="empty-msg">God Mode: No items in vetting queue.</p>`;
+              return;
+          }
 
-    if (pendingItems.length === 0) {
-        queueContainer.innerHTML = `<p class="empty-msg">God Mode: No items currently in vetting queue.</p>`;
-        return;
-    }
+          // Use your existing .map logic to show the cards
+          queueContainer.innerHTML = pendingItems.map(item => `
+              <div class="admin-card">
+                  <img src="${item.image}" class="admin-thumb">
+                  <h3>${item.name}</h3>
+                  <button onclick="approveItem('${item.id}')">APPROVE</button>
+              </div>
+          `).join('');
+      });
+}
 
     queueContainer.innerHTML = pendingItems.map(item => `
         <div class="admin-card">
