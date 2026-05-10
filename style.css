@@ -1007,3 +1007,61 @@ body {
         margin-left: 280px; /* Push content so it's not covered by sidebar */
     }
 }
+
+/* Sidebar Engine */
+.side-bar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: var(--sidebar-width);
+    background: var(--card-bg);
+    position: fixed;
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+/* Mobile Toggle: Default Hidden */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: var(--card-bg);
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* TABLET & MOBILE VIEW (768px and below) */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Show hamburger only on mobile */
+    }
+    .side-bar {
+        left: -100%; /* Hide sidebar off-screen */
+    }
+    .side-bar.active {
+        left: 0; /* Slide in when active */
+    }
+    #main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* DESKTOP VIEW (769px and above) */
+@media (min-width: 769px) {
+    .menu-toggle, .close-sidebar {
+        display: none !important; /* Kill the hamburger and X button */
+    }
+    .side-bar {
+        left: 0 !important; /* Lock sidebar to the left */
+    }
+    #main-content {
+        margin-left: var(--sidebar-width); /* Push content to avoid overlap */
+        width: calc(100% - var(--sidebar-width));
+    }
+}
