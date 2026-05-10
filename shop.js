@@ -117,3 +117,17 @@ function handleShopSubmission(event) {
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('my-shop-grid')) renderMyShop();
 });
+
+// Add this to your getLiveMallInventory() function in furniture.js
+function getLiveMallInventory() {
+    const vendorItems = JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [];
+    
+    // GUARD: Only show items that are ACTIVE and NOT SOLD
+    const approvedMallItems = vendorItems.filter(item => 
+        item.status === 'active' && 
+        item.placementTag === 'mall' && 
+        item.isSold !== true // <--- The Profit Shield
+    );
+
+    return [...furnitureInventory, ...approvedMallItems];
+}
