@@ -229,3 +229,19 @@ function contactVendor(shopName, itemName, phone) {
     
     window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`, '_blank');
 }
+
+function openTheMall() {
+    const gateway = document.getElementById('gateway-overlay');
+    const mainContent = document.getElementById('main-content');
+    
+    if (gateway) {
+        gateway.style.transition = "opacity 0.8s ease"; // Adds a premium fade
+        gateway.style.opacity = "0";
+        setTimeout(() => {
+            gateway.style.display = 'none';
+            if (mainContent) mainContent.style.display = 'block';
+        }, 800);
+    }
+    
+    console.log("SSC System: Showroom active.");
+}
