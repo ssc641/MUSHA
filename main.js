@@ -174,11 +174,11 @@ function toggleSidebar() {
     const icon = document.querySelector('.menu-toggle i');
 
     if (sidebar) {
-        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('show-sidebar');
         
         // Sync icon state if it exists
         if (icon) {
-            if (sidebar.classList.contains('hidden')) {
+            if (sidebar.classList.contains('show-sidebar')) {
                 icon.className = 'fas fa-bars';
             } else {
                 icon.className = 'fas fa-times';
