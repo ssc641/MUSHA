@@ -67,11 +67,8 @@ body {
     letter-spacing: 4px;
 }
 
-/* --- DESIGN 2: THE MALL ENTRANCE (mall.html) --- */
-#mall-gateway {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                url('assets/doors_closed.png') no-repeat center center/cover;
-}
+
+
 
 /* System Buttons */
 .enter-btn, #open-btn {
@@ -144,8 +141,8 @@ body {
    ========================================= */
 .menu-toggle {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 6px;
+    left: -2px;
     z-index: 1100;
     background: var(--musha-green);
     color: white;
