@@ -938,3 +938,72 @@ body {
     cursor: pointer;
     font-weight: bold;
 }
+/* Sidebar Layout Fix */
+.side-bar {
+    display: flex;
+    flex-direction: column; /* Allows margin-top: auto to work */
+    height: 100vh;
+    position: fixed;
+    transition: var(--transition);
+}
+
+/* THE MOBILE TOGGLE LOGIC */
+.menu-toggle {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: var(--card-bg);
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* VENDOR BUTTON STYLING */
+.vendor-btn {
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid var(--musha-gold); 
+    color: var(--musha-gold); 
+    background: transparent; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    transition: 0.3s;
+}
+
+.vendor-btn:hover {
+    background: var(--musha-gold);
+    color: black;
+}
+
+/* RESPONSIVENESS SYSTEM */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex; /* Show only on mobile */
+    }
+    .side-bar {
+        left: -280px; /* Hide sidebar initially on mobile */
+    }
+    .side-bar.active {
+        left: 0;
+    }
+    #main-content {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 769px) {
+    .menu-toggle, .close-sidebar {
+        display: none !important; /* Hide toggle and close button on desktop */
+    }
+    .side-bar {
+        left: 0 !important; /* Always show sidebar on desktop */
+    }
+    #main-content {
+        margin-left: 280px; /* Push content so it's not covered by sidebar */
+    }
+}
