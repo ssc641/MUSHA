@@ -58,27 +58,30 @@ function renderAdminQueue() {
 /**
  * Approve Item: Moves it to the live market
  */
-function approveItem(itemID) {
-    const itemIndex = pendingInventory.findIndex(i => i.id === itemID);
-    if (itemIndex > -1) {
-        pendingInventory[itemIndex].status = 'active';
-        localStorage.setItem('musha_vendor_inventory', JSON.stringify(pendingInventory));
-        
-        // CEO Feedback
-        console.log(`Musha System: ${pendingInventory[itemIndex].name} is now LIVE.`);
-        renderAdminQueue();
-        alert("Item Approved & Moved to Live Market.");
-    }
+function approveItem(docId) {
+    db.collection("vendor_inventory").doc(docId).update({
+        status: 'active'
+    })
+    .then(() => {
+        alert("Item is now LIVE in the Grand Mall!");
+    })
+    .catch((error) => {
+        console.error("Error updating document: ", error);
+    });
 }
 
 /**
  * Reject Item: Removes it from the system
  */
-function rejectItem(itemID) {
+function rejectItem(docId) {
     if (confirm("Are you sure you want to delete this listing?")) {
-        pendingInventory = pendingInventory.filter(i => i.id !== itemID);
-        localStorage.setItem('musha_vendor_inventory', JSON.stringify(pendingInventory));
-        renderAdminQueue();
+        db.collection("vendor_inventory").doc(docId).delete()
+        .then(() => {
+            alert("Item rejected and removed from system.");
+        })
+        .catch((error) => {
+            console.error("Error removing document: ", error);
+        });
     }
 }
 
