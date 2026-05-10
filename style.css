@@ -1039,7 +1039,7 @@ body {
 .menu-toggle {
     display: none;
     position: fixed;
-    top: 20px;
+    top: 3px;
     left: 20px;
     z-index: 1001;
     background: var(--card-bg);
