@@ -8,56 +8,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="app-body">
-    <button class="menu-toggle" id="menu-toggle-btn" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-    </button>
+<button class="menu-toggle" id="menu-toggle-btn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
 
-    <nav class="side-bar" id="mall-sidebar">
+<nav class="side-bar" id="mall-sidebar">
+    <div class="sidebar-header">
         <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
-        
         <div class="logo">SSC GRAND MALL</div>
-        
-        <div class="cart-status" onclick="location.href='cart.html'">
-            <i class="fas fa-shopping-bag"></i> 
-            MY CART: <span id="cart-count-display">0</span>
-        </div>
-
-        <div class="mall-controls" style="padding: 15px;">
-            <label class="sidebar-label">COMPARE PRICES</label>
-            <select id="price-sort-select" class="musha-select">
-                <option value="default">Featured Items</option>
-                <option value="low">Price: Low to High</option>
-                <option value="high">Price: High to Low</option>
-            </select>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" id="tab-premium" onclick="showFurnitureSection('premium')">Premium</button>
-            <button class="tab-btn" id="tab-standard" onclick="showFurnitureSection('standard')">Standard</button>
-        </div>
-
+    </div>
+    
+    <div class="sidebar-content">
         <ul class="sections">
-            <li onclick="filterFurnitureByRoom('Appliances')"><i class="fas fa-plug"></i> Home Appliances</li>
             <li onclick="filterFurnitureByRoom('Living Room')"><i class="fas fa-couch"></i> Lounge & Living</li>
             <li onclick="filterFurnitureByRoom('Bedroom')"><i class="fas fa-bed"></i> Bedroom Suite</li>
             <li onclick="filterFurnitureByRoom('Kitchen')"><i class="fas fa-utensils"></i> Kitchen & Dining</li>
-            <li onclick="filterFurnitureByRoom('Office')"><i class="fas fa-briefcase"></i> Office & Study</li>
-            <li onclick="filterFurnitureByRoom('Outdoor')"><i class="fas fa-tree"></i> Outdoor Living</li>
+            <li onclick="filterFurnitureByRoom('Appliances')"><i class="fas fa-plug"></i> Home Appliances</li>
         </ul>
+    </div>
 
-        <div class="logistics-box">
-            <label class="logistics-label">TRACK DELIVERY</label>
-            <div class="search-input">
-                <input type="text" id="track-id" placeholder="Order ID (e.g. MSH-101)">
-                <button onclick="trackOrder()" class="search-btn">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            <div class="logistics-tag">
-                <p><i class="fas fa-shield-alt"></i> SSC Logistics: Vetted</p>
-            </div>
-        </div>
-    </nav>
+    <div class="vendor-access-box" style="margin-top: auto; padding: 20px; border-top: 1px solid #333;">
+        <p style="font-size: 0.7rem; color: #888; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Partner Portal</p>
+        <button onclick="location.href='shop.html'" class="vendor-btn">
+            <i class="fas fa-store"></i> MANAGE MY SHOP
+        </button>
+    </div>
+</nav>
 
     <main class="lobby-container" id="main-content">
         
