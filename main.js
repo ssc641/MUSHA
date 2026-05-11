@@ -222,14 +222,21 @@ function handlePublicUpload(event) {
  * Universal Contact Logic
  * Connects the buyer directly to the vendor's phone via WhatsApp
  */
-function contactVendor(shopName, itemName, phone) {
-    // If no phone is provided, it defaults to the StaTech Hub Line
-    const targetPhone = phone || "263771111111"; 
-    const message = `Hi ${shopName}, I saw your listing for the ${itemName} on the Musha Virtual Mall. Is it still available?`;
+function contactVendor(shopName, itemName, phone, fb, email) {
+    const contactOptions = `
+        <div class="contact-modal">
+            <h3>Contact ${shopName}</h3>
+            <button onclick="window.open('https://wa.me/${phone}?text=Is the ${itemName} available?')">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+            ${fb ? `<button onclick="window.open('${fb}')"><i class="fab fa-facebook"></i> Facebook</button>` : ''}
+            ${email ? `<button onclick="location.href='mailto:${email}?subject=Inquiry for ${itemName}'"><i class="fas fa-envelope"></i> Email</button>` : ''}
+        </div>
+    `;
     
-    window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`, '_blank');
+    // For now, you can use a simple prompt or a custom modal to show these
+    // If you want to keep it simple, just stick to the specific buttons in the UI
 }
-
 function openTheMall() {
     const gateway = document.getElementById('gateway-overlay');
     const mainContent = document.getElementById('main-content');
