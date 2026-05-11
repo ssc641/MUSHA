@@ -35,18 +35,22 @@ const carInventory = [
    ========================================= */
 
 // NEW MISSION: Listen to the Cloud for Active Vehicles
-function syncLiveAutoLot() {
+function syncAutoLot() {
     db.collection("vendor_inventory")
       .where("status", "==", "active")
       .where("placementTag", "==", "lot")
       .onSnapshot((querySnapshot) => {
-          let approvedVendorCars = [];
+          let vendorCars = [];
           querySnapshot.forEach((doc) => {
-              approvedVendorCars.push({ id: doc.id, ...doc.data() });
+              vendorCars.push({ id: doc.id, ...doc.data() });
           });
 
-          const finalStock = [...carInventory, ...approvedVendorCars];
-          displayCars(finalStock);
+          const totalStock = [...carInventory, ...vendorCars];
+          displayCars(totalStock);
+          
+          if(document.getElementById('car-count')) {
+              document.getElementById('car-count').innerText = `${totalStock.length} Vehicles Available`;
+          }
       });
 }
 
