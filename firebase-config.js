@@ -18,3 +18,6 @@ const storage = firebase.storage();
 
 console.log("Firebase is connected to Musha-a9afd!");
 
+// Force Firestore to use a more stable connection method
+db.settings({ experimentalForceLongPolling: true });
+
