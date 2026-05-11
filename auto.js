@@ -34,18 +34,21 @@ const carInventory = [
    2. SYSTEM SYNC: LIVE INVENTORY
    ========================================= */
 
-// This function merges hardcoded cars with Approved Vendor Hub items
-function getLiveAutoInventory() {
-    const vendorItems = JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [];
-    
-    const approvedVendorCars = vendorItems.filter(item => 
-        item.status === 'active' && item.placementTag === 'lot'
-    );
+// Replace the old getLiveAutoInventory in auto.js
+function renderLiveAutoLot() {
+    db.collection("vendor_inventory")
+      .where("status", "==", "active")
+      .where("placementTag", "==", "lot")
+      .onSnapshot((querySnapshot) => {
+          let approvedVendorCars = [];
+          querySnapshot.forEach((doc) => {
+              approvedVendorCars.push({ id: doc.id, ...doc.data() });
+          });
 
-    // Combine them
-    return [...carInventory, ...approvedVendorCars];
+          const finalStock = [...carInventory, ...approvedVendorCars];
+          displayCars(finalStock);
+      });
 }
-
 /* =========================================
    3. RENDERING THE SHOWROOM
    ========================================= */
