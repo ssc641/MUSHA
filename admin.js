@@ -94,17 +94,20 @@ function filterAdmin(tag) {
     tabs.forEach(t => t.classList.remove('active'));
     event.currentTarget.classList.add('active');
 
-    const allItems = JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [];
-    const queueContainer = document.getElementById('admin-pending-list');
+    // FIX: Query Firestore directly based on the tag
+    let query = db.collection("vendor_inventory").where("status", "==", "pending");
     
-    // Filter by 'pending' AND the specific placement tag
-    const filtered = allItems.filter(item => {
-        if (tag === 'all') return item.status === 'pending';
-        return item.status === 'pending' && item.placementTag === tag;
-    });
+    if (tag !== 'all') {
+        query = query.where("placementTag", "==", tag);
+    }
 
-    // Re-render only the filtered items
-    renderCustomAdminList(filtered);
+    query.get().then((querySnapshot) => {
+        let items = [];
+        querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() });
+        });
+        renderCustomAdminList(items);
+    });
 }
 
 function renderCustomAdminList(items) {
