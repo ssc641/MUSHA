@@ -44,45 +44,50 @@ function markAsSold(id) {
  * Render the "My Shop" Dashboard
  */
 function renderMyShop() {
-    const container = document.getElementById('my-shop-grid');
-    if (!container) return;
+    const shopGrid = document.getElementById('my-shop-grid');
+    const shopName = localStorage.getItem('musha_shop_name') || "Independent Seller";
 
-    updateVendorStats(); // Refresh stats on every render
+    // MISSION: Fetch only items belonging to THIS specific shop
+    db.collection("vendor_inventory")
+      .where("vendorName", "==", shopName)
+      .onSnapshot((querySnapshot) => {
+          let myItems = [];
+          querySnapshot.forEach((doc) => {
+              myItems.push({ id: doc.id, ...doc.data() });
+          });
 
-    if (myShopInventory.length === 0) {
-        container.innerHTML = `<p class="empty-msg">Your shop is empty.</p>`;
-        return;
-    }
+          // Update the Stats (Total Stock, Live Items) using the cloud data
+          updateCloudStats(myItems);
 
-    container.innerHTML = myShopInventory.map(item => {
-        if (item.isSold) return ''; // We can create a 'History' tab for these later
+          if (myItems.length === 0) {
+              shopGrid.innerHTML = `<p>No listings found for ${shopName}.</p>`;
+              return;
+          }
 
-        let statusClass = item.status === 'active' ? 'status-active' : 'status-pending';
-        let statusText = item.status === 'active' ? 'LIVE' : 'VETTING';
-
-        return `
-            <div class="shop-item-card ${item.onPromotion ? 'promo-active' : ''}">
-                <img src="${item.image}" alt="preview">
-                <div class="shop-item-details">
-                    <h4>${item.name}</h4>
-                    <p class="gold-text">$${item.price}</p>
-                    <div class="item-tags">
-                        <span class="status-badge ${statusClass}">${statusText}</span>
-                    </div>
-                    <div class="shop-actions">
-                        <button onclick="markAsSold(${item.id})" class="sold-btn">
-                            <i class="fas fa-hand-holding-usd"></i> MARK SOLD
-                        </button>
-                        <button onclick="deleteListing(${item.id})" class="delete-btn">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }).join('');
+          shopGrid.innerHTML = myItems.map(item => `
+              <div class="shop-item-card">
+                  <img src="${item.image}" alt="${item.name}">
+                  <div class="shop-item-info">
+                      <h4>${item.name}</h4>
+                      <p class="status-tag ${item.status}">${item.status.toUpperCase()}</p>
+                      <p>$${item.price}</p>
+                      <button onclick="deleteListing('${item.id}')" class="delete-btn">Remove</button>
+                  </div>
+              </div>
+          `).join('');
+      });
 }
 
+// NEW HELPER: Updates stats based on Cloud data instead of LocalStorage
+function updateCloudStats(items) {
+    const liveCount = items.filter(i => i.status === 'active').length;
+    const pendingCount = items.filter(i => i.status === 'pending').length;
+    
+    if(document.getElementById('live-items-count')) {
+        document.getElementById('live-items-count').innerText = liveCount;
+        document.getElementById('pending-items-count').innerText = pendingCount;
+    }
+}
 /**
  * Handle Submission with Analytics Support
  */
