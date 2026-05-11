@@ -1080,3 +1080,39 @@ body {
         width: calc(100% - var(--sidebar-width));
     }
 }
+/* CONTACT STRIP LOGIC */
+.contact-strip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+}
+
+.buy-btn {
+    flex-grow: 1;
+    background: var(--musha-gold);
+    color: black;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.extra-channels {
+    display: flex;
+    gap: 12px;
+}
+
+.extra-channels a {
+    color: var(--musha-gold);
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.extra-channels a:hover {
+    color: white;
+    transform: translateY(-2px);
+}
