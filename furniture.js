@@ -59,42 +59,35 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================= */
 
 function displayFurniture(items) {
-    const mallGrid = document.getElementById('mall-grid');
-    const countDisplay = document.getElementById('mall-count');
+    const grid = document.getElementById('mall-grid');
+    grid.innerHTML = items.map(item => {
+        // Logic: Only show icons if the vendor provided the data
+        const fbIcon = item.facebook ? `<a href="${item.facebook}" target="_blank" title="Visit Facebook"><i class="fab fa-facebook"></i></a>` : '';
+        const emailIcon = item.email ? `<a href="mailto:${item.email}" title="Send Email"><i class="fas fa-envelope"></i></a>` : '';
 
-    if (!mallGrid) return;
-
-    if (countDisplay) {
-        countDisplay.innerHTML = `<i class="fas fa-store"></i> ${items.length} Items in the Grand Mall`;
-    }
-
-    mallGrid.innerHTML = items.map(item => `
-        <div class="furniture-card ${item.onPromotion ? 'promo-active' : ''}">
-            <div class="f-image-container">
-                <img src="${item.image}" alt="${item.name}" onerror="this.src='assets/musha.png'">
-                ${item.onPromotion ? '<span class="promo-badge">PROMO</span>' : ''}
-            </div>
-            
-            <div class="f-details">
-                <h3 class="f-title">${item.name}</h3>
-                <p class="f-category">${item.category}</p>
-                <p class="f-price">$${item.price}</p>
-                
-                <p class="vendor-tag">
-                    <i class="fas fa-user-tag"></i> ${item.vendorName || "Musha Official"}
-                </p>
-
-                <div class="f-actions">
-                    <button class="mall-contact-btn" onclick="negotiateWA('${item.name}', '${item.whatsapp || item.phone || '263771111111'}')">
-                        <i class="fab fa-whatsapp"></i> CONTACT
-                    </button>
-                    <button class="f-view-btn" onclick="showProductDetails(${item.id})">
-                        DETAILS
-                    </button>
+        return `
+            <div class="item-card">
+                <div class="card-img-container">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="card-info">
+                    <h3>${item.name}</h3>
+                    <p class="category">${item.category}</p>
+                    <p class="price-tag">$${item.price.toLocaleString()}</p>
+                    
+                    <div class="contact-strip">
+                        <button class="buy-btn" onclick="contactVendor('${item.vendorName}', '${item.name}', '${item.whatsapp}')">
+                            <i class="fab fa-whatsapp"></i> WHATSAPP
+                        </button>
+                        <div class="extra-channels">
+                            ${fbIcon}
+                            ${emailIcon}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 /* =========================================
