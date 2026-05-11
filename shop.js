@@ -106,6 +106,13 @@ function handleShopSubmission(event) {
         vendorName: localStorage.getItem('musha_shop_name') || "Independent Seller",
         image: document.getElementById('output-preview').src || 'assets/musha.png'
     };
+   // Inside your submission function
+const newItem = {
+    // ... your existing fields (name, price, etc.)
+    facebook: document.getElementById('p-fb').value || null,
+    email: document.getElementById('p-email').value || null,
+    // ... rest of the object
+};
 
  // Replace the old myShopInventory.push and localStorage.setItem with this:
 db.collection("vendor_inventory").add(newItem)
