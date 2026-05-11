@@ -26,17 +26,22 @@ const furnitureInventory = [
    2. SYSTEM SYNC: MALL LIVE INVENTORY
    ========================================= */
 
-function getLiveMallInventory() {
-    // 1. Get vendor items from local storage
-    const vendorItems = JSON.parse(localStorage.getItem('musha_vendor_inventory')) || [];
-    
-    // 2. Filter for Approved Mall items only
-    const approvedMallItems = vendorItems.filter(item => 
-        item.status === 'active' && item.placementTag === 'mall'
-    );
+// Replace the old getLiveMallInventory in furniture.js
+function renderLiveMall() {
+    // Listen to Firestore for ACTIVE items tagged for the 'mall'
+    db.collection("vendor_inventory")
+      .where("status", "==", "active")
+      .where("placementTag", "==", "mall")
+      .onSnapshot((querySnapshot) => {
+          let approvedVendorItems = [];
+          querySnapshot.forEach((doc) => {
+              approvedVendorItems.push({ id: doc.id, ...doc.data() });
+          });
 
-    // 3. Combine with hardcoded furniture
-    return [...furnitureInventory, ...approvedMallItems];
+          // Combine with your hardcoded items
+          const finalInventory = [...furnitureInventory, ...approvedVendorItems];
+          displayFurniture(finalInventory);
+      });
 }
 
 /* =========================================
