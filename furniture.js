@@ -37,20 +37,38 @@ function syncLiveMall() {
               approvedVendorItems.push({ id: doc.id, ...doc.data() });
           });
 
-          // COMBINE: Hardcoded elites + Cloud reinforcements
-          const finalInventory = [...furnitureInventory, ...approvedVendorItems];
-          displayFurniture(finalInventory);
+          // Combine hardcoded master items with the new Cloud items
+          const fullInventory = [...furnitureInventory, ...approvedVendorItems];
           
-          // CEO Update: Update counts
-          if(document.getElementById('mall-count')) {
-              document.getElementById('mall-count').innerText = `${finalInventory.length} ITEMS LIVE`;
+          // SORT: Boosted/Promoted items first
+          fullInventory.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
+
+          // UPDATE UI: This automatically refreshes the grid when data changes
+          displayFurniture(fullInventory);
+          
+          // Update the counter in the header
+          if (document.getElementById('mall-count')) {
+              document.getElementById('mall-count').innerText = `${fullInventory.length} Items in Showroom`;
           }
       });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if we are on the mall grid page
     if (document.getElementById('mall-grid')) {
-        syncLiveMall(); // START THE SYNC
+        
+        // START THE CLOUD ENGINE
+        syncLiveMall(); 
+
+        // Optional: Category Filter listener
+        const categoryFilter = document.getElementById('mall-category-filter');
+        if (categoryFilter) {
+            categoryFilter.addEventListener('change', (e) => {
+                // Since syncLiveMall handles the main display, 
+                // you might need a global variable to store fullInventory 
+                // if you want to filter without re-fetching from the cloud.
+            });
+        }
     }
 });
 
