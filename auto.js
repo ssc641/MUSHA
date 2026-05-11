@@ -34,8 +34,8 @@ const carInventory = [
    2. SYSTEM SYNC: LIVE INVENTORY
    ========================================= */
 
-// Replace the old getLiveAutoInventory in auto.js
-function renderLiveAutoLot() {
+// NEW MISSION: Listen to the Cloud for Active Vehicles
+function syncLiveAutoLot() {
     db.collection("vendor_inventory")
       .where("status", "==", "active")
       .where("placementTag", "==", "lot")
@@ -49,6 +49,12 @@ function renderLiveAutoLot() {
           displayCars(finalStock);
       });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('car-results-grid')) {
+        syncLiveAutoLot(); // START THE AUTO SYNC
+    }
+});
 /* =========================================
    3. RENDERING THE SHOWROOM
    ========================================= */
