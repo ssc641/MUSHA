@@ -26,9 +26,8 @@ const furnitureInventory = [
    2. SYSTEM SYNC: MALL LIVE INVENTORY
    ========================================= */
 
-// Replace the old getLiveMallInventory in furniture.js
-function renderLiveMall() {
-    // Listen to Firestore for ACTIVE items tagged for the 'mall'
+// NEW MISSION: Listen to the Cloud for Active Mall Items
+function syncLiveMall() {
     db.collection("vendor_inventory")
       .where("status", "==", "active")
       .where("placementTag", "==", "mall")
@@ -38,11 +37,22 @@ function renderLiveMall() {
               approvedVendorItems.push({ id: doc.id, ...doc.data() });
           });
 
-          // Combine with your hardcoded items
+          // COMBINE: Hardcoded elites + Cloud reinforcements
           const finalInventory = [...furnitureInventory, ...approvedVendorItems];
           displayFurniture(finalInventory);
+          
+          // CEO Update: Update counts
+          if(document.getElementById('mall-count')) {
+              document.getElementById('mall-count').innerText = `${finalInventory.length} ITEMS LIVE`;
+          }
       });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('mall-grid')) {
+        syncLiveMall(); // START THE SYNC
+    }
+});
 
 /* =========================================
    3. RENDERING THE MALL SHOWROOM
