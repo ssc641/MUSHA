@@ -60,43 +60,32 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================= */
 
 function displayCars(cars) {
-    const carGrid = document.getElementById('car-results-grid');
-    const countDisplay = document.getElementById('car-count');
-    
-    if (!carGrid) return;
+    const grid = document.getElementById('car-results-grid');
+    grid.innerHTML = cars.map(car => {
+        const fbIcon = car.facebook ? `<a href="${car.facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : '';
+        const emailIcon = car.email ? `<a href="mailto:${car.email}"><i class="fas fa-envelope"></i></a>` : '';
 
-    // Update the counter
-    if (countDisplay) {
-        countDisplay.innerHTML = `<i class="fas fa-car"></i> Showing ${cars.length} Vehicles in Gweru Hub`;
-    }
-
-    carGrid.innerHTML = cars.map(car => `
-        <div class="car-card ${car.onPromotion ? 'promo-active' : ''}">
-            <div class="image-container">
-                <img src="${car.image}" alt="${car.model}" onerror="this.src='assets/musha.png'">
-                <div class="price-badge">${typeof car.price === 'number' ? '$' + car.price : car.price}</div>
-            </div>
-            <div class="car-details">
-                <h3 class="car-title">${car.brand || ''} ${car.model}</h3>
-                <p class="car-meta">${car.year || '2026'} • ${car.trim || 'Standard'}</p>
-                
-                <p class="vendor-tag">
-                    <i class="fas fa-store"></i> ${car.vendorName || car.dealership || "Musha Hub"}
-                </p>
-                
-                <div class="action-buttons">
-                    <button class="negotiate-wa" onclick="negotiateWhatsApp('${car.brand || ''} ${car.model}', '${car.phone}')">
-                        <i class="fab fa-whatsapp"></i> CONTACT
-                    </button>
-                    <button class="view-btn" onclick="makeOffer('${car.model}')">
-                        MAKE OFFER
-                    </button>
+        return `
+            <div class="car-card">
+                <img src="${car.image}" alt="${car.brand}">
+                <div class="car-details">
+                    <h4>${car.year} ${car.brand} ${car.model}</h4>
+                    <p class="price">${car.price}</p>
+                    
+                    <div class="contact-strip">
+                        <button class="buy-btn" onclick="negotiateWhatsApp('${car.brand} ${car.model}', '${car.phone}')">
+                            <i class="fab fa-whatsapp"></i> NEGOTIATE
+                        </button>
+                        <div class="extra-channels">
+                            ${fbIcon}
+                            ${emailIcon}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
-
 /* =========================================
    4. FILTER ENGINE
    ========================================= */
