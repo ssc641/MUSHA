@@ -1,153 +1,172 @@
 
-# Fix 4: admin.js - Remove orphaned code, fix syntax, complete renderAdminQueue
-admin_js_fixed = '''/* =========================================
-   STA-TECH ADMIN ENGINE: GOD MODE
+/* =========================================
+   MOOSHA AUTO LOT ENGINE v3.0
    ========================================= */
 
-/**
- * Load and Render the Pending Queue from Firestore
- */
-function renderAdminQueue() {
-    const queueContainer = document.getElementById('admin-pending-list');
-    if (!queueContainer) return;
+const carInventory = [
+    {
+        id: 1,
+        year: "2026",
+        category: "SUV",
+        brand: "Toyota",
+        model: "Land Cruiser 300",
+        trim: "GR-Sport",
+        dealership: "Gweru Central Motors",
+        price: 120000,
+        isVerified: true, 
+        phone: "263771111111", 
+        image: "assets/lc300.jpg"
+    },
+    {
+        id: 2,
+        year: "2025",
+        category: "Sedan",
+        brand: "Mercedes-Benz",
+        model: "C-Class",
+        trim: "C300 AMG Line",
+        dealership: "Gweru Central Motors",
+        price: 75000,
+        isVerified: true,
+        phone: "263771111111",
+        image: "assets/c-class.jpg"
+    }
+];
+
+let liveCarInventory = [];
+
+function syncLiveAutoLot() {
+    console.log("Musha Auto: Syncing live inventory...");
 
     db.collection("vendor_inventory")
-      .where("status", "==", "pending")
+      .where("status", "==", "active")
+      .where("placementTag", "==", "lot")
       .onSnapshot((querySnapshot) => {
-          let pendingItems = [];
+          let vendorCars = [];
           querySnapshot.forEach((doc) => {
-              pendingItems.push({ id: doc.id, ...doc.data() });
+              const data = doc.data();
+              vendorCars.push({
+                  id: doc.id,
+                  year: data.year || "",
+                  category: data.category || "Vehicle",
+                  brand: data.brand || (data.name ? data.name.split(' ')[0] : "Unknown"),
+                  model: data.model || data.name || "Unknown",
+                  trim: data.trim || "",
+                  dealership: data.vendorName || data.dealership || "Independent",
+                  price: Number(data.price) || 0,
+                  isVerified: true,
+                  phone: data.whatsapp || data.phone || "263771111111",
+                  email: data.email || null,
+                  facebook: data.facebook || null,
+                  image: data.image || "assets/musha.png",
+                  priorityScore: data.priorityScore || 0
+              });
           });
 
-          document.getElementById('pending-count').innerText = pendingItems.length;
+          liveCarInventory = [...carInventory, ...vendorCars];
+          liveCarInventory.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
 
-          if (pendingItems.length === 0) {
-              queueContainer.innerHTML = `
-                  <div class="admin-placeholder">
-                      <i class="fas fa-check-circle" style="font-size:3rem; color:var(--musha-green);"></i>
-                      <p>God Mode: No items in vetting queue.</p>
-                  </div>`;
-              return;
-          }
-
-          queueContainer.innerHTML = pendingItems.map(item => `
-              <div class="admin-card">
-                  <img src="${item.image || 'assets/musha.png'}" class="admin-thumb" alt="${item.name}">
-                  <div class="admin-info">
-                      <h3>${item.name} <span class="tag">${item.placementTag || 'mall'}</span></h3>
-                      <p class="gold-text">$${Number(item.price).toLocaleString()}</p>
-                      <p class="vendor-id">Vendor: ${item.vendorName || 'Unknown'}</p>
-                  </div>
-                  <div class="admin-actions">
-                      <button onclick="approveItem('${item.id}')" class="approve-btn">
-                          <i class="fas fa-check"></i> APPROVE
-                      </button>
-                      <button onclick="rejectItem('${item.id}')" class="reject-btn">
-                          <i class="fas fa-trash"></i> REJECT
-                      </button>
-                  </div>
-              </div>
-          `).join('');
+          displayCars(liveCarInventory);
+          updateCarCount(liveCarInventory.length);
       }, (error) => {
-          console.error("Admin snapshot error:", error);
-          queueContainer.innerHTML = `<p class="empty-msg">Error loading queue. Check Firebase rules.</p>`;
+          console.error("Auto lot sync error:", error);
+          liveCarInventory = [...carInventory];
+          displayCars(liveCarInventory);
+          updateCarCount(liveCarInventory.length);
       });
 }
 
-/**
- * Approve Item: Moves it to the live market
- */
-function approveItem(docId) {
-    db.collection("vendor_inventory").doc(docId).update({
-        status: 'active'
-    })
-    .then(() => {
-        alert("Item is now LIVE in the Grand Mall!");
-    })
-    .catch((error) => {
-        console.error("Error updating document: ", error);
-        alert("Failed to approve. Check console.");
-    });
-}
-
-/**
- * Reject Item: Removes it from the system
- */
-function rejectItem(docId) {
-    if (confirm("Are you sure you want to delete this listing?")) {
-        db.collection("vendor_inventory").doc(docId).delete()
-        .then(() => {
-            alert("Item rejected and removed from system.");
-        })
-        .catch((error) => {
-            console.error("Error removing document: ", error);
-            alert("Failed to reject. Check console.");
-        });
+function updateCarCount(count) {
+    const el = document.getElementById('car-count');
+    if (el) {
+        el.innerHTML = `<i class="fas fa-info-circle"></i> ${count} Vehicle${count !== 1 ? 's' : ''} in Stock`;
     }
 }
 
-/**
- * Sidebar filtering for admin
- */
-function filterAdmin(tag) {
-    const tabs = document.querySelectorAll('.admin-tab');
-    tabs.forEach(t => t.classList.remove('active'));
-    if (event && event.currentTarget) {
-        event.currentTarget.classList.add('active');
+function displayCars(cars) {
+    const grid = document.getElementById('car-results-grid');
+    if (!grid) return;
+
+    if (cars.length === 0) {
+        grid.innerHTML = `<div class="empty-msg"><i class="fas fa-car" style="font-size:2rem; display:block; margin-bottom:15px; color:var(--musha-gold);"></i>No vehicles match your filters.</div>`;
+        return;
     }
 
-    let query = db.collection("vendor_inventory").where("status", "==", "pending");
-    
-    if (tag !== 'all') {
-        query = query.where("placementTag", "==", tag);
-    }
+    grid.innerHTML = cars.map((car, index) => {
+        const fbIcon = car.facebook ? `<a href="${car.facebook}" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>` : '';
+        const emailIcon = car.email ? `<a href="mailto:${car.email}" title="Email"><i class="fas fa-envelope"></i></a>` : '';
+        const delay = index * 0.05;
 
-    const queueContainer = document.getElementById('admin-pending-list');
-    if (!queueContainer) return;
-
-    query.get().then((querySnapshot) => {
-        let items = [];
-        querySnapshot.forEach((doc) => {
-            items.push({ id: doc.id, ...doc.data() });
-        });
-
-        if (items.length === 0) {
-            queueContainer.innerHTML = `<p class="empty-msg">No pending items for this filter.</p>`;
-            return;
-        }
-
-        queueContainer.innerHTML = items.map(item => `
-            <div class="admin-card">
-                <img src="${item.image || 'assets/musha.png'}" class="admin-thumb" alt="${item.name}">
-                <div class="admin-info">
-                    <h3>${item.name} <span class="tag">${item.placementTag || 'mall'}</span></h3>
-                    <p class="gold-text">$${Number(item.price).toLocaleString()}</p>
-                    <p class="vendor-id">Vendor: ${item.vendorName || 'Unknown'}</p>
+        return `
+            <div class="car-card animate-fade" style="animation-delay: ${delay}s">
+                <div class="car-image-container">
+                    <img src="${car.image}" alt="${car.brand} ${car.model}" loading="lazy">
+                    ${car.isVerified ? '<span class="verified-badge"><i class="fas fa-check"></i> Verified</span>' : ''}
+                    ${car.priorityScore > 0 ? '<span class="promo-badge">FEATURED</span>' : ''}
                 </div>
-                <div class="admin-actions">
-                    <button onclick="approveItem('${item.id}')" class="approve-btn">
-                        <i class="fas fa-check"></i> APPROVE
-                    </button>
-                    <button onclick="rejectItem('${item.id}')" class="reject-btn">
-                        <i class="fas fa-trash"></i> REJECT
-                    </button>
+                <div class="car-info">
+                    <h3>${car.year} ${car.brand} ${car.model}</h3>
+                    <p class="car-specs">${car.trim} | ${car.dealership} | ${car.category}</p>
+                    <span class="car-price">$${Number(car.price).toLocaleString()}</span>
+
+                    <div class="car-actions">
+                        <button class="negotiate-wa" onclick="negotiateWhatsApp('${car.brand} ${car.model}', '${car.phone}')">
+                            <i class="fab fa-whatsapp"></i> NEGOTIATE
+                        </button>
+                        <button class="view-btn" onclick="makeOffer('${car.brand} ${car.model}')">
+                            MAKE OFFER
+                        </button>
+                    </div>
+                    <div class="extra-channels" style="margin-top:12px;">
+                        ${fbIcon}
+                        ${emailIcon}
+                    </div>
                 </div>
             </div>
-        `).join('');
-    }).catch((error) => {
-        console.error("Filter error:", error);
-    });
+        `;
+    }).join('');
 }
 
-// Initial Load
+function filterCars() {
+    const brand = document.getElementById('brand-select').value;
+    const cat = document.getElementById('category-select').value;
+    const dealer = document.getElementById('dealership-select').value;
+    const year = document.getElementById('year-select').value;
+
+    const filtered = liveCarInventory.filter(car => {
+        return (brand === 'all' || (car.brand && car.brand.toLowerCase() === brand.toLowerCase())) &&
+               (cat === 'all' || (car.category && car.category.toLowerCase() === cat.toLowerCase())) &&
+               (dealer === 'all' || (car.dealership && car.dealership.toLowerCase().includes(dealer.toLowerCase()))) &&
+               (year === 'all' || (car.year && car.year === year));
+    });
+
+    displayCars(filtered);
+    updateCarCount(filtered.length);
+}
+
+function negotiateWhatsApp(carName, phone) {
+    const targetPhone = phone || "263771111111";
+    const msg = `Hi, I saw the ${carName} on StaTech Auto. Is it available for viewing?`;
+    window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function makeOffer(carName) {
+    const offer = prompt(`Enter your cash offer for the ${carName} (USD):`);
+    if (offer && !isNaN(offer) && Number(offer) > 0) {
+        showToast(`Offer of $${Number(offer).toLocaleString()} sent to vendor!`, 'success');
+    }
+}
+
+function resetFilters() {
+    document.getElementById('brand-select').value = 'all';
+    document.getElementById('category-select').value = 'all';
+    document.getElementById('dealership-select').value = 'all';
+    document.getElementById('year-select').value = 'all';
+    displayCars(liveCarInventory);
+    updateCarCount(liveCarInventory.length);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('admin-pending-list')) {
-        renderAdminQueue();
+    if (document.getElementById('car-results-grid')) {
+        syncLiveAutoLot();
     }
 });
-'''
-
-with open('/mnt/agents/output/admin.js', 'w') as f:
-    f.write(admin_js_fixed)
-
-print("admin.js fixed and saved.")
