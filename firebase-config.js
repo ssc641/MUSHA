@@ -1,4 +1,7 @@
-// Your web app's Firebase configuration
+// =========================================
+// MOOSHA FIREBASE CONFIGURATION v3.0
+// =========================================
+
 const firebaseConfig = {
   apiKey: "AIzaSyC2tEGjPcpz5bCac-fNLfnvTdlPj76Ix5I",
   authDomain: "musha-a9afd.firebaseapp.com",
@@ -9,15 +12,65 @@ const firebaseConfig = {
   measurementId: "G-Y8GJN9K0KN"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase with error handling
+try {
+  firebase.initializeApp(firebaseConfig);
+  console.log("%c[Firebase] Connected to Musha-a9afd", "color: #2eaf7d; font-weight: bold;");
+} catch (error) {
+  console.error("%c[Firebase] INIT FAILED:", "color: #ff4b2b; font-weight: bold;", error);
+  // Prevent the rest of the app from crashing
+  window.firebaseInitFailed = true;
+}
 
-// These are the "Shortcuts" we will use in your other scripts
-const db = firebase.firestore();
-const storage = firebase.storage();
+// Create shortcuts ONLY if init succeeded
+let db, storage;
 
-console.log("Firebase is connected to Musha-a9afd!");
+if (!window.firebaseInitFailed) {
+  try {
+    db = firebase.firestore();
+    storage = firebase.storage();
 
-// Force Firestore to use a more stable connection method
-db.settings({ experimentalForceLongPolling: true });
+    // Enable offline persistence so submissions survive bad internet
+    db.enablePersistence({ synchronizeTabs: true })
+      .then(() => {
+        console.log("%c[Firestore] Offline persistence enabled", "color: #d4af37;");
+      })
+      .catch((err) => {
+        if (err.code === 'failed-precondition') {
+          console.warn("[Firestore] Persistence failed: multiple tabs open");
+        } else if (err.code === 'unimplemented') {
+          console.warn("[Firestore] Persistence not supported in this browser");
+        }
+      });
 
+    // Settings must be set BEFORE any db operations
+    db.settings({ 
+      experimentalForceLongPolling: true,
+      merge: true 
+    });
+
+  } catch (error) {
+    console.error("%c[Firebase] Service init failed:", "color: #ff4b2b;", error);
+    window.firebaseInitFailed = true;
+  }
+} else {
+  // Create dummy objects so the rest of the app doesn't crash
+  db = {
+    collection: () => ({
+      where: () => ({ onSnapshot: () => {}, get: () => Promise.resolve({ forEach: () => {} }) }),
+      add: () => Promise.reject(new Error("Firebase not initialized")),
+      doc: () => ({ update: () => Promise.reject(new Error("Firebase not initialized")), delete: () => Promise.reject(new Error("Firebase not initialized")) })
+    })
+  };
+  storage = { ref: () => ({ put: () => Promise.reject(new Error("Firebase not initialized")) }) };
+}
+
+// Global safety check helper
+function isFirebaseReady() {
+  if (window.firebaseInitFailed) {
+    console.error("Firebase is not initialized. Check your internet and Firebase config.");
+    showToast("Connection failed. Check internet & Firebase config.", "error");
+    return false;
+  }
+  return true;
+}
