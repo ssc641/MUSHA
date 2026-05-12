@@ -1,174 +1,153 @@
-/* =========================================
-   1. THE MASTER INVENTORY (Hardcoded)
-   ========================================= */
-const carInventory = [
-    {
-        id: 1,
-        year: "2026",
-        category: "SUV",
-        brand: "Toyota",
-        model: "Land Cruiser 300",
-        trim: "GR-Sport",
-        dealership: "Gweru Central Motors",
-        price: "$120,000",
-        isVerified: true, 
-        phone: "263771111111", 
-        image: "assets/lc300.jpg"
-    },
-    {
-        id: 2,
-        year: "2025",
-        category: "Sedan",
-        brand: "Mercedes-Benz",
-        model: "C-Class",
-        trim: "C300 AMG Line",
-        dealership: "Gweru Central Motors",
-        price: "$75,000",
-        isVerified: true,
-        phone: "263771111111",
-        image: "assets/c-class.jpg"
-    }
-];
 
-/* =========================================
-   2. SYSTEM SYNC: LIVE INVENTORY
+# Fix 4: admin.js - Remove orphaned code, fix syntax, complete renderAdminQueue
+admin_js_fixed = '''/* =========================================
+   STA-TECH ADMIN ENGINE: GOD MODE
    ========================================= */
 
-// This tells the site to watch the database for new cars
-function syncLiveAutoLot() {
-    console.log("Musha: Watching the Auto Lot for new vehicles...");
+/**
+ * Load and Render the Pending Queue from Firestore
+ */
+function renderAdminQueue() {
+    const queueContainer = document.getElementById('admin-pending-list');
+    if (!queueContainer) return;
+
     db.collection("vendor_inventory")
-      .where("status", "==", "active")
-      .where("placementTag", "==", "lot")
+      .where("status", "==", "pending")
       .onSnapshot((querySnapshot) => {
-          renderAutoLot(querySnapshot);
+          let pendingItems = [];
+          querySnapshot.forEach((doc) => {
+              pendingItems.push({ id: doc.id, ...doc.data() });
+          });
+
+          document.getElementById('pending-count').innerText = pendingItems.length;
+
+          if (pendingItems.length === 0) {
+              queueContainer.innerHTML = `
+                  <div class="admin-placeholder">
+                      <i class="fas fa-check-circle" style="font-size:3rem; color:var(--musha-green);"></i>
+                      <p>God Mode: No items in vetting queue.</p>
+                  </div>`;
+              return;
+          }
+
+          queueContainer.innerHTML = pendingItems.map(item => `
+              <div class="admin-card">
+                  <img src="${item.image || 'assets/musha.png'}" class="admin-thumb" alt="${item.name}">
+                  <div class="admin-info">
+                      <h3>${item.name} <span class="tag">${item.placementTag || 'mall'}</span></h3>
+                      <p class="gold-text">$${Number(item.price).toLocaleString()}</p>
+                      <p class="vendor-id">Vendor: ${item.vendorName || 'Unknown'}</p>
+                  </div>
+                  <div class="admin-actions">
+                      <button onclick="approveItem('${item.id}')" class="approve-btn">
+                          <i class="fas fa-check"></i> APPROVE
+                      </button>
+                      <button onclick="rejectItem('${item.id}')" class="reject-btn">
+                          <i class="fas fa-trash"></i> REJECT
+                      </button>
+                  </div>
+              </div>
+          `).join('');
+      }, (error) => {
+          console.error("Admin snapshot error:", error);
+          queueContainer.innerHTML = `<p class="empty-msg">Error loading queue. Check Firebase rules.</p>`;
       });
 }
 
-// This pulls the current list of cars
-function getLiveAutoInventory() {
-    db.collection("vendor_inventory")
-      .where("status", "==", "active")
-      .where("placementTag", "==", "lot")
-      .get()
-      .then((querySnapshot) => {
-          renderAutoLot(querySnapshot);
-      });
-}
-
-// This actually puts the cars on your screen
-function renderAutoLot(snapshot) {
-    const lotContainer = document.getElementById('auto-lot-display'); 
-    if(!lotContainer) return;
-    
-    lotContainer.innerHTML = ''; 
-    snapshot.forEach((doc) => {
-        const car = doc.data();
-        lotContainer.innerHTML += `
-            <div class="car-card">
-                <img src="${car.image}" alt="${car.name}">
-                <h3>${car.name}</h3>
-                <p>Price: $${car.price}</p>
-                <button onclick="window.location.href='https://wa.me/263716044537'">Negotiate</button>
-            </div>
-        `;
+/**
+ * Approve Item: Moves it to the live market
+ */
+function approveItem(docId) {
+    db.collection("vendor_inventory").doc(docId).update({
+        status: 'active'
+    })
+    .then(() => {
+        alert("Item is now LIVE in the Grand Mall!");
+    })
+    .catch((error) => {
+        console.error("Error updating document: ", error);
+        alert("Failed to approve. Check console.");
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('car-results-grid')) {
-        syncLiveAutoLot(); // START THE AUTO SYNC
-    }
-});
-/* =========================================
-   3. RENDERING THE SHOWROOM
-   ========================================= */
-
-function displayCars(cars) {
-    const grid = document.getElementById('car-results-grid');
-    grid.innerHTML = cars.map(car => {
-        const fbIcon = car.facebook ? `<a href="${car.facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : '';
-        const emailIcon = car.email ? `<a href="mailto:${car.email}"><i class="fas fa-envelope"></i></a>` : '';
-
-        return `
-            <div class="car-card">
-                <img src="${car.image}" alt="${car.brand}">
-                <div class="car-details">
-                    <h4>${car.year} ${car.brand} ${car.model}</h4>
-                    <p class="price">${car.price}</p>
-                    
-                    <div class="contact-strip">
-                        <button class="buy-btn" onclick="negotiateWhatsApp('${car.brand} ${car.model}', '${car.phone}')">
-                            <i class="fab fa-whatsapp"></i> NEGOTIATE
-                        </button>
-                        <div class="extra-channels">
-                            ${fbIcon}
-                            ${emailIcon}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-/* =========================================
-   4. FILTER ENGINE
-   ========================================= */
-
-function filterCars() {
-    const fullStock = getLiveAutoInventory();
-    
-    const brand = document.getElementById('brand-select').value;
-    const cat = document.getElementById('category-select').value;
-    const dealer = document.getElementById('dealership-select').value;
-
-    const filtered = fullStock.filter(car => {
-        return (brand === 'all' || car.brand === brand) &&
-               (cat === 'all' || car.category === cat) &&
-               (dealer === 'all' || (car.dealership === dealer || car.vendorName === dealer));
-    });
-
-    displayCars(filtered);
-}
-
-/* =========================================
-   5. UTILITIES & INITIALIZATION
-   ========================================= */
-
-function negotiateWhatsApp(carName, phone) {
-    const targetPhone = phone || "263771111111";
-    const msg = `Hi, I saw the ${carName} on StaTech Auto. Is it available for viewing?`;
-    window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-function makeOffer(carName) {
-    const offer = prompt(`Enter your cash offer for the ${carName}:`);
-    if (offer) {
-        alert(`Offer for ${carName} sent to the Vendor Hub for review!`);
-    }
-}
-
-function resetFilters() {
-    document.getElementById('brand-select').value = 'all';
-    document.getElementById('category-select').value = 'all';
-    document.getElementById('dealership-select').value = 'all';
-    displayCars(getLiveAutoInventory());
-}
-
-// THE ENGINE START - CLEAN VERSION
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Check if we are on the auto lot page
-    if (document.getElementById('car-results-grid')) {
-        // 2. Start the live sync from Firebase
-        syncLiveAutoLot(); 
-        
-        // 3. Set up the dropdown filters
-        const filters = ['brand-select', 'category-select', 'dealership-select'];
-        filters.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.addEventListener('change', filterCars);
+/**
+ * Reject Item: Removes it from the system
+ */
+function rejectItem(docId) {
+    if (confirm("Are you sure you want to delete this listing?")) {
+        db.collection("vendor_inventory").doc(docId).delete()
+        .then(() => {
+            alert("Item rejected and removed from system.");
+        })
+        .catch((error) => {
+            console.error("Error removing document: ", error);
+            alert("Failed to reject. Check console.");
         });
     }
-});
+}
+
+/**
+ * Sidebar filtering for admin
+ */
+function filterAdmin(tag) {
+    const tabs = document.querySelectorAll('.admin-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    }
+
+    let query = db.collection("vendor_inventory").where("status", "==", "pending");
+    
+    if (tag !== 'all') {
+        query = query.where("placementTag", "==", tag);
+    }
+
+    const queueContainer = document.getElementById('admin-pending-list');
+    if (!queueContainer) return;
+
+    query.get().then((querySnapshot) => {
+        let items = [];
+        querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() });
+        });
+
+        if (items.length === 0) {
+            queueContainer.innerHTML = `<p class="empty-msg">No pending items for this filter.</p>`;
+            return;
+        }
+
+        queueContainer.innerHTML = items.map(item => `
+            <div class="admin-card">
+                <img src="${item.image || 'assets/musha.png'}" class="admin-thumb" alt="${item.name}">
+                <div class="admin-info">
+                    <h3>${item.name} <span class="tag">${item.placementTag || 'mall'}</span></h3>
+                    <p class="gold-text">$${Number(item.price).toLocaleString()}</p>
+                    <p class="vendor-id">Vendor: ${item.vendorName || 'Unknown'}</p>
+                </div>
+                <div class="admin-actions">
+                    <button onclick="approveItem('${item.id}')" class="approve-btn">
+                        <i class="fas fa-check"></i> APPROVE
+                    </button>
+                    <button onclick="rejectItem('${item.id}')" class="reject-btn">
+                        <i class="fas fa-trash"></i> REJECT
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }).catch((error) => {
+        console.error("Filter error:", error);
+    });
+}
+
+// Initial Load
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('admin-pending-list')) {
+        renderAdminQueue();
     }
 });
+'''
+
+with open('/mnt/agents/output/admin.js', 'w') as f:
+    f.write(admin_js_fixed)
+
+print("admin.js fixed and saved.")
