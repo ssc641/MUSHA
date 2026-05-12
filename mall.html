@@ -6,60 +6,88 @@
     <title>SSC Grand Mall | Moosha Premium Logistics</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<base target="_blank">
 </head>
 <body class="app-body">
-<button class="menu-toggle" id="menu-toggle-btn" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-</button>
 
-<nav class="side-bar" id="mall-sidebar">
-    <div class="sidebar-header">
-        <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
-        <div class="logo">SSC GRAND MALL</div>
-    </div>
-    
-    <div class="sidebar-content" style="flex-grow: 1;">
-        <ul class="sections">
-            <li onclick="filterFurnitureByRoom('Living Room')"><i class="fas fa-couch"></i> Lounge & Living</li>
-            <li onclick="filterFurnitureByRoom('Bedroom')"><i class="fas fa-bed"></i> Bedroom Suite</li>
-            <li onclick="filterFurnitureByRoom('Kitchen')"><i class="fas fa-utensils"></i> Kitchen & Dining</li>
-            <li onclick="filterFurnitureByRoom('Appliances')"><i class="fas fa-plug"></i> Home Appliances</li>
-        </ul>
-    </div>
+    <button class="menu-toggle" id="menu-toggle-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
 
-    <div class="vendor-access-box" style="padding: 20px; border-top: 1px solid #333; background: rgba(212, 175, 55, 0.05);">
-        <p style="font-size: 0.7rem; color: #888; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Partner Portal</p>
-        <button onclick="location.href='sell.html'" class="vendor-btn">
-            <i class="fas fa-store"></i> MANAGE MY SHOP
-        </button>
-    </div>
-</nav>
-
-    <main class="lobby-container" id="main-content">
-        
-        <div id="mall-header" class="section-header" style="display:none; padding: 20px;">
-            <h2 id="mall-count" class="gold-text">Scanning Showroom...</h2>
-            <button class="back-btn" onclick="location.reload()"><i class="fas fa-arrow-left"></i> Back to Lobby</button>
+    <nav class="side-bar" id="mall-sidebar">
+        <div class="sidebar-header">
+            <div class="logo">SSC GRAND MALL</div>
+            <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
         </div>
 
-        <div class="fountain-wrapper" id="lobby-view">
-            <img src="assets/lobby_v2.png" class="main-img" usemap="#mallmap" alt="SSC Grand Mall Lobby">
-            <map name="mallmap">
-                <area shape="rect" coords="0,0,300,1000" href="javascript:void(0)" onclick="showFurnitureSection('standard')" alt="Standard Furniture">
-                <area shape="rect" coords="700,0,1000,1000" href="javascript:void(0)" onclick="showFurnitureSection('premium')" alt="Premium Furniture">
-                <area shape="circle" coords="500,600,150" href="javascript:void(0)" onclick="location.href='auto.html'" alt="Automotive">
-            </map>
+        <div class="sidebar-content">
+            <ul class="sections">
+                <li onclick="filterFurnitureByRoom('Living Room')">
+                    <i class="fas fa-couch"></i> Lounge & Living
+                </li>
+                <li onclick="filterFurnitureByRoom('Bedroom')">
+                    <i class="fas fa-bed"></i> Bedroom Suite
+                </li>
+                <li onclick="filterFurnitureByRoom('Kitchen')">
+                    <i class="fas fa-utensils"></i> Kitchen & Dining
+                </li>
+                <li onclick="filterFurnitureByRoom('Appliances')">
+                    <i class="fas fa-plug"></i> Home Appliances
+                </li>
+            </ul>
+        </div>
+
+        <div class="vendor-access-box">
+            <p>Partner Portal</p>
+            <button onclick="location.href='sell.html'" class="vendor-btn">
+                <i class="fas fa-store"></i> MANAGE MY SHOP
+            </button>
+        </div>
+    </nav>
+
+    <main class="lobby-container" id="main-content">
+
+        <div id="mall-header" class="section-header" style="display:none;">
+            <div class="header-title">
+                <h3><i class="fas fa-store"></i> SHOWROOM</h3>
+                <p id="mall-count">Scanning Showroom...</p>
+            </div>
+            <button class="back-btn" onclick="location.reload()">
+                <i class="fas fa-arrow-left"></i> Back to Lobby
+            </button>
+        </div>
+
+        <!-- RESPONSIVE LOBBY: Replaces broken image map -->
+        <div class="lobby-hero" id="lobby-view" style="background-image: url('assets/lobby_v2.png');">
+            <div class="lobby-overlay">
+                <div class="lobby-zone lobby-left" onclick="showFurnitureSection('standard')">
+                    <div class="zone-label">
+                        <i class="fas fa-couch"></i>
+                        <span>Standard Furniture</span>
+                    </div>
+                </div>
+                <div class="lobby-zone lobby-center" onclick="location.href='auto.html'">
+                    <div class="zone-label zone-circle">
+                        <i class="fas fa-car"></i>
+                        <span>Automotive</span>
+                    </div>
+                </div>
+                <div class="lobby-zone lobby-right" onclick="showFurnitureSection('premium')">
+                    <div class="zone-label">
+                        <i class="fas fa-gem"></i>
+                        <span>Premium Furniture</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="mall-grid" class="car-grid" style="display:none;"></div>
     </main>
 
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    
     <script src="firebase-config.js"></script>
-
     <script src="furniture.js"></script>
     <script src="main.js"></script>
 </body>
