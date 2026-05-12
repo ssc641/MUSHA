@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+# Fix 1: sell.html - Remove duplicate empty form, wire to correct handler
+sell_html_fixed = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,140 +20,143 @@
                 <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Exit</a>
             </div>
         </nav>
-      <div class="vendor-identity-card">
-    <div class="profile-pic">
-        <i class="fas fa-store fa-2x"></i>
-    </div>
-    <div class="identity-text">
-        <input type="text" id="shop-name-input" placeholder="Shop Name (e.g. Staff's Tech)" onblur="saveShopIdentity()">
-        <input type="text" id="shop-whatsapp-input" placeholder="WhatsApp (e.g. 263771111111)" onblur="saveShopIdentity()">
-
-    </div>
-</div>
-        <div class="input-group">
-    <label><i class="fab fa-facebook"></i> Facebook Page (Optional)</label>
-    <input type="url" id="p-fb" placeholder="https://facebook.com/yourshop">
-</div>
-
-<div class="input-group">
-    <label><i class="fas fa-envelope"></i> Business Email (Optional)</label>
-    <input type="email" id="p-email" placeholder="vendor@email.com">
-</div>
-        
 
         <div class="sell-container">
             <header class="sell-header">
                 <div class="header-text">
                     <h1 class="brand-name">LIST YOUR <span class="gold-text">PRODUCT</span></h1>
                     <p>Direct Submission to StaTech Hub</p>
-    <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchDashboardTab('list')">
-            <i class="fas fa-plus-circle"></i> NEW LISTING
-        </button>
-        <button class="tab-btn" onclick="switchDashboardTab('manage')">
-            <i class="fas fa-store"></i> MY SHOP
-        </button>
-    </div>
-                    <div class="vendor-analytics">
-    <div class="stat-card">
-        <i class="fas fa-wallet"></i>
-        <div class="stat-info">
-            <span class="stat-label">Stock Value</span>
-            <h3 id="total-stock-value">$0</h3>
-        </div>
-    </div>
-    <div class="stat-card">
-        <i class="fas fa-chart-line"></i>
-        <div class="stat-info">
-            <span class="stat-label">Live Items</span>
-            <h3 id="live-items-count">0</h3>
-        </div>
-    </div>
-    <div class="stat-card">
-        <i class="fas fa-percentage"></i>
-        <div class="stat-info">
-            <span class="stat-label">Boosted</span>
-            <h3 id="boosted-items-count">0</h3>
-        </div>
-    </div>
-</div>
-
-    <div id="sell-form-section">
-        <form id="public-upload-form" class="sell-form" onsubmit="handleShopSubmission(event)">
-            </form>
-    </div>
-
-    <div id="my-shop-section" style="display: none;">
-        <div class="shop-header">
-            <h2 class="gold-text">MANAGE INVENTORY</h2>
-            <p id="vendor-stats">Vetting: 1 | Active: 0</p>
-        </div>
-        <div id="my-shop-grid" class="shop-grid">
-            </div>
-    </div>
-
                 </div>
 
-                
-                <div class="input-group full-width">
-    <label>Listing Category</label>
-    <select id="p-category" class="universal-select" required>
-        <option value="" disabled selected>Select what you are listing...</option>
-        <option value="Furniture">Furniture / Home Decor (Grand Mall)</option>
-        <option value="Vehicle">Vehicle / Automotive (Auto Lot)</option>
-        <option value="Appliance">Kitchen & Home Appliances-electronic devices</option>
-    </select>
-</div>
+                <div class="vendor-identity-card">
+                    <div class="profile-pic">
+                        <i class="fas fa-store fa-2x"></i>
+                    </div>
+                    <div class="identity-text">
+                        <input type="text" id="shop-name-input" placeholder="Shop Name (e.g. Staff's Tech)" onblur="saveShopIdentity()">
+                        <input type="text" id="shop-whatsapp-input" placeholder="WhatsApp (e.g. 263771111111)" onblur="saveShopIdentity()">
+                    </div>
+                </div>
+
+                <div class="dashboard-tabs">
+                    <button class="tab-btn active" onclick="switchDashboardTab('list')">
+                        <i class="fas fa-plus-circle"></i> NEW LISTING
+                    </button>
+                    <button class="tab-btn" onclick="switchDashboardTab('manage')">
+                        <i class="fas fa-store"></i> MY SHOP
+                    </button>
+                </div>
+
+                <div class="vendor-analytics">
+                    <div class="stat-card">
+                        <i class="fas fa-wallet"></i>
+                        <div class="stat-info">
+                            <span class="stat-label">Stock Value</span>
+                            <h3 id="total-stock-value">$0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="stat-info">
+                            <span class="stat-label">Live Items</span>
+                            <h3 id="live-items-count">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-percentage"></i>
+                        <div class="stat-info">
+                            <span class="stat-label">Pending</span>
+                            <h3 id="pending-items-count">0</h3>
+                        </div>
+                    </div>
+                </div>
             </header>
 
-            <form id="public-upload-form" class="sell-form" onsubmit="handlePublicUpload(event)">
-                
-                <div class="camera-upload-zone">
-                    <label for="camera-input" class="camera-trigger">
-                        <div class="icon-circle">
-                            <i class="fas fa-camera fa-2x"></i>
-                        </div>
-                        <span>TAP TO SNAP OR UPLOAD PHOTO</span>
-                    </label>
-                    <input type="file" id="camera-input" accept="image/*" capture="environment" onchange="previewImage(event)" hidden>
-                    <img id="output-preview" style="display:none; width:100%; border-radius:15px; margin-top:10px;">
-                </div>
-
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Product Name & Model</label>
-                        <input type="text" id="p-name" placeholder="e.g. Toyota Hilux GD6" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Asking Price (USD)</label>
-                        <input type="number" id="p-price" placeholder="Price in $" required>
-                    </div>
-
+            <!-- TAB 1: LISTING FORM -->
+            <div id="sell-form-section">
+                <form id="public-upload-form" class="sell-form" onsubmit="handleShopSubmission(event)">
+                    
                     <div class="input-group full-width">
-                        <label> Details & Your Location</label>
-                        <textarea id="p-desc" rows="3" placeholder="Condition, Mileage, and where the car is located..."></textarea>
+                        <label>Listing Category</label>
+                        <select id="p-category" class="universal-select" required>
+                            <option value="" disabled selected>Select what you are listing...</option>
+                            <option value="Furniture">Furniture / Home Decor (Grand Mall)</option>
+                            <option value="Vehicle">Vehicle / Automotive (Auto Lot)</option>
+                            <option value="Appliance">Kitchen & Home Appliances / Electronics</option>
+                        </select>
                     </div>
-                </div>
 
-                <div class="verification-note">
-                    <i class="fas fa-shield-alt"></i> 
-                    <p>All listings stay <b>Private</b> until verified by the StaTech Admin Team.</p>
-                </div>
+                    <div class="camera-upload-zone">
+                        <label for="camera-input" class="camera-trigger">
+                            <div class="icon-circle">
+                                <i class="fas fa-camera fa-2x"></i>
+                            </div>
+                            <span>TAP TO SNAP OR UPLOAD PHOTO</span>
+                        </label>
+                        <input type="file" id="camera-input" accept="image/*" capture="environment" onchange="previewImage(event)" hidden>
+                        <img id="output-preview" style="display:none; width:100%; border-radius:15px; margin-top:10px;">
+                    </div>
 
-                <button type="submit" class="list-now-btn">SUBMIT TO HUB</button>
-            </form>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Product Name & Model</label>
+                            <input type="text" id="p-name" placeholder="e.g. Toyota Hilux GD6" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Asking Price (USD)</label>
+                            <input type="number" id="p-price" placeholder="Price in $" required>
+                        </div>
+
+                        <div class="input-group full-width">
+                            <label>Details & Your Location</label>
+                            <textarea id="p-desc" rows="3" placeholder="Condition, Mileage, and where the item is located..."></textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label><i class="fab fa-facebook"></i> Facebook Page (Optional)</label>
+                            <input type="url" id="p-fb" placeholder="https://facebook.com/yourshop">
+                        </div>
+
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope"></i> Business Email (Optional)</label>
+                            <input type="email" id="p-email" placeholder="vendor@email.com">
+                        </div>
+                    </div>
+
+                    <div class="verification-note">
+                        <i class="fas fa-shield-alt"></i> 
+                        <p>All listings stay <b>Private</b> until verified by the StaTech Admin Team.</p>
+                    </div>
+
+                    <button type="submit" class="list-now-btn">SUBMIT TO HUB</button>
+                </form>
+            </div>
+
+            <!-- TAB 2: MY SHOP -->
+            <div id="my-shop-section" style="display: none;">
+                <div class="shop-header">
+                    <h2 class="gold-text">MANAGE INVENTORY</h2>
+                    <p id="vendor-stats">Vetting: 0 | Active: 0</p>
+                </div>
+                <div id="my-shop-grid" class="shop-grid">
+                    <p class="empty-msg">No listings yet. Create your first one above.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
-
-    
     <script src="main.js"></script>
-    <script src="shop.js"></script >
+    <script src="shop.js"></script>
 </body>
-</html>
+</html>'''
 
+with open('/mnt/agents/output/sell.html', 'w') as f:
+    f.write(sell_html_fixed)
+
+print("sell.html fixed and saved.")
