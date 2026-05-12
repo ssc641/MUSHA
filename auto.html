@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+# Fix 3: auto.html - Correct Firebase script order
+auto_html_fixed = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,9 +19,6 @@
         <a href="sell.html" class="nav-link sell-btn-nav">
             <i class="fas fa-plus-circle"></i> LIST YOUR VEHICLE
         </a>
-        <button class="nav-link" onclick="openTracker('car')" style="background:none; border:none; cursor:pointer; color:inherit;">
-            <i class="fas fa-truck"></i> Logistics
-        </button>
     </div>
 </nav>
     <header class="musha-header">
@@ -98,15 +97,19 @@
         <p>&copy; 2026 StaTech Logistics. <span class="musha-green">Your Home, Our Home.</span></p>
     </footer>
 
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <!-- FIREBASE: APP MUST LOAD FIRST -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     
     <script src="firebase-config.js"></script>
-    
     <script src="auto.js"></script>
-    
     <script src="main.js"></script>
 </body>
-</html>
+</html>'''
+
+with open('/mnt/agents/output/auto.html', 'w') as f:
+    f.write(auto_html_fixed)
+
+print("auto.html fixed and saved.")
+
