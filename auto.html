@@ -1,6 +1,4 @@
-
-# Fix 3: auto.html - Correct Firebase script order
-auto_html_fixed = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +6,7 @@ auto_html_fixed = '''<!DOCTYPE html>
     <title>StaTech Automotive | Moosha Virtual Lot</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<base target="_blank">
 </head>
 <body class="auto-body">
 
@@ -27,13 +26,13 @@ auto_html_fixed = '''<!DOCTYPE html>
     </header>
 
     <div class="main-layout">
-        
+
         <aside class="filter-sidebar">
             <div class="filter-header">
                 <i class="fas fa-sliders-h"></i>
                 <h3>Refine Search</h3>
             </div>
-            
+
             <div class="filter-group">
                 <label>DEALERSHIP HUB</label>
                 <select id="dealership-select" onchange="filterCars()">
@@ -101,15 +100,9 @@ auto_html_fixed = '''<!DOCTYPE html>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    
+
     <script src="firebase-config.js"></script>
     <script src="auto.js"></script>
     <script src="main.js"></script>
 </body>
-</html>'''
-
-with open('/mnt/agents/output/auto.html', 'w') as f:
-    f.write(auto_html_fixed)
-
-print("auto.html fixed and saved.")
-
+</html>
