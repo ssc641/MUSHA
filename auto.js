@@ -34,24 +34,45 @@ const carInventory = [
    2. SYSTEM SYNC: LIVE INVENTORY
    ========================================= */
 
-// NEW MISSION: Listen to the Cloud for Active Vehicles
-function syncAutoLot() {
+// This tells the site to watch the database for new cars
+function syncLiveAutoLot() {
+    console.log("Musha: Watching the Auto Lot for new vehicles...");
     db.collection("vendor_inventory")
       .where("status", "==", "active")
       .where("placementTag", "==", "lot")
       .onSnapshot((querySnapshot) => {
-          let vendorCars = [];
-          querySnapshot.forEach((doc) => {
-              vendorCars.push({ id: doc.id, ...doc.data() });
-          });
-
-          const totalStock = [...carInventory, ...vendorCars];
-          displayCars(totalStock);
-          
-          if(document.getElementById('car-count')) {
-              document.getElementById('car-count').innerText = `${totalStock.length} Vehicles Available`;
-          }
+          renderAutoLot(querySnapshot);
       });
+}
+
+// This pulls the current list of cars
+function getLiveAutoInventory() {
+    db.collection("vendor_inventory")
+      .where("status", "==", "active")
+      .where("placementTag", "==", "lot")
+      .get()
+      .then((querySnapshot) => {
+          renderAutoLot(querySnapshot);
+      });
+}
+
+// This actually puts the cars on your screen
+function renderAutoLot(snapshot) {
+    const lotContainer = document.getElementById('auto-lot-display'); 
+    if(!lotContainer) return;
+    
+    lotContainer.innerHTML = ''; 
+    snapshot.forEach((doc) => {
+        const car = doc.data();
+        lotContainer.innerHTML += `
+            <div class="car-card">
+                <img src="${car.image}" alt="${car.name}">
+                <h3>${car.name}</h3>
+                <p>Price: $${car.price}</p>
+                <button onclick="window.location.href='https://wa.me/263716044537'">Negotiate</button>
+            </div>
+        `;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
