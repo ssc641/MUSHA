@@ -1,14 +1,10 @@
 
-# Fix 2: shop.js - Merge newItem declarations, add missing functions, fix Firebase submission
-shop_js_fixed = '''/* =========================================
-   STA-TECH SHOP ENGINE: VENDOR HUB LOGIC
+/* =========================================
+   MOOSHA SHOP ENGINE v3.0 - VENDOR HUB
    ========================================= */
 
 let myShopInventory = [];
 
-/**
- * Save shop identity to localStorage
- */
 function saveShopIdentity() {
     const name = document.getElementById('shop-name-input').value.trim();
     const whatsapp = document.getElementById('shop-whatsapp-input').value.trim();
@@ -16,13 +12,12 @@ function saveShopIdentity() {
     if (whatsapp) localStorage.setItem('musha_shop_whatsapp', whatsapp);
 }
 
-/**
- * Switch between List and Manage tabs
- */
 function switchDashboardTab(tab) {
     const tabs = document.querySelectorAll('.tab-btn');
     tabs.forEach(t => t.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    }
 
     if (tab === 'list') {
         document.getElementById('sell-form-section').style.display = 'block';
@@ -34,9 +29,6 @@ function switchDashboardTab(tab) {
     }
 }
 
-/**
- * THE ANALYTICS ENGINE
- */
 function updateVendorStats() {
     const totalPotential = myShopInventory
         .filter(item => !item.isSold)
@@ -59,9 +51,6 @@ function updateVendorStats() {
     }
 }
 
-/**
- * Handle Submission to Firebase
- */
 function handleShopSubmission(event) {
     event.preventDefault();
 
@@ -72,13 +61,17 @@ function handleShopSubmission(event) {
     const fb = document.getElementById('p-fb').value.trim() || null;
     const email = document.getElementById('p-email').value.trim() || null;
     const imagePreview = document.getElementById('output-preview').src;
-    
+
     const placement = (category === 'Vehicle') ? 'lot' : 'mall';
     const shopName = localStorage.getItem('musha_shop_name') || "Independent Seller";
     const shopWhatsapp = localStorage.getItem('musha_shop_whatsapp') || "263771111111";
 
     if (!itemName || !price) {
-        alert("Please fill in the product name and price.");
+        showToast("Please fill in product name and price.", "error");
+        return;
+    }
+    if (!category) {
+        showToast("Please select a category.", "error");
         return;
     }
 
@@ -95,68 +88,75 @@ function handleShopSubmission(event) {
         whatsapp: shopWhatsapp,
         facebook: fb,
         email: email,
-        image: (imagePreview && imagePreview !== window.location.href) ? imagePreview : 'assets/musha.png',
+        image: (imagePreview && !imagePreview.includes(window.location.href)) ? imagePreview : 'assets/musha.png',
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
+
+    const btn = event.target.querySelector('.list-now-btn');
+    if (btn) {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SUBMITTING...';
+        btn.disabled = true;
+    }
 
     db.collection("vendor_inventory").add(newItem)
     .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
-        alert(`SUCCESS: Your ${itemName} has been sent for vetting.`);
+        showToast(`${itemName} submitted for vetting!`, "success");
         document.getElementById('public-upload-form').reset();
         document.getElementById('output-preview').style.display = 'none';
-        // Switch to My Shop tab to show it
+        const trigger = document.querySelector('.camera-trigger');
+        if (trigger) trigger.style.display = 'block';
         switchDashboardTab('manage');
     })
     .catch((error) => {
         console.error("Error adding document: ", error);
-        alert("Error submitting. Check your internet connection.");
+        showToast("Submission failed. Check connection.", "error");
+    })
+    .finally(() => {
+        if (btn) {
+            btn.innerHTML = 'SUBMIT TO HUB';
+            btn.disabled = false;
+        }
     });
 }
 
-/**
- * Delete a listing
- */
 function deleteListing(docId) {
-    if (confirm("Are you sure you want to remove this listing?")) {
+    if (confirm("Remove this listing permanently?")) {
         db.collection("vendor_inventory").doc(docId).delete()
         .then(() => {
-            alert("Listing removed.");
+            showToast("Listing removed.", "info");
             renderMyShop();
         })
         .catch((error) => {
             console.error("Error deleting: ", error);
+            showToast("Failed to remove listing.", "error");
         });
     }
 }
 
-/**
- * Mark as Sold
- */
 function markAsSold(id) {
     db.collection("vendor_inventory").doc(id).update({
         isSold: true,
-        status: 'sold'
+        status: 'sold',
+        soldAt: firebase.firestore.FieldValue.serverTimestamp()
     })
     .then(() => {
-        alert("Item marked as sold!");
+        showToast("Item marked as sold!", "success");
         renderMyShop();
     })
     .catch((error) => {
         console.error("Error updating: ", error);
+        showToast("Failed to update status.", "error");
     });
 }
 
-/**
- * Render the "My Shop" Dashboard from Firestore
- */
 function renderMyShop() {
     const shopGrid = document.getElementById('my-shop-grid');
     const shopName = localStorage.getItem('musha_shop_name') || "Independent Seller";
 
     if (!shopGrid) return;
 
-    shopGrid.innerHTML = '<p class="empty-msg">Loading your inventory...</p>';
+    shopGrid.innerHTML = '<div class="empty-msg"><i class="fas fa-spinner fa-spin"></i> Loading your inventory...</div>';
 
     db.collection("vendor_inventory")
       .where("vendorName", "==", shopName)
@@ -166,23 +166,24 @@ function renderMyShop() {
           querySnapshot.forEach((doc) => {
               myItems.push({ id: doc.id, ...doc.data() });
           });
-          
-          myShopInventory = myItems; // sync local cache
+
+          myShopInventory = myItems;
           updateVendorStats();
 
           if (myItems.length === 0) {
-              shopGrid.innerHTML = `<p class="empty-msg">No listings found for ${shopName}.</p>`;
+              shopGrid.innerHTML = `<div class="empty-msg"><i class="fas fa-store" style="font-size:2rem; display:block; margin-bottom:15px; color:var(--musha-gold);"></i>No listings found for ${shopName}.</div>`;
               return;
           }
 
-          shopGrid.innerHTML = myItems.map(item => `
-              <div class="shop-item-card ${item.onPromotion ? 'promo-active' : ''}">
-                  <img src="${item.image}" alt="${item.name}" style="width:100%; height:180px; object-fit:cover;">
-                  <div class="shop-item-info" style="padding:15px;">
+          shopGrid.innerHTML = myItems.map((item, index) => `
+              <div class="shop-item-card ${item.onPromotion ? 'promo-active' : ''}" style="animation-delay: ${index * 0.05}s">
+                  <img src="${item.image}" alt="${item.name}" loading="lazy">
+                  <div class="shop-item-info">
                       <h4>${item.name}</h4>
-                      <p class="status-tag status-${item.status}">${item.status.toUpperCase()}</p>
-                      <p style="color:var(--musha-gold); font-weight:bold;">$${Number(item.price).toLocaleString()}</p>
-                      <div class="shop-actions" style="display:flex; gap:8px; margin-top:10px;">
+                      <span class="status-tag status-${item.status}">${item.status.toUpperCase()}</span>
+                      <p style="color:var(--musha-gold); font-weight:700; font-size:1.1rem; margin:8px 0;">$${Number(item.price).toLocaleString()}</p>
+                      <p style="font-size:0.8rem; color:var(--text-muted);">${item.category} | ${item.placementTag === 'lot' ? 'Auto Lot' : 'Grand Mall'}</p>
+                      <div class="shop-actions">
                           <button onclick="markAsSold('${item.id}')" class="sold-btn">Mark Sold</button>
                           <button onclick="deleteListing('${item.id}')" class="delete-btn">Remove</button>
                       </div>
@@ -192,24 +193,17 @@ function renderMyShop() {
       })
       .catch((error) => {
           console.error("Error fetching shop: ", error);
-          shopGrid.innerHTML = `<p class="empty-msg">Error loading data. Check connection.</p>`;
+          shopGrid.innerHTML = `<div class="empty-msg"><i class="fas fa-exclamation-circle" style="color:var(--danger);"></i>Error loading data. Check connection.</div>`;
       });
 }
 
-// Load identity on page load
 document.addEventListener('DOMContentLoaded', () => {
     const savedName = localStorage.getItem('musha_shop_name');
     const savedWhatsapp = localStorage.getItem('musha_shop_whatsapp');
     if (savedName) document.getElementById('shop-name-input').value = savedName;
     if (savedWhatsapp) document.getElementById('shop-whatsapp-input').value = savedWhatsapp;
-    
+
     if (document.getElementById('my-shop-grid')) {
         renderMyShop();
     }
 });
-'''
-
-with open('/mnt/agents/output/shop.js', 'w') as f:
-    f.write(shop_js_fixed)
-
-print("shop.js fixed and saved.")
