@@ -155,21 +155,20 @@ function resetFilters() {
     displayCars(getLiveAutoInventory());
 }
 
-// THE ENGINE START
+// THE ENGINE START - CLEAN VERSION
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Check if we are on the auto lot page
     if (document.getElementById('car-results-grid')) {
-        const liveStock = getLiveAutoInventory();
+        // 2. Start the live sync from Firebase
+        syncLiveAutoLot(); 
         
-        // Sort: Promoted items first
-        liveStock.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
-        
-        displayCars(liveStock);
-
-        // Auto-filter listeners
+        // 3. Set up the dropdown filters
         const filters = ['brand-select', 'category-select', 'dealership-select'];
         filters.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.addEventListener('change', filterCars);
         });
+    }
+});
     }
 });
