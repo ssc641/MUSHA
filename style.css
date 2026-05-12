@@ -1,396 +1,302 @@
+
 /* =========================================
-   1. CORE ENGINE & BRANDING
+   MOOSHA DESIGN SYSTEM v3.0
+   Premium Marketplace UI Kit
    ========================================= */
+
+/* ---------- 1. ROOT VARIABLES ---------- */
 :root {
     --musha-green: #2eaf7d;
+    --musha-green-light: #36c78f;
     --musha-gold: #d4af37;
+    --musha-gold-dim: rgba(212, 175, 55, 0.15);
     --dark-bg: #050a08;
+    --dark-elevated: #0d0d0d;
     --card-bg: #111111;
+    --card-hover: #1a1a1a;
+    --border-subtle: #222;
+    --border-gold: rgba(212, 175, 55, 0.3);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --text-muted: #666;
+    --danger: #ff4b2b;
+    --danger-soft: rgba(255, 75, 43, 0.1);
+    --success: #25d366;
+    --warning: #ffa500;
     --sidebar-width: 280px;
-    --transition: all 0.3s ease;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.4);
+    --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.15);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ---------- 2. RESET & BASE ---------- */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     background-color: var(--dark-bg);
-    color: white;
-    font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+    color: var(--text-primary);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
+::selection {
+    background: var(--musha-gold);
+    color: #000;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--musha-gold); }
+
+/* ---------- 3. UTILITIES & ANIMATIONS ---------- */
 .gold-text {
     color: var(--musha-gold);
     text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
 }
 
-/* =========================================
-   2. RECTIFIED GATEWAY SYSTEM
-   ========================================= */
+.musha-green { color: var(--musha-green); }
 
-/* GLOBAL GATEWAY BASE */
-#landing-gateway, #mall-gateway {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+.empty-msg {
     text-align: center;
-}
-
-/* --- DESIGN 1: THE LANDING (index.html) --- */
-#landing-gateway {
-    background: linear-gradient(to bottom, #ffffff 50%, #b0b0b0 60%);
-    color: #333;
-}
-
-/* Tiny Logo size fix for index.html */
-.musha-logo-container {
-    width: 60px; /* Small branding size */
-    margin-bottom: 10px;
-}
-
-.musha-icon-img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-#landing-gateway .brand-name { 
-    color: #000; 
-    font-size: 2rem;
-    letter-spacing: 4px;
-}
-
-
-
-
-/* System Buttons */
-.enter-btn, #open-btn {
-    background: transparent;
-    color: var(--musha-gold);
-    border: 1.5px solid var(--musha-gold);
-    padding: 12px 25px;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: var(--transition);
-    border-radius: 4px;
-    margin-top: 10px;
-}
-
-#open-btn {
-    padding: 18px 50px;
+    padding: 60px 20px;
+    color: var(--text-muted);
     font-size: 1.1rem;
-    letter-spacing: 3px;
-    backdrop-filter: blur(5px);
+    grid-column: 1 / -1;
 }
 
-.enter-btn:hover, #open-btn:hover {
-    background: var(--musha-gold);
-    color: #000;
-    letter-spacing: 5px;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* =========================================
-   3. THE MALL LAYOUT (mall.html)
-   ========================================= */
+@keyframes slideInLeft {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.animate-fade {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* ---------- 4. LOADING & SKELETON ---------- */
+.skeleton {
+    background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-md);
+}
+
+/* ---------- 5. SIDEBAR SYSTEM (CLEAN) ---------- */
 .app-body {
     display: flex;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
 }
 
 .side-bar {
+    position: fixed;
+    left: 0;
+    top: 0;
     width: var(--sidebar-width);
-    min-width: var(--sidebar-width);
     height: 100vh;
     background: linear-gradient(180deg, #004d33 0%, var(--dark-bg) 100%);
     border-right: 2px solid var(--musha-gold);
-    padding: 20px;
+    padding: 20px 0;
     transition: var(--transition);
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.side-bar.hidden {
-    margin-left: calc(var(--sidebar-width) * -1);
+.sidebar-header {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
+.sidebar-header .logo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--musha-gold);
+    letter-spacing: 2px;
+}
+
+.close-sidebar {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--musha-gold);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.sidebar-content {
+    flex-grow: 1;
+    padding: 0 15px;
+}
+
+.sections {
+    list-style: none;
+}
+
+.sections li {
+    padding: 14px 16px;
+    margin-bottom: 6px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    color: #bbb;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sections li:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--musha-gold);
+}
+
+.sections li i {
+    width: 20px;
+    text-align: center;
+}
+
+.vendor-access-box {
+    padding: 20px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    background: rgba(212, 175, 55, 0.05);
+    margin-top: auto;
+}
+
+.vendor-access-box p {
+    font-size: 0.7rem;
+    color: #888;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.vendor-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+    background: transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 700;
+    transition: var(--transition);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.vendor-btn:hover {
+    background: var(--musha-gold);
+    color: #000;
+}
+
+/* Toggle Button */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+    background: var(--card-bg);
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-md);
+}
+
+/* Main Content */
 .lobby-container {
     flex-grow: 1;
-    height: 100vh;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
     position: relative;
-    overflow-y: auto;
     background: var(--dark-bg);
 }
 
-.main-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* =========================================
-   4. NAVIGATION & GRIDS
-   ========================================= */
-.menu-toggle {
-    position: fixed;
-    top: 6px;
-    left: -2px;
-    z-index: 1100;
-    background: var(--musha-green);
-    color: white;
-    border: none;
-    padding: 12px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.car-grid, .admin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    padding: 30px;
-}
-
-.car-card, .furniture-card {
-    background: var(--card-bg);
-    border: 1px solid #222;
-    border-radius: 15px;
-    overflow: hidden;
-    transition: transform 0.2s;
-}
-
-/* =========================================
-   5. RESPONSIVE DESIGN
-   ========================================= */
-@media (max-width: 768px) {
-    .side-bar {
-        position: absolute;
-        height: 100%;
-        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-       
-    }
-}
-
-/* =========================================
-   AUTOMOTIVE SHOWROOM (auto.html)
-   ========================================= */
-
-/* Main Layout Fix */
-.auto-body .main-layout {
-    display: flex;
-    margin-top: 20px;
-    min-height: calc(100vh - 160px);
-}
-
-/* Sidebar / Filters */
-.auto-body .filter-sidebar {
-    width: var(--sidebar-width);
-    background: var(--card-bg);
-    border-right: 1px solid #222;
-    padding: 25px;
-    position: sticky;
-    top: 80px;
-    height: fit-content;
-}
-
-.filter-group {
-    margin-bottom: 20px;
-}
-
-.filter-group label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--musha-gold);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-}
-
-.filter-group select {
-    width: 100%;
-    padding: 10px;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    color: white;
-    border-radius: 5px;
-}
-
-/* Car Cards - The "Virtual Lot" Look */
-.car-grid {
-    flex-grow: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 25px;
-    padding: 0 30px 30px 30px;
-}
-
-.car-card {
-    background: var(--card-bg);
-    border: 1px solid #222;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: var(--transition);
-    position: relative;
-}
-
-.car-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--musha-gold);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.car-image-container {
-    height: 200px;
-    overflow: hidden;
-    position: relative;
-}
-
-.car-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.verified-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--musha-green);
-    color: white;
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-}
-
-.car-info {
-    padding: 20px;
-}
-
-.car-info h3 {
-    font-size: 1.2rem;
-    margin-bottom: 5px;
-}
-
-.car-specs {
-    font-size: 0.85rem;
-    color: #888;
-    margin-bottom: 15px;
-}
-
-.car-price {
-    font-size: 1.4rem;
-    color: var(--musha-gold);
-    font-weight: bold;
-    margin-bottom: 15px;
-    display: block;
-}
-
-/* Action Buttons */
-.car-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.negotiate-wa {
-    flex: 1;
-    background: #25d366;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.view-btn {
-    flex: 1;
-    background: transparent;
-    border: 1px solid var(--musha-gold);
-    color: var(--musha-gold);
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-@media (max-width: 992px) {
-    .auto-body .main-layout {
-        flex-direction: column;
-    }
-    .auto-body .filter-sidebar {
-        width: 100%;
-        position: relative;
-        top: 0;
-        margin-bottom: 20px;
-    }
-}
-/* =========================================
-   AUTO SHOWROOM BACKGROUND
-   ========================================= */
-.auto-body {
-    /* Use one of your new uploads as the lot background */
-    background: linear-gradient(rgba(5, 10, 8, 0.65), rgba(5, 10, 8, 0.55)), 
-                url('assets/showroom-bg.jpg'); 
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-}
-
-/* Make the sidebar slightly transparent to show the bg */
-.auto-body .filter-sidebar {
-    background: rgba(17, 17, 17, 0.8) !important;
-    backdrop-filter: blur(10px); /* Modern glass effect */
-    border-right: 1px solid rgba(212, 175, 55, 0.2);
-}
-
-/* Ensure the cards stand out against the new background */
-.car-card {
-    background: rgba(20, 20, 20, 0.9) !important;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-/* =========================================
-   SYNCHRONIZED NAV BUTTONS (Auto/Mall/Sell)
-   ========================================= */
-
+/* ---------- 6. MAIN NAVIGATION ---------- */
 .main-nav {
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    border-bottom: 1px solid var(--border-gold);
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 900;
+}
+
+.main-nav .logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 2px;
 }
 
 .nav-links {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
 }
 
-/* Base style for Mall and Showroom buttons */
 .nav-link {
     text-decoration: none;
-    color: #bbb;
+    color: var(--text-secondary);
     font-size: 0.85rem;
     font-weight: 600;
     padding: 10px 18px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     transition: var(--transition);
     border: 1px solid transparent;
     display: flex;
     align-items: center;
     gap: 8px;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -401,10 +307,9 @@ body {
 .nav-link.active {
     color: var(--musha-gold);
     border-color: rgba(212, 175, 55, 0.4);
-    background: rgba(212, 175, 55, 0.1);
+    background: var(--musha-gold-dim);
 }
 
-/* The "Sell" Button - Higher Visual Priority */
 .sell-btn-nav {
     background: var(--musha-green) !important;
     color: white !important;
@@ -415,26 +320,489 @@ body {
 .sell-btn-nav:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(46, 175, 125, 0.5);
-    background: #36c78f !important;
+    background: var(--musha-green-light) !important;
 }
 
-/* =========================================
-   MOBILE RESPONSIVENESS
-   ========================================= */
-@media (max-width: 768px) {
-    .nav-links .nav-link span {
-        display: none; /* Hide text, show only icons on very small screens */
-    }
-    .logo { font-size: 1rem; }
+/* ---------- 7. GATEWAY / HERO SYSTEM ---------- */
+#gateway-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    text-align: center;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
 }
 
-/* =========================================
-   SELL PAGE MODERNIZATION
-   ========================================= */
+.gateway-header {
+    margin-bottom: 40px;
+}
 
+.musha-logo-container {
+    width: 80px;
+    margin: 0 auto 20px;
+}
+
+.musha-icon-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
+}
+
+.brand-name {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 6px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--musha-gold), #fff, var(--musha-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.tagline {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.gateway-choices {
+    display: flex;
+    gap: 40px;
+    align-items: stretch;
+    margin: 40px 0;
+}
+
+.choice-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 40px 30px;
+    min-width: 280px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.choice-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--musha-gold), transparent);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.choice-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--border-gold);
+    box-shadow: var(--shadow-gold);
+}
+
+.choice-card:hover::before {
+    opacity: 1;
+}
+
+.choice-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.choice-card p {
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+.enter-btn {
+    background: transparent;
+    color: var(--musha-gold);
+    border: 1.5px solid var(--musha-gold);
+    padding: 14px 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.enter-btn:hover {
+    background: var(--musha-gold);
+    color: #000;
+    letter-spacing: 3px;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.divider {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--musha-gold), transparent);
+    align-self: stretch;
+}
+
+.gateway-footer {
+    margin-top: 60px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* ---------- 8. LOBBY / HERO (RESPONSIVE) ---------- */
+.lobby-hero {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lobby-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(5,10,8,0.3), rgba(5,10,8,0.7));
+    pointer-events: none;
+}
+
+.lobby-overlay {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 70px);
+    display: flex;
+}
+
+.lobby-zone {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.lobby-zone:hover {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.lobby-zone:hover .zone-label {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+.zone-label {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-gold);
+    padding: 20px 30px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    transition: var(--transition);
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+.zone-label i {
+    font-size: 2rem;
+    color: var(--musha-gold);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.zone-label span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: white;
+}
+
+.zone-circle {
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 2px solid var(--musha-gold);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.zone-circle i {
+    margin-bottom: 5px;
+}
+
+/* ---------- 9. SECTION HEADERS ---------- */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-title h3 {
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-title p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.back-btn {
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.85rem;
+}
+
+.back-btn:hover {
+    border-color: var(--musha-gold);
+    color: var(--musha-gold);
+}
+
+/* ---------- 10. GRIDS ---------- */
+.car-grid, .admin-grid, .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 30px;
+}
+
+/* ---------- 11. CARDS (UNIFIED) ---------- */
+.car-card, .item-card, .shop-item-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.car-card:hover, .item-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-gold);
+    box-shadow: var(--shadow-gold);
+}
+
+.car-image-container, .card-img-container {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.car-image-container img, .card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.car-card:hover .car-image-container img,
+.item-card:hover .card-img-container img {
+    transform: scale(1.08);
+}
+
+.verified-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--musha-green);
+    color: white;
+    font-size: 0.7rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 2;
+}
+
+.promo-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #ff4b2b, #ff6b4b);
+    color: white;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: pulse 2s infinite;
+    z-index: 2;
+}
+
+.car-info, .card-info, .shop-item-info {
+    padding: 20px;
+}
+
+.car-info h3, .card-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.car-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.car-specs, .card-info .category {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.car-price, .price-tag {
+    font-size: 1.3rem;
+    color: var(--musha-gold);
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.vendor-tag {
+    font-size: 0.75rem;
+    color: var(--musha-gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ---------- 12. CONTACT STRIP ---------- */
+.contact-strip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.buy-btn, .negotiate-wa, .wa-btn {
+    flex-grow: 1;
+    background: var(--musha-gold);
+    color: #000;
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.buy-btn:hover, .negotiate-wa:hover {
+    background: #e5c158;
+    transform: scale(1.02);
+    box-shadow: var(--shadow-gold);
+}
+
+.negotiate-wa {
+    background: var(--success);
+    color: white;
+}
+
+.negotiate-wa:hover {
+    background: #1ebe57;
+}
+
+.view-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.view-btn:hover {
+    background: var(--musha-gold-dim);
+}
+
+.car-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.extra-channels {
+    display: flex;
+    gap: 12px;
+}
+
+.extra-channels a {
+    color: var(--musha-gold);
+    font-size: 1.2rem;
+    transition: var(--transition);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.extra-channels a:hover {
+    color: white;
+    background: rgba(212, 175, 55, 0.25);
+    transform: translateY(-2px);
+}
+
+/* ---------- 13. SELL PAGE ---------- */
 .sell-body {
-    /* PLACE YOUR BACKGROUND IMAGE HERE */
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.9)), 
                 url('assets/1000144673.jpg'); 
     background-size: cover;
     background-position: center;
@@ -445,335 +813,41 @@ body {
 .sell-page-wrapper {
     width: 100%;
     min-height: 100vh;
+    padding-bottom: 40px;
 }
 
 .sell-container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 0 20px;
 }
 
-.sell-form {
-    background: rgba(17, 17, 17, 0.85); /* Dark transparent glass */
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+.sell-header {
+    margin-bottom: 30px;
 }
 
 .sell-header .brand-name {
-    font-size: 2rem;
+    font-size: 2.2rem;
     text-align: center;
-    margin-bottom: 5px;
-}
-
-.sell-header p {
-    text-align: center;
-    color: #bbb;
-    margin-bottom: 30px;
-}
-
-/* Form Layout */
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.full-width { grid-column: 1 / -1; }
-
-.input-group label {
-    display: block;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--musha-gold);
     margin-bottom: 8px;
-    letter-spacing: 1px;
 }
 
-.input-group input, .input-group textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #333;
-    padding: 12px;
-    color: white;
-    border-radius: 8px;
-    outline: none;
-}
-
-.input-group input:focus {
-    border-color: var(--musha-gold);
-}
-
-/* List Button Sync */
-.list-now-btn {
-    width: 100%;
-    background: var(--musha-green);
-    color: white;
-    border: none;
-    padding: 15px;
-    border-radius: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-top: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.list-now-btn:hover {
-    background: #36c78f;
-    transform: translateY(-2px);
-}
-.universal-select {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid #333;
-    padding: 12px;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: inherit;
-}
-
-.universal-select option {
-    background: #111; /* Ensures dropdown options are readable */
-    color: white;
-}
-
-/* =========================================
-   PART 3: VENDOR DASHBOARD STYLING
-   ========================================= */
-
-.dashboard-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.tab-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #333;
-    color: #888;
-    padding: 12px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: var(--transition);
-}
-
-.tab-btn.active {
-    color: var(--musha-gold);
-    border-color: var(--musha-gold);
-    background: rgba(212, 175, 55, 0.1);
-}
-
-/* My Shop Inventory Cards */
-.shop-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.shop-item-card {
-    background: #111;
-    border-radius: 15px;
-    overflow: hidden;
-    border: 1px solid #222;
-    position: relative;
-    transition: 0.3s;
-}
-
-/* THE PROMOTION GLOW: For items with priorityScore > 0 */
-.shop-item-card.promo-active {
-    border-color: var(--musha-gold);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-}
-
-.promo-active::after {
-    content: "PROMOTED";
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: var(--musha-gold);
-    color: black;
-    font-size: 0.6rem;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 4px;
-}
-
-.shop-item-details { padding: 15px; }
-
-.shop-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 15px;
-}
-
-.promo-btn {
-    flex: 1;
-    background: transparent;
-    border: 1px solid var(--musha-gold);
-    color: var(--musha-gold);
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 0.75rem;
-    cursor: pointer;
-}
-
-.logistics-btn {
-    flex: 1;
-    background: #25d366;
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 0.75rem;
-    cursor: pointer;
-}
-
-.status-pending { color: #ffa500; font-size: 0.7rem; font-weight: bold; }
-.status-active { color: var(--musha-green); font-size: 0.7rem; font-weight: bold; }
-
-/* =========================================
-   PART 4: ADMIN DESK STYLING
-   ========================================= */
-
-.admin-card {
-    background: #1a1a1a;
-    border-left: 4px solid var(--musha-gold);
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    gap: 20px;
-}
-
-.admin-thumb {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.admin-info { flex-grow: 1; }
-
-.admin-actions { display: flex; gap: 10px; }
-
-.approve-btn {
-    background: var(--musha-green);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.reject-btn {
-    background: #ff4b2b;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.vendor-id { font-size: 0.7rem; color: #666; margin-top: 5px; }
-
-/* =========================================
-   GOD MODE DASHBOARD LAYOUT
-   ========================================= */
-.admin-dashboard-layout {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    min-height: calc(100vh - 70px);
-}
-
-.admin-sidebar {
-    background: #0d0d0d;
-    padding: 20px;
-    border-right: 1px solid #222;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.sidebar-label {
-    font-size: 0.7rem;
-    color: #444;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-.admin-tab {
-    background: transparent;
-    border: 1px solid transparent;
-    color: #888;
-    padding: 12px 15px;
-    text-align: left;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.admin-tab:hover, .admin-tab.active {
-    background: rgba(212, 175, 55, 0.05);
-    color: var(--musha-gold);
-    border-color: rgba(212, 175, 55, 0.2);
-}
-
-.verification-desk {
-    padding: 30px;
-    background: #050a08;
-}
-
-.section-header {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #222;
-    padding-bottom: 20px;
-}
-
-.header-title h3 {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
-}
-
-.header-title p {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* Admin Grid Responsive */
-.admin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 20px;
-}
-
-.admin-placeholder {
-    grid-column: 1/-1;
+.sell-header > p {
     text-align: center;
-    padding: 100px;
-    color: #444;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
 }
+
 .vendor-identity-card {
-    background: linear-gradient(145deg, #111, #080808);
-    padding: 20px;
-    border-radius: 15px;
+    background: linear-gradient(145deg, rgba(17,17,17,0.9), rgba(8,8,8,0.9));
+    padding: 24px;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(212, 175, 55, 0.1);
+    gap: 18px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    backdrop-filter: blur(10px);
 }
 
 .profile-pic {
@@ -786,128 +860,92 @@ body {
     align-items: center;
     justify-content: center;
     color: var(--musha-gold);
+    flex-shrink: 0;
 }
 
-#shop-name-input {
+.identity-text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.identity-text input {
     background: transparent;
     border: none;
     border-bottom: 1px dashed #444;
     color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 1.1rem;
+    font-weight: 600;
     width: 100%;
     outline: none;
+    padding: 4px 0;
 }
 
-#shop-name-input:focus {
+.identity-text input:focus {
     border-bottom-color: var(--musha-gold);
 }
-/* =========================================
-   LIVE VIEW: PRODUCT CARD ENHANCEMENTS
-   ========================================= */
 
-.vendor-tag {
-    font-size: 0.7rem;
-    color: var(--musha-gold);
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-bottom: 5px;
+.identity-text input::placeholder {
+    color: #555;
+    font-weight: 400;
+}
+
+.dashboard-tabs {
     display: flex;
-    align-items: center;
-    gap: 5px;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
-.promo-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #ff4b2b;
-    color: white;
-    font-size: 0.6rem;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.wa-btn {
-    width: 100%;
-    background: #25d366;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
+.tab-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    padding: 12px 24px;
+    border-radius: 30px;
     cursor: pointer;
-    transition: 0.3s;
+    font-weight: 700;
+    transition: var(--transition);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.wa-btn:hover {
-    background: #1ebe57;
-    transform: scale(1.02);
-}
-/* =========================================
-   PART 7: STATUS BADGES
-   ========================================= */
-
-.status-badge {
-    font-size: 0.65rem;
-    font-weight: bold;
-    padding: 4px 10px;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+.tab-btn:hover {
+    border-color: var(--border-gold);
+    color: var(--text-secondary);
 }
 
-.status-pending {
-    background: rgba(255, 165, 0, 0.1);
-    color: #ffa500;
-    border: 1px solid #ffa500;
+.tab-btn.active {
+    color: var(--musha-gold);
+    border-color: var(--musha-gold);
+    background: var(--musha-gold-dim);
+    box-shadow: var(--shadow-gold);
 }
 
-.status-active {
-    background: rgba(37, 211, 102, 0.1);
-    color: #25d366;
-    border: 1px solid #25d366;
-}
-
-.delete-btn {
-    background: #222;
-    color: #ff4b2b;
-    border: 1px solid #333;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.delete-btn:hover {
-    background: #ff4b2b;
-    color: white;
-}
 .vendor-analytics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 15px;
     margin-bottom: 30px;
-    padding: 10px;
 }
 
 .stat-card {
-    background: #1a1a1a;
-    border: 1px solid #333;
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid var(--border-subtle);
     padding: 20px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     gap: 15px;
+    backdrop-filter: blur(5px);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    border-color: var(--border-gold);
+    transform: translateY(-2px);
 }
 
 .stat-card i {
@@ -916,203 +954,941 @@ body {
 }
 
 .stat-label {
-    font-size: 0.75rem;
-    color: #888;
+    font-size: 0.7rem;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .stat-info h3 {
-    margin: 0;
-    font-size: 1.2rem;
+    margin: 4px 0 0;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: 700;
+}
+
+.sell-form {
+    background: rgba(17, 17, 17, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-gold);
+    padding: 35px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.full-width { 
+    grid-column: 1 / -1; 
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--musha-gold);
+    margin-bottom: 8px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.input-group input, 
+.input-group textarea, 
+.input-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    padding: 14px;
+    color: white;
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.input-group input:focus, 
+.input-group textarea:focus, 
+.input-group select:focus {
+    border-color: var(--musha-gold);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+    color: #555;
+}
+
+.universal-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px !important;
+}
+
+.universal-select option {
+    background: #111;
     color: white;
 }
 
-.gold-border { border: 2px solid var(--musha-gold) !important; }
+.camera-upload-zone {
+    border: 2px dashed var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.camera-upload-zone:hover {
+    border-color: var(--musha-gold);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.camera-trigger {
+    cursor: pointer;
+    display: block;
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    color: var(--musha-gold);
+    border: 1px solid var(--border-gold);
+    transition: var(--transition);
+}
+
+.camera-upload-zone:hover .icon-circle {
+    background: rgba(212, 175, 55, 0.2);
+    transform: scale(1.1);
+}
+
+.camera-trigger span {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.verification-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(46, 175, 125, 0.08);
+    border: 1px solid rgba(46, 175, 125, 0.2);
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    margin: 20px 0;
+}
+
+.verification-note i {
+    color: var(--musha-green);
+    font-size: 1.2rem;
+    margin-top: 2px;
+}
+
+.verification-note p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.list-now-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--musha-green), var(--musha-green-light));
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.list-now-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(46, 175, 125, 0.4);
+}
+
+.list-now-btn:active {
+    transform: translateY(0);
+}
+
+/* ---------- 14. SHOP DASHBOARD ---------- */
+.shop-header {
+    margin-bottom: 25px;
+}
+
+.shop-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.shop-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.shop-item-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    transition: var(--transition);
+}
+
+.shop-item-card:hover {
+    border-color: var(--border-gold);
+}
+
+.shop-item-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.shop-item-info {
+    padding: 18px;
+}
+
+.shop-item-info h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.shop-item-info p {
+    margin-bottom: 4px;
+}
+
+.shop-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.sold-btn, .delete-btn, .promo-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: var(--transition);
+    border: none;
+}
+
 .sold-btn {
     background: var(--musha-green);
     color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-}
-/* Sidebar Layout Fix */
-.side-bar {
-    display: flex;
-    flex-direction: column; /* Allows margin-top: auto to work */
-    height: 100vh;
-    position: fixed;
-    transition: var(--transition);
 }
 
-/* THE MOBILE TOGGLE LOGIC */
-/* RESPONSIVENESS SYSTEM */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: flex !important; /* Forces hamburger to show on mobile */
-    }
-    
-    .side-bar {
-        left: -280px; /* Hide by default on mobile */
-        z-index: 2000;
-    }
-
-    /* This is the class the JavaScript will toggle */
-    .side-bar.show-sidebar {
-        left: 0 !important;
-    }
+.sold-btn:hover {
+    background: var(--musha-green-light);
 }
 
-@media (min-width: 769px) {
-    .menu-toggle, .close-sidebar {
-        display: none !important;
-    }
-    .side-bar {
-        left: 0 !important; /* Always visible on desktop */
-    }
-    #main-content {
-        margin-left: 280px;
-    }
+.delete-btn {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(255, 75, 43, 0.3);
 }
 
-/* VENDOR BUTTON STYLING */
-.vendor-btn {
-    width: 100%; 
-    padding: 12px; 
-    border: 1px solid var(--musha-gold); 
-    color: var(--musha-gold); 
-    background: transparent; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    transition: 0.3s;
+.delete-btn:hover {
+    background: var(--danger);
+    color: white;
 }
 
-.vendor-btn:hover {
+.promo-btn {
+    background: transparent;
+    border: 1px solid var(--musha-gold);
+    color: var(--musha-gold);
+}
+
+.promo-btn:hover {
+    background: var(--musha-gold-dim);
+}
+
+/* Status Tags */
+.status-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.status-pending {
+    background: rgba(255, 165, 0, 0.15);
+    color: var(--warning);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.status-active {
+    background: rgba(37, 211, 102, 0.15);
+    color: var(--success);
+    border: 1px solid rgba(37, 211, 102, 0.3);
+}
+
+.status-sold {
+    background: rgba(100, 100, 100, 0.15);
+    color: #888;
+    border: 1px solid #333;
+}
+
+.shop-item-card.promo-active {
+    border-color: var(--musha-gold);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.shop-item-card.promo-active::after {
+    content: "PROMOTED";
+    position: absolute;
+    top: 12px;
+    left: 12px;
     background: var(--musha-gold);
     color: black;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
 }
 
-/* RESPONSIVENESS SYSTEM */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: flex; /* Show only on mobile */
-    }
-    .side-bar {
-        left: -280px; /* Hide sidebar initially on mobile */
-    }
-    .side-bar.active {
-        left: 0;
-    }
-    #main-content {
-        margin-left: 0;
-    }
+/* ---------- 15. ADMIN DASHBOARD ---------- */
+.admin-body {
+    background: var(--dark-bg);
+    min-height: 100vh;
 }
 
-@media (min-width: 769px) {
-    .menu-toggle, .close-sidebar {
-        display: none !important; /* Hide toggle and close button on desktop */
-    }
-    .side-bar {
-        left: 0 !important; /* Always show sidebar on desktop */
-    }
-    #main-content {
-        margin-left: 280px; /* Push content so it's not covered by sidebar */
-    }
-}
-
-/* Sidebar Engine */
-.side-bar {
+.admin-nav {
+    background: rgba(0,0,0,0.9);
+    border-bottom: 1px solid var(--border-gold);
+    padding: 15px 30px;
     display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: var(--sidebar-width);
-    background: var(--card-bg);
-    position: fixed;
-    transition: var(--transition);
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
     z-index: 1000;
 }
 
-/* Mobile Toggle: Default Hidden */
-.menu-toggle {
-    display: none;
-    position: fixed;
-    top: 3px;
-    left: 20px;
-    z-index: 1001;
-    background: var(--card-bg);
-    border: 1px solid var(--musha-gold);
-    color: var(--musha-gold);
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* TABLET & MOBILE VIEW (768px and below) */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block; /* Show hamburger only on mobile */
-    }
-    .side-bar {
-        left: -100%; /* Hide sidebar off-screen */
-    }
-    .side-bar.active {
-        left: 0; /* Slide in when active */
-    }
-    #main-content {
-        margin-left: 0;
-        width: 100%;
-    }
-}
-
-/* DESKTOP VIEW (769px and above) */
-@media (min-width: 769px) {
-    .menu-toggle, .close-sidebar {
-        display: none !important; /* Kill the hamburger and X button */
-    }
-    .side-bar {
-        left: 0 !important; /* Lock sidebar to the left */
-    }
-    #main-content {
-        margin-left: var(--sidebar-width); /* Push content to avoid overlap */
-        width: calc(100% - var(--sidebar-width));
-    }
-}
-/* CONTACT STRIP LOGIC */
-.contact-strip {
+.admin-logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid #333;
 }
 
-.buy-btn {
-    flex-grow: 1;
-    background: var(--musha-gold);
-    color: black;
-    border: none;
-    padding: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.extra-channels {
+.stats-bar {
     display: flex;
-    gap: 12px;
+    align-items: center;
+    gap: 25px;
 }
 
-.extra-channels a {
+.stat-item {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.stat-item b {
     color: var(--musha-gold);
-    font-size: 1.2rem;
-    transition: 0.3s;
+    font-size: 1.1rem;
+    margin-left: 5px;
 }
 
-.extra-channels a:hover {
-    color: white;
-    transform: translateY(-2px);
+.exit-admin {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(255, 75, 43, 0.3);
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
 }
+
+.exit-admin:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.admin-dashboard-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 65px);
+}
+
+.admin-sidebar {
+    background: var(--dark-elevated);
+    padding: 25px 15px;
+    border-right: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+.admin-tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    padding: 12px 15px;
+    text-align: left;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.admin-tab:hover, .admin-tab.active {
+    background: var(--musha-gold-dim);
+    color: var(--musha-gold);
+    border-color: var(--border-gold);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 20px 10px 0;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+}
+
+.sidebar-footer p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.sidebar-footer small {
+    font-size: 0.7rem;
+    color: #444;
+}
+
+.verification-desk {
+    padding: 30px;
+    background: var(--dark-bg);
+    overflow-y: auto;
+}
+
+.admin-card {
+    background: linear-gradient(145deg, #1a1a1a, #141414);
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--musha-gold);
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: var(--radius-md);
+    gap: 20px;
+    transition: var(--transition);
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.admin-card:hover {
+    border-color: var(--border-gold);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.admin-thumb {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    flex-shrink: 0;
+}
+
+.admin-info {
+    flex-grow: 1;
+}
+
+.admin-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tag {
+    font-size: 0.65rem;
+    background: var(--musha-gold-dim);
+    color: var(--musha-gold);
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.admin-info .gold-text {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.vendor-id {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.approve-btn, .reject-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.approve-btn {
+    background: var(--musha-green);
+    color: white;
+}
+
+.approve-btn:hover {
+    background: var(--musha-green-light);
+    box-shadow: 0 4px 15px rgba(46, 175, 125, 0.3);
+}
+
+.reject-btn {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(255, 75, 43, 0.3);
+}
+
+.reject-btn:hover {
+    background: var(--danger);
+    color: white;
+}
+
+/* ---------- 16. AUTO SHOWROOM ---------- */
+.auto-body {
+    background: linear-gradient(rgba(5, 10, 8, 0.7), rgba(5, 10, 8, 0.8)), 
+                url('assets/showroom-bg.jpg'); 
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.auto-body .main-layout {
+    display: flex;
+    margin-top: 20px;
+    min-height: calc(100vh - 160px);
+}
+
+.musha-header {
+    text-align: center;
+    padding: 40px 20px 20px;
+}
+
+.musha-header .brand-name {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.musha-header .tagline {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    letter-spacing: 4px;
+}
+
+.filter-sidebar {
+    width: var(--sidebar-width);
+    background: rgba(17, 17, 17, 0.9);
+    backdrop-filter: blur(15px);
+    border-right: 1px solid var(--border-subtle);
+    padding: 25px;
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.filter-header h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.filter-header i {
+    color: var(--musha-gold);
+}
+
+.reset-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.reset-btn:hover {
+    border-color: var(--musha-gold);
+    color: var(--musha-gold);
+}
+
+.showroom-container {
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+.showroom-stats {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+}
+
+.showroom-stats p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.showroom-stats i {
+    color: var(--musha-gold);
+    margin-right: 8px;
+}
+
+.auto-footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 40px;
+}
+
+/* ---------- 17. TRACKER ---------- */
+.tracker-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.tracker-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 35px;
+    text-align: center;
+    border-top: 4px solid var(--musha-gold);
+}
+
+.tracker-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.status-pill {
+    display: inline-block;
+    background: var(--musha-gold-dim);
+    color: var(--musha-gold);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid var(--border-gold);
+}
+
+.tracker-card p {
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.tracker-card p strong {
+    color: white;
+}
+
+/* ---------- 18. RESPONSIVE SYSTEM ---------- */
+@media (max-width: 768px) {
+    /* Sidebar Mobile */
+    .menu-toggle {
+        display: block !important;
+    }
+
+    .side-bar {
+        left: -280px;
+        box-shadow: 10px 0 40px rgba(0,0,0,0.6);
+    }
+
+    .side-bar.active {
+        left: 0;
+    }
+
+    .close-sidebar {
+        display: block;
+    }
+
+    .lobby-container {
+        margin-left: 0;
+    }
+
+    /* Main Nav */
+    .main-nav {
+        padding: 12px 15px;
+    }
+
+    .nav-links .nav-link span {
+        display: none;
+    }
+
+    .nav-link {
+        padding: 10px 12px;
+    }
+
+    .logo { 
+        font-size: 1rem; 
+    }
+
+    /* Gateway */
+    .gateway-choices {
+        flex-direction: column;
+        gap: 25px;
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .choice-card {
+        min-width: auto;
+        padding: 30px 25px;
+    }
+
+    .divider {
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, var(--musha-gold), transparent);
+    }
+
+    .brand-name {
+        font-size: 2rem;
+    }
+
+    /* Lobby */
+    .lobby-overlay {
+        flex-direction: column;
+    }
+
+    .lobby-zone {
+        min-height: 200px;
+    }
+
+    .zone-label {
+        padding: 15px 20px;
+    }
+
+    .zone-circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    /* Grids */
+    .car-grid, .admin-grid, .shop-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    /* Auto Layout */
+    .auto-body .main-layout {
+        flex-direction: column;
+    }
+
+    .filter-sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+        border-radius: 0;
+        margin-bottom: 20px;
+    }
+
+    /* Sell Page */
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sell-container {
+        margin: 20px auto;
+    }
+
+    .sell-form {
+        padding: 25px 20px;
+    }
+
+    .vendor-analytics {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Admin */
+    .admin-dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 15px;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .sidebar-label {
+        display: none;
+    }
+
+    .admin-tab {
+        white-space: nowrap;
+    }
+
+    .stats-bar {
+        gap: 15px;
+    }
+
+    .admin-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .admin-thumb {
+        width: 100%;
+        height: 200px;
+    }
+
+    .admin-actions {
+        width: 100%;
+    }
+
+    .approve-btn, .reject-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    /* Section Header */
+    .section-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .car-grid, .admin-grid, .shop-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ---------- 19. MISC UTILITIES ---------- */
+.admin-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-muted);
+}
+
+.admin-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--musha-gold);
+    opacity: 0.5;
+}
+
+.gold-border { 
+    border: 2px solid var(--musha-gold) !important; 
+}
+
+/* Toast Notification System */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-gold);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 9999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.success { border-left: 4px solid var(--musha-green); }
+.toast.error { border-left: 4px solid var(--danger); }
+.toast.info { border-left: 4px solid var(--musha-gold); }
