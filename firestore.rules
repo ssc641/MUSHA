@@ -2,27 +2,55 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Allow anyone to READ active items (public marketplace)
+    // VENDOR INVENTORY: Public marketplace items
     match /vendor_inventory/{item} {
-      allow read: if resource.data.status == "active" || 
-                     request.auth != null || 
-                     request.auth == null;
+      // Anyone can READ active items
+      allow read: if true;
 
-      // Allow anyone to CREATE (vendors submitting listings)
+      // Only logged-in vendors can CREATE (goes to pending)
       allow create: if request.resource.data.keys().hasAny(['name', 'price', 'category']) &&
                        request.resource.data.status == "pending";
 
-      // Allow anyone to UPDATE their own item (mark as sold, edit)
-      // In production, you'd want auth checks. For now, open for testing.
-      allow update: if true;
+      // Vendor can update their own items, admin can update any
+      allow update: if resource.data.vendorId == request.auth?.uid || 
+                       get(/databases/$(database)/documents/vendors/$(request.auth?.uid)).data.isAdmin == true;
 
-      // Allow anyone to DELETE (remove their listing)
-      allow delete: if true;
+      // Vendor can delete their own items, admin can delete any
+      allow delete: if resource.data.vendorId == request.auth?.uid ||
+                       get(/databases/$(database)/documents/vendors/$(request.auth?.uid)).data.isAdmin == true;
     }
 
-    // Admin collection (for future use)
-    match /admins/{admin} {
-      allow read, write: if false; // Restricted - set up auth later
+    // VENDORS: Shop accounts
+    match /vendors/{vendorId} {
+      // Anyone can read vendor public info
+      allow read: if true;
+
+      // Anyone can register (create)
+      allow create: if request.resource.data.keys().hasAll(['shopName', 'email', 'phone', 'password']);
+
+      // Only self or admin can update
+      allow update: if request.auth != null && (request.auth.uid == vendorId || resource.data.isAdmin == true);
+
+      // Only admin can delete vendor accounts
+      allow delete: if request.auth != null && 
+                       get(/databases/$(database)/documents/vendors/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    // PASSWORD RESETS: Admin-managed queue
+    match /password_resets/{resetId} {
+      // Anyone can create a reset request
+      allow create: if request.resource.data.keys().hasAll(['vendorId', 'vendorEmail', 'proofPhone']);
+
+      // Only admin can read/update
+      allow read, update: if request.auth != null &&
+                            get(/databases/$(database)/documents/vendors/$(request.auth.uid)).data.isAdmin == true;
+
+      allow delete: if false; // Never delete reset records (audit trail)
+    }
+
+    // ADMIN COLLECTION (reserved for future)
+    match /admins/{adminId} {
+      allow read, write: if false;
     }
   }
 }
