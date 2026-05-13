@@ -1,107 +1,42 @@
-
-# Option B: Validation-only rules that work with custom auth system
-# Prevents garbage data, forces pending status, validates emails, restricts updates
-
-firestore_rules_safe = '''rules_version = '2';
+rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // =========================================
-    // VENDOR INVENTORY: Marketplace items
-    // =========================================
+
     match /vendor_inventory/{item} {
-      
-      // READ: Anyone can read active or pending items
-      allow read: if resource.data.status == "active" || 
-                     resource.data.status == "pending" ||
-                     resource.data.status == "sold";
-      
-      // CREATE: Must have all required fields, status MUST be pending
+      allow read: if true;
       allow create: if request.resource.data.keys().hasAll(['name', 'price', 'category', 'vendorId', 'vendorName', 'status', 'placementTag']) &&
                        request.resource.data.status == "pending" &&
                        request.resource.data.price is number &&
-                       request.resource.data.price > 0 &&
-                       request.resource.data.name is string &&
-                       request.resource.data.name.size() > 0 &&
-                       request.resource.data.category is string &&
-                       request.resource.data.category.size() > 0 &&
-                       request.resource.data.vendorId is string &&
-                       request.resource.data.vendorId.size() > 0 &&
-                       request.resource.data.vendorName is string &&
-                       request.resource.data.vendorName.size() > 0 &&
-                       request.resource.data.placementTag in ["mall", "lot"];
-      
-      // UPDATE: Can only change specific fields (prevents price tampering)
-      // Allowed: status (admin approval), isSold, onPromotion, priorityScore, soldAt, image
+                       request.resource.data.price > 0;
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
-                       .hasOnly(['status', 'isSold', 'onPromotion', 'priorityScore', 'soldAt', 'image', 'facebook', 'email', 'whatsapp']) &&
-                       // Status can only change to valid values
-                       (request.resource.data.status == null || 
-                        request.resource.data.status in ["active", "pending", "sold", "rejected"]) &&
-                       // If price is being updated, it must stay positive
-                       (request.resource.data.price == null || 
-                        (request.resource.data.price is number && request.resource.data.price > 0));
-      
-      // DELETE: Allow for admin cleanup
+                       .hasOnly(['status', 'isSold', 'onPromotion', 'priorityScore', 'soldAt', 'image', 'facebook', 'email', 'whatsapp']);
       allow delete: if true;
     }
-    
-    // =========================================
-    // VENDORS: Shop accounts
-    // =========================================
+
     match /vendors/{vendorId} {
-      
-      // READ: Anyone can read vendor public info
       allow read: if true;
-      
-      // CREATE: Must have all required fields, valid email format
       allow create: if request.resource.data.keys().hasAll(['shopName', 'email', 'phone', 'password']) &&
                        request.resource.data.shopName is string &&
                        request.resource.data.shopName.size() >= 2 &&
                        request.resource.data.email is string &&
-                       request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') &&
+                       request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$') &&
                        request.resource.data.phone is string &&
                        request.resource.data.phone.size() >= 8 &&
                        request.resource.data.password is string &&
                        request.resource.data.password.size() >= 6;
-      
-      // UPDATE: Can only update profile fields (NOT password directly)
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
-                       .hasOnly(['shopName', 'phone', 'whatsapp', 'facebook', 'lastLogin', 'isVerified', 'status', 'passwordResetAt']) &&
-                       // If shopName is updated, must be valid
-                       (request.resource.data.shopName == null || 
-                        (request.resource.data.shopName is string && request.resource.data.shopName.size() >= 2));
-      
-      // DELETE: Allow for admin cleanup
+                       .hasOnly(['shopName', 'phone', 'whatsapp', 'facebook', 'lastLogin', 'isVerified', 'status', 'passwordResetAt']);
       allow delete: if true;
     }
-    
-    // =========================================
-    // PASSWORD RESETS: Admin-managed queue
-    // =========================================
+
     match /password_resets/{resetId} {
-      // Anyone can create a reset request
       allow create: if request.resource.data.keys().hasAll(['vendorId', 'vendorEmail', 'proofPhone', 'vendorShopName', 'status']) &&
                        request.resource.data.status == "pending_admin_review";
-      
-      // Anyone can read their own (by email), admin can read all
       allow read: if true;
-      
-      // Only admin can update status
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
                        .hasOnly(['status', 'completedAt', 'rejectedAt']) &&
                        request.resource.data.status in ["completed", "rejected"];
-      
-      // Never delete reset records (audit trail)
       allow delete: if false;
     }
   }
 }
-'''
-
-with open('/mnt/agents/output/firestore.rules', 'w') as f:
-    f.write(firestore_rules_safe)
-
-print("firestore.rules updated with VALIDATION-ONLY security rules")
-print("=" * 60)
-print(firestore_rules_safe)
