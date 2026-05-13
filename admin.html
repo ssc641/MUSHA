@@ -6,6 +6,7 @@
     <title>StaTech | God Mode Admin</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<base target="_blank">
 </head>
 <body class="admin-body">
 
@@ -16,54 +17,102 @@
         <div class="stats-bar">
             <div class="stat-item">Queue: <b id="pending-count">0</b></div>
             <div class="stat-item">Revenue: <b id="total-revenue">$0</b></div>
-            <button class="exit-admin" onclick="location.href='index.html'">EXIT SYSTEM</button>
+            <button class="exit-admin" onclick="location.href='index.html'">
+                <i class="fas fa-sign-out-alt"></i> EXIT SYSTEM
+            </button>
         </div>
     </nav>
 
     <main class="admin-dashboard-layout">
-        
+
         <aside class="admin-sidebar">
-            <div class="sidebar-label">FILTERS</div>
+            <div class="sidebar-label">ADMIN PANEL</div>
+
             <button class="admin-tab active" onclick="filterAdmin('all')">
-                <i class="fas fa-layer-group"></i> All Requests
+                <i class="fas fa-clipboard-check"></i> Verification Desk
             </button>
             <button class="admin-tab" onclick="filterAdmin('mall')">
-                <i class="fas fa-store"></i> Musha Mall
+                <i class="fas fa-store"></i> Mall Queue
             </button>
             <button class="admin-tab" onclick="filterAdmin('lot')">
-                <i class="fas fa-car"></i> Auto Lot
+                <i class="fas fa-car"></i> Auto Lot Queue
             </button>
-            
+
+            <div style="margin-top: 20px; border-top: 1px solid #222; padding-top: 20px;">
+                <div class="sidebar-label">MANAGEMENT</div>
+                <button class="admin-tab" onclick="filterAdmin('vendors')">
+                    <i class="fas fa-users"></i> All Vendors
+                </button>
+                <button class="admin-tab" onclick="filterAdmin('resets')">
+                    <i class="fas fa-key"></i> Password Resets
+                </button>
+            </div>
+
             <div class="sidebar-footer">
-                <p>Musha System v2.0</p>
+                <p>Musha System v3.0</p>
                 <small>Secure Admin Node</small>
             </div>
         </aside>
 
         <section class="verification-desk">
-            <div class="section-header">
-                <div class="header-title">
-                    <h3><i class="fas fa-clipboard-check"></i> VERIFICATION DESK</h3>
-                    <p>Security Check: Approve or Reject submissions</p>
+
+            <!-- VERIFICATION DESK -->
+            <div id="verification-desk-section">
+                <div class="section-header">
+                    <div class="header-title">
+                        <h3><i class="fas fa-clipboard-check"></i> VERIFICATION DESK</h3>
+                        <p>Security Check: Approve or Reject submissions</p>
+                    </div>
+                </div>
+                <div id="admin-pending-list" class="admin-grid">
+                    <div class="admin-placeholder">
+                        <i class="fas fa-sync fa-spin"></i>
+                        <p>Scanning vault for submissions...</p>
+                    </div>
                 </div>
             </div>
-            
-            <div id="admin-pending-list" class="admin-grid">
-                <div class="admin-placeholder">
-                    <i class="fas fa-sync fa-spin"></i>
-                    <p>Scanning local vault for submissions...</p>
+
+            <!-- VENDOR MANAGEMENT -->
+            <div id="vendor-management-section" style="display:none;">
+                <div class="section-header">
+                    <div class="header-title">
+                        <h3><i class="fas fa-users"></i> VENDOR MANAGEMENT</h3>
+                        <p>View and manage all registered vendor shops</p>
+                    </div>
+                </div>
+                <div id="vendor-management-list" class="admin-grid">
+                    <div class="admin-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading vendor registry...</p>
+                    </div>
                 </div>
             </div>
+
+            <!-- PASSWORD RESET QUEUE -->
+            <div id="password-reset-section" style="display:none;">
+                <div class="section-header">
+                    <div class="header-title">
+                        <h3><i class="fas fa-key"></i> PASSWORD RESET QUEUE</h3>
+                        <p>Verify vendor proof and approve password recoveries</p>
+                    </div>
+                </div>
+                <div id="password-reset-list" class="admin-grid">
+                    <div class="admin-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading reset requests...</p>
+                    </div>
+                </div>
+            </div>
+
         </section>
-        
+
     </main>
 
-   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    
     <script src="firebase-config.js"></script>
-
+    <script src="auth.js"></script>
     <script src="admin.js"></script>
     <script src="main.js"></script>
 </body>
