@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sell on Moosha | Snap & List</title>
+    <title>Sell on Moosha | Vendor Hub</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <base target="_blank">
@@ -12,66 +12,198 @@
     <div class="sell-page-wrapper">
 
         <nav class="main-nav">
-            <div class="logo">STA-TECH <span class="gold-text">SELLS</span></div>
+            <div class="logo">STA-TECH <span class="gold-text">VENDOR HUB</span></div>
             <div class="nav-links">
-                <a href="mall.html" class="nav-link"><i class="fas fa-store"></i> Mall</a>
-                <a href="auto.html" class="nav-link"><i class="fas fa-car"></i> Showroom</a>
-                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Exit</a>
+                <a href="mall.html" class="nav-link"><i class="fas fa-store"></i> <span>Mall</span></a>
+                <a href="auto.html" class="nav-link"><i class="fas fa-car"></i> <span>Showroom</span></a>
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> <span>Exit</span></a>
+                <button id="logout-btn" onclick="logoutVendor()" class="nav-link" style="display:none; background:none; border:none; color:#ff4b2b; cursor:pointer;">
+                    <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+                </button>
             </div>
         </nav>
 
-        <div class="sell-container">
-            <header class="sell-header">
-                <div class="header-text">
-                    <h1 class="brand-name">LIST YOUR <span class="gold-text">PRODUCT</span></h1>
-                    <p>Direct Submission to StaTech Hub</p>
+        <!-- AUTH SECTION: Login / Register -->
+        <div id="auth-section" class="sell-container" style="max-width: 450px;">
+            <div class="auth-tabs dashboard-tabs" style="margin-bottom: 30px;">
+                <button class="tab-btn active" onclick="switchAuthTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> LOGIN
+                </button>
+                <button class="tab-btn" onclick="switchAuthTab('register')">
+                    <i class="fas fa-user-plus"></i> REGISTER
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="login-form" class="sell-form">
+                <div class="sell-header" style="margin-bottom: 25px;">
+                    <h1 class="brand-name" style="font-size: 1.8rem;">VENDOR <span class="gold-text">LOGIN</span></h1>
+                    <p>Access your shop dashboard</p>
                 </div>
 
-                <div class="vendor-identity-card">
-                    <div class="profile-pic">
-                        <i class="fas fa-store fa-2x"></i>
+                <form onsubmit="handleLogin(event)">
+                    <div class="input-group full-width">
+                        <label><i class="fas fa-envelope"></i> Business Email</label>
+                        <input type="email" id="login-email" placeholder="vendor@email.com" required>
                     </div>
-                    <div class="identity-text">
-                        <input type="text" id="shop-name-input" placeholder="Shop Name (e.g. Staff's Tech)" onblur="saveShopIdentity()">
-                        <input type="text" id="shop-whatsapp-input" placeholder="WhatsApp (e.g. 263771111111)" onblur="saveShopIdentity()">
-                    </div>
-                </div>
 
-                <div class="dashboard-tabs">
-                    <button class="tab-btn active" onclick="switchDashboardTab('list')">
-                        <i class="fas fa-plus-circle"></i> NEW LISTING
+                    <div class="input-group full-width">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="login-password" placeholder="Your password" required>
+                    </div>
+
+                    <div class="input-group full-width" style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+                        <input type="checkbox" id="remember-me" style="width:auto;">
+                        <label for="remember-me" style="margin:0; font-size:0.8rem; color:var(--text-secondary);">Remember me for 7 days</label>
+                    </div>
+
+                    <button type="submit" class="list-now-btn" style="margin-top: 20px;">
+                        <i class="fas fa-sign-in-alt"></i> LOGIN TO SHOP
                     </button>
-                    <button class="tab-btn" onclick="switchDashboardTab('manage')">
-                        <i class="fas fa-store"></i> MY SHOP
+                </form>
+
+                <p style="text-align:center; margin-top:20px; color:var(--text-muted); font-size:0.85rem;">
+                    <a href="#" onclick="showForgotPassword()" style="color:var(--musha-gold);">Forgot password?</a>
+                </p>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div id="register-form" class="sell-form" style="display:none;">
+                <div class="sell-header" style="margin-bottom: 25px;">
+                    <h1 class="brand-name" style="font-size: 1.8rem;">CREATE <span class="gold-text">SHOP</span></h1>
+                    <p>Start selling on Moosha today</p>
+                </div>
+
+                <form onsubmit="handleRegister(event)">
+                    <div class="input-group full-width">
+                        <label><i class="fas fa-store"></i> Shop Name</label>
+                        <input type="text" id="reg-shop-name" placeholder="e.g. Staff's Tech" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="reg-email" placeholder="vendor@email.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-phone"></i> WhatsApp</label>
+                            <input type="text" id="reg-phone" placeholder="263771111111" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label><i class="fab fa-facebook"></i> Facebook Page (Optional)</label>
+                        <input type="url" id="reg-facebook" placeholder="https://facebook.com/yourshop">
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label><i class="fas fa-lock"></i> Password</label>
+                            <input type="password" id="reg-password" placeholder="Min 6 characters" required minlength="6">
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-lock"></i> Confirm</label>
+                            <input type="password" id="reg-confirm" placeholder="Repeat password" required>
+                        </div>
+                    </div>
+
+                    <div class="verification-note" style="margin: 15px 0;">
+                        <i class="fas fa-info-circle"></i>
+                        <p>By registering, you agree to Moosha's vendor terms. Admin will verify your shop before listings go live.</p>
+                    </div>
+
+                    <button type="submit" class="list-now-btn">
+                        <i class="fas fa-user-plus"></i> CREATE SHOP ACCOUNT
                     </button>
+                </form>
+            </div>
+
+            <!-- FORGOT PASSWORD FORM -->
+            <div id="forgot-form" class="sell-form" style="display:none;">
+                <div class="sell-header" style="margin-bottom: 25px;">
+                    <h1 class="brand-name" style="font-size: 1.8rem;">RESET <span class="gold-text">PASSWORD</span></h1>
+                    <p>Prove ownership to recover access</p>
                 </div>
 
-                <div class="vendor-analytics">
-                    <div class="stat-card">
-                        <i class="fas fa-wallet"></i>
-                        <div class="stat-info">
-                            <span class="stat-label">Stock Value</span>
-                            <h3 id="total-stock-value">$0</h3>
-                        </div>
+                <form onsubmit="handleForgotPassword(event)">
+                    <div class="input-group full-width">
+                        <label><i class="fas fa-envelope"></i> Registered Email</label>
+                        <input type="email" id="forgot-email" placeholder="Your shop email" required>
                     </div>
-                    <div class="stat-card">
-                        <i class="fas fa-chart-line"></i>
-                        <div class="stat-info">
-                            <span class="stat-label">Live Items</span>
-                            <h3 id="live-items-count">0</h3>
-                        </div>
+
+                    <div class="input-group full-width">
+                        <label><i class="fas fa-phone"></i> Shop WhatsApp Number</label>
+                        <input type="text" id="forgot-phone" placeholder="263771111111" required>
                     </div>
-                    <div class="stat-card">
-                        <i class="fas fa-percentage"></i>
-                        <div class="stat-info">
-                            <span class="stat-label">Pending</span>
-                            <h3 id="pending-items-count">0</h3>
-                        </div>
+
+                    <div class="input-group full-width">
+                        <label><i class="fas fa-store"></i> Exact Shop Name</label>
+                        <input type="text" id="forgot-shop" placeholder="As registered" required>
+                    </div>
+
+                    <div class="verification-note" style="background: rgba(212, 175, 55, 0.08); border-color: var(--musha-gold);">
+                        <i class="fas fa-shield-alt" style="color: var(--musha-gold);"></i>
+                        <p>An admin will verify your proof and reset your password within 24 hours. You'll receive a temporary password via WhatsApp.</p>
+                    </div>
+
+                    <button type="submit" class="list-now-btn" style="background: linear-gradient(135deg, var(--musha-gold), #e5c158);">
+                        <i class="fas fa-paper-plane"></i> SUBMIT RESET REQUEST
+                    </button>
+
+                    <p style="text-align:center; margin-top:15px;">
+                        <a href="#" onclick="showLoginForm()" style="color:var(--text-secondary); font-size:0.85rem;">Back to login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <!-- DASHBOARD SECTION: Only visible when logged in -->
+        <div id="dashboard-section" class="sell-container" style="display:none;">
+
+            <div class="vendor-identity-card">
+                <div class="profile-pic">
+                    <i class="fas fa-store fa-2x"></i>
+                </div>
+                <div class="identity-text">
+                    <input type="text" id="shop-name-input" placeholder="Shop Name" readonly style="border-bottom:none;">
+                    <p id="vendor-email-display" style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;"></p>
+                </div>
+            </div>
+
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchDashboardTab('list')">
+                    <i class="fas fa-plus-circle"></i> NEW LISTING
+                </button>
+                <button class="tab-btn" onclick="switchDashboardTab('manage')">
+                    <i class="fas fa-store"></i> MY SHOP
+                </button>
+            </div>
+
+            <div class="vendor-analytics">
+                <div class="stat-card">
+                    <i class="fas fa-wallet"></i>
+                    <div class="stat-info">
+                        <span class="stat-label">Stock Value</span>
+                        <h3 id="total-stock-value">$0</h3>
                     </div>
                 </div>
-            </header>
+                <div class="stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="stat-info">
+                        <span class="stat-label">Live Items</span>
+                        <h3 id="live-items-count">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <span class="stat-label">Pending</span>
+                        <h3 id="pending-items-count">0</h3>
+                    </div>
+                </div>
+            </div>
 
-            <!-- TAB 1: LISTING FORM -->
+            <!-- NEW LISTING FORM -->
             <div id="sell-form-section">
                 <form id="public-upload-form" class="sell-form" onsubmit="handleShopSubmission(event)">
 
@@ -113,7 +245,7 @@
                         </div>
 
                         <div class="input-group">
-                            <label><i class="fab fa-facebook"></i> Facebook Page (Optional)</label>
+                            <label><i class="fab fa-facebook"></i> Facebook (Optional)</label>
                             <input type="url" id="p-fb" placeholder="https://facebook.com/yourshop">
                         </div>
 
@@ -128,18 +260,20 @@
                         <p>All listings stay <b>Private</b> until verified by the StaTech Admin Team.</p>
                     </div>
 
-                    <button type="submit" class="list-now-btn">SUBMIT TO HUB</button>
+                    <button type="submit" class="list-now-btn">
+                        <i class="fas fa-paper-plane"></i> SUBMIT TO HUB
+                    </button>
                 </form>
             </div>
 
-            <!-- TAB 2: MY SHOP -->
+            <!-- MY SHOP SECTION -->
             <div id="my-shop-section" style="display: none;">
                 <div class="shop-header">
                     <h2 class="gold-text">MANAGE INVENTORY</h2>
                     <p id="vendor-stats">Vetting: 0 | Active: 0</p>
                 </div>
                 <div id="my-shop-grid" class="shop-grid">
-                    <p class="empty-msg">No listings yet. Create your first one above.</p>
+                    <div class="empty-msg">No listings yet. Create your first one above.</div>
                 </div>
             </div>
 
@@ -150,6 +284,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
     <script src="main.js"></script>
     <script src="shop.js"></script>
 </body>
