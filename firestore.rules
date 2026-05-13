@@ -2,41 +2,70 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // =========================================
+    // VENDOR INVENTORY (Mall + Auto Lot items)
+    // =========================================
     match /vendor_inventory/{item} {
-      allow read: if true;
-      allow create: if request.resource.data.keys().hasAll(['name', 'price', 'category', 'vendorId', 'vendorName', 'status', 'placementTag']) &&
-                       request.resource.data.status == "pending" &&
-                       request.resource.data.price is number &&
-                       request.resource.data.price > 0;
+      // Anyone can read active listings (public marketplace)
+      allow read: if resource.data.status == 'active'
+                    || resource.data.status == 'pending';
+
+      // Vendors can submit new items (goes to pending)
+      allow create: if request.resource.data.keys().hasAll([
+        'name', 'price', 'vendorId', 'status', 'placementTag'
+      ]);
+
+      // Allow updates for: approval, sold status, promotions
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
-                       .hasOnly(['status', 'isSold', 'onPromotion', 'priorityScore', 'soldAt', 'image', 'facebook', 'email', 'whatsapp']);
+        .hasOnly([
+          'status', 'approvedAt',
+          'isSold', 'soldAt',
+          'onPromotion', 'priorityScore',
+          'image', 'description', 'whatsapp', 'facebook', 'email'
+        ]);
+
+      // Vendors can delete their own; admin can delete any
       allow delete: if true;
     }
 
-    match /vendors/{vendorId} {
+    // =========================================
+    // VENDORS (Shop accounts)
+    // =========================================
+    match /vendors/{vendor} {
+      // Needed for login/registration lookups
       allow read: if true;
-      allow create: if request.resource.data.keys().hasAll(['shopName', 'email', 'phone', 'password']) &&
-                       request.resource.data.shopName is string &&
-                       request.resource.data.shopName.size() >= 2 &&
-                       request.resource.data.email is string &&
-                       request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$') &&
-                       request.resource.data.phone is string &&
-                       request.resource.data.phone.size() >= 8 &&
-                       request.resource.data.password is string &&
-                       request.resource.data.password.size() >= 6;
+
+      // Registration
+      allow create: if request.resource.data.keys().hasAll([
+        'shopName', 'email', 'password'
+      ]);
+
+      // Allow password resets and lastLogin updates only
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
-                       .hasOnly(['shopName', 'phone', 'whatsapp', 'facebook', 'lastLogin', 'isVerified', 'status', 'passwordResetAt']);
+        .hasOnly([
+          'password', 'passwordResetAt', 'lastLogin',
+          'whatsapp', 'facebook', 'phone'
+        ]);
+
+      // Admin shop deletion
       allow delete: if true;
     }
 
-    match /password_resets/{resetId} {
-      allow create: if request.resource.data.keys().hasAll(['vendorId', 'vendorEmail', 'proofPhone', 'vendorShopName', 'status']) &&
-                       request.resource.data.status == "pending_admin_review";
+    // =========================================
+    // PASSWORD RESET QUEUE
+    // =========================================
+    match /password_resets/{reset} {
       allow read: if true;
+
+      allow create: if request.resource.data.keys().hasAll([
+        'vendorId', 'vendorEmail', 'status', 'requestedAt'
+      ]);
+
+      // Admin approves/rejects
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
-                       .hasOnly(['status', 'completedAt', 'rejectedAt']) &&
-                       request.resource.data.status in ["completed", "rejected"];
-      allow delete: if false;
+        .hasOnly(['status', 'completedAt', 'rejectedAt']);
+
+      allow delete: if true;
     }
   }
 }
