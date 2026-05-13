@@ -206,5 +206,73 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleSidebar();
             }
         }
+
+       
+# Update main.js to add comparison modal system
+with open('/mnt/agents/output/main.js', 'r') as f:
+    current_main = f.read()
+
+# Add comparison modal functions before the closing of the file
+compare_functions = '''
+
+/* =========================================
+   COMPARISON MODAL SYSTEM
+   ========================================= */
+
+let _compareModalCreated = false;
+
+function ensureCompareModal() {
+    if (_compareModalCreated) return;
+    
+    const modalHTML = `
+        <div id="compare-modal-overlay" class="compare-modal-overlay" onclick="closeCompareModal(event)">
+            <div class="compare-modal" onclick="event.stopPropagation()">
+                <div class="compare-header">
+                    <h2><i class="fas fa-balance-scale"></i> Compare Prices</h2>
+                    <button class="compare-close" onclick="closeCompareModal()">&times;</button>
+                </div>
+                <div class="compare-body" id="compare-modal-body">
+                    <!-- Content injected here -->
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const div = document.createElement('div');
+    div.innerHTML = modalHTML;
+    document.body.appendChild(div.firstElementChild);
+    _compareModalCreated = true;
+}
+
+function openCompareModal() {
+    ensureCompareModal();
+    const overlay = document.getElementById('compare-modal-overlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeCompareModal(e) {
+    if (e && e.target !== e.currentTarget) return;
+    const overlay = document.getElementById('compare-modal-overlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCompareModal();
+});
+'''
+
+# Append before the last closing brace or at the end
+with open('/mnt/agents/output/main.js', 'w') as f:
+    f.write(current_main + '\n' + compare_functions)
+
+print("Comparison modal functions added to main.js")
+
     });
 });
