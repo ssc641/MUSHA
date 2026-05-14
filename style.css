@@ -1892,3 +1892,29 @@ body {
 .toast.success { border-left: 4px solid var(--musha-green); }
 .toast.error { border-left: 4px solid var(--danger); }
 .toast.info { border-left: 4px solid var(--musha-gold); }
+
+/* ---------- TRANSPORT WITH MOOSHA ---------- */
+.transport-btn {
+    width: 100%;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--warning), #ff8c00);
+    color: #000;
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.transport-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+}
