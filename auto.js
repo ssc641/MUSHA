@@ -118,6 +118,9 @@ function negotiateWhatsApp(carName, phone) {
     const msg = `Hi, I saw the ${carName} on StaTech Auto. Is it available for viewing?`;
     window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
+                    <button class="transport-btn" onclick="transportWithMoosha('${car.year} ${car.brand} ${car.model}', '${car.dealership || 'Independent'}', ${car.price}, 'Auto Lot')">
+                        <i class="fas fa-truck"></i> TRANSPORT WITH MOOSHA
+                    </button>
 
 function makeOffer(carName) {
     const offer = prompt(`Enter your cash offer for the ${carName} (USD):`);
