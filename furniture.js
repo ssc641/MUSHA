@@ -105,6 +105,14 @@ function negotiateWA(itemName, phone) {
     window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
+                    <button class="negotiate-btn-main" onclick="negotiateWA('${item.name}', '${item.whatsapp}')">
+                        <i class="fab fa-whatsapp"></i> CHAT TO BUY
+                    </button>
+                    <button class="transport-btn" onclick="transportWithMoosha('${item.name}', '${item.vendorName || 'Musha Official'}', ${item.price}, 'Grand Mall')">
+                        <i class="fas fa-truck"></i> TRANSPORT WITH MOOSHA
+                    </button>
+                    <div class="card-actions-row">
+
 function showProductDetails(id) { alert(`Product ID: ${id}`); }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -129,3 +137,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+
