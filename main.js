@@ -128,6 +128,17 @@ function showToast(message, type = 'info') {
 }
 
 /* =========================================
+   MOOSHA TRANSPORT CONCIERGE
+   ========================================= */
+const MOOSHA_LOGISTICS_WHATSAPP = "263779041144";
+
+function transportWithMoosha(itemName, vendorName, price, source) {
+    const msg = `Hi Moosha, I'm interested in buying *${itemName}* from *${vendorName || 'a vendor'}* (priced at $${Number(price).toLocaleString()}) on the ${source || 'marketplace'}. Can you help arrange delivery to my area? I'm ready to pay for transport.`;
+    window.open(`https://wa.me/${MOOSHA_LOGISTICS_WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+
+/* =========================================
    COMPARISON MODAL SYSTEM
    ========================================= */
 let _compareModalCreated = false;
