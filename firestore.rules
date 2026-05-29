@@ -3,69 +3,133 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // =========================================
-    // VENDOR INVENTORY (Mall + Auto Lot items)
+    // MALL QUEUE (Pending furniture/item submissions)
     // =========================================
-    match /vendor_inventory/{item} {
-      // Anyone can read active listings (public marketplace)
-      allow read: if resource.data.status == 'active'
-                    || resource.data.status == 'pending';
+    match /mallQueue/{itemId} {
+      // Admin reads all; vendors read their own
+      allow read: if request.auth != null 
+                   && (resource.data.vendorId == request.auth.uid 
+                       || isAdmin());
 
-      // Vendors can submit new items (goes to pending)
-      allow create: if request.resource.data.keys().hasAll([
-        'name', 'price', 'vendorId', 'status', 'placementTag'
-      ]);
+      // Any authenticated vendor can submit
+      allow create: if request.auth != null
+        && request.resource.data.vendorId == request.auth.uid
+        && request.resource.data.keys().hasAll([
+             'name', 'price', 'vendorId', 'status', 'placementTag'
+           ])
+        && request.resource.data.status == 'pending';
 
-      // Allow updates for: approval, sold status, promotions
-      allow update: if request.resource.data.diff(resource.data).affectedKeys()
-        .hasOnly([
-          'status', 'approvedAt',
-          'isSold', 'soldAt',
-          'onPromotion', 'priorityScore',
-          'image', 'description', 'whatsapp', 'facebook', 'email'
-        ]);
+      // Admin approves/rejects only
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly(['status', 'approvedAt', 'rejectedAt', 'reviewedBy']);
 
-      // Vendors can delete their own; admin can delete any
-      allow delete: if true;
+      allow delete: if isAdmin();
+    }
+
+    // =========================================
+    // AUTO LOT QUEUE (Pending vehicle submissions)
+    // =========================================
+    match /autoLotQueue/{itemId} {
+      allow read: if request.auth != null 
+                   && (resource.data.vendorId == request.auth.uid 
+                       || isAdmin());
+
+      allow create: if request.auth != null
+        && request.resource.data.vendorId == request.auth.uid
+        && request.resource.data.keys().hasAll([
+             'name', 'price', 'vendorId', 'status', 'placementTag'
+           ])
+        && request.resource.data.status == 'pending';
+
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly(['status', 'approvedAt', 'rejectedAt', 'reviewedBy']);
+
+      allow delete: if isAdmin();
+    }
+
+    // =========================================
+    // VERIFICATION DESK (Admin-only view of all queues)
+    // Optional: aggregate collection for admin dashboard
+    // =========================================
+    match /verificationDesk/{docId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // =========================================
+    // VENDOR INVENTORY (Live, approved listings)
+    // =========================================
+    match /vendor_inventory/{itemId} {
+      // Public can read active items
+      allow read: if resource.data.status == 'active';
+
+      // Admin creates these when approving from queue
+      // OR auto-created by Cloud Function on approval
+      allow create: if isAdmin();
+
+      // Admin controls: status, promotions, sold flag
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly([
+             'status', 'approvedAt',
+             'isSold', 'soldAt',
+             'onPromotion', 'priorityScore'
+           ]);
+
+      allow delete: if isAdmin();
     }
 
     // =========================================
     // VENDORS (Shop accounts)
     // =========================================
-    match /vendors/{vendor} {
-      // Needed for login/registration lookups
+    match /vendors/{vendorId} {
       allow read: if true;
 
-      // Registration
       allow create: if request.resource.data.keys().hasAll([
         'shopName', 'email', 'password'
       ]);
 
-      // Allow password resets and lastLogin updates only
-      allow update: if request.resource.data.diff(resource.data).affectedKeys()
-        .hasOnly([
-          'password', 'passwordResetAt', 'lastLogin',
-          'whatsapp', 'facebook', 'phone'
-        ]);
+      // Vendor updates own profile; admin updates any
+      allow update: if (request.auth != null && request.auth.uid == vendorId)
+        || isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly([
+             'password', 'passwordResetAt', 'lastLogin',
+             'whatsapp', 'facebook', 'phone'
+           ]);
 
-      // Admin shop deletion
-      allow delete: if true;
+      allow delete: if isAdmin();
     }
 
     // =========================================
     // PASSWORD RESET QUEUE
     // =========================================
-    match /password_resets/{reset} {
+    match /password_resets/{resetId} {
       allow read: if true;
 
       allow create: if request.resource.data.keys().hasAll([
         'vendorId', 'vendorEmail', 'status', 'requestedAt'
       ]);
 
-      // Admin approves/rejects
-      allow update: if request.resource.data.diff(resource.data).affectedKeys()
-        .hasOnly(['status', 'completedAt', 'rejectedAt']);
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly(['status', 'completedAt', 'rejectedAt']);
 
-      allow delete: if true;
+      allow delete: if isAdmin();
+    }
+
+    // =========================================
+    // ADMIN HELPERS
+    // =========================================
+    function isAdmin() {
+      // Option A: Check custom claim (recommended)
+      return request.auth != null 
+        && request.auth.token.admin == true;
+      
+      // Option B: Check admin document (if not using custom claims)
+      // return exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
   }
 }
