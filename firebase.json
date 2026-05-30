@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "musha-a9afd",
     "public": ".",
     "ignore": [
       "firebase.json",
