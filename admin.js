@@ -7,54 +7,64 @@ function renderAdminQueue() {
     const queueContainer = document.getElementById('admin-pending-list');
     if (!queueContainer) return;
 
-    db.collection("vendor_inventory")
-      .where("status", "==", "pending")
-      .onSnapshot((querySnapshot) => {
-          let pendingItems = [];
-          querySnapshot.forEach((doc) => {
-              pendingItems.push({ id: doc.id, ...doc.data() });
-          });
+    // Read from BOTH queues
+    const mallQuery = db.collection("mallQueue").where("status", "==", "pending");
+    const autoQuery = db.collection("autoLotQueue").where("status", "==", "pending");
 
-          const countEl = document.getElementById('pending-count');
-          if (countEl) countEl.innerText = pendingItems.length;
+    Promise.all([
+        mallQuery.get(),
+        autoQuery.get()
+    ]).then(([mallSnapshot, autoSnapshot]) => {
+        let pendingItems = [];
+        
+        mallSnapshot.forEach((doc) => {
+            pendingItems.push({ id: doc.id, ...doc.data(), sourceQueue: 'mallQueue' });
+        });
+        
+        autoSnapshot.forEach((doc) => {
+            pendingItems.push({ id: doc.id, ...doc.data(), sourceQueue: 'autoLotQueue' });
+        });
 
-          if (pendingItems.length === 0) {
-              queueContainer.innerHTML = `
-                  <div class="admin-placeholder">
-                      <i class="fas fa-check-circle" style="color:var(--musha-green);"></i>
-                      <p>All caught up! No items in vetting queue.</p>
-                  </div>`;
-              return;
-          }
+        const countEl = document.getElementById('pending-count');
+        if (countEl) countEl.innerText = pendingItems.length;
 
-          queueContainer.innerHTML = pendingItems.map((item, index) => `
-              <div class="admin-card" style="animation-delay: ${index * 0.05}s">
-                  <img src="${item.image || 'assets/musha.png'}" class="admin-thumb" alt="${item.name}" loading="lazy">
-                  <div class="admin-info">
-                      <h3>${item.name} <span class="tag">${item.placementTag || 'mall'}</span></h3>
-                      <p class="gold-text">$${Number(item.price).toLocaleString()}</p>
-                      <p class="vendor-id"><i class="fas fa-user"></i> ${item.vendorName || 'Unknown'}</p>
-                      <p class="vendor-id" style="margin-top:2px;"><i class="fas fa-envelope"></i> ${item.vendorEmail || 'No email'}</p>
-                      <p class="vendor-id" style="margin-top:2px;"><i class="fas fa-folder"></i> ${item.category || 'Uncategorized'}</p>
-                  </div>
-                  <div class="admin-actions">
-                      <button onclick="approveItem('${item.id}')" class="approve-btn">
-                          <i class="fas fa-check"></i> APPROVE
-                      </button>
-                      <button onclick="rejectItem('${item.id}')" class="reject-btn">
-                          <i class="fas fa-trash"></i> REJECT
-                      </button>
-                  </div>
-              </div>
-          `).join('');
-      }, (error) => {
-          console.error("Admin snapshot error:", error);
-          queueContainer.innerHTML = `<div class="admin-placeholder"><i class="fas fa-exclamation-triangle" style="color:var(--danger);"></i><p>Error loading queue. Check Firebase rules.</p></div>`;
-      });
+        if (pendingItems.length === 0) {
+            queueContainer.innerHTML = `
+                <div class="admin-placeholder">
+                    <i class="fas fa-check-circle" style="color:var(--musha-green);"></i>
+                    <p>All caught up! No items in vetting queue.</p>
+                </div>`;
+            return;
+        }
+
+        queueContainer.innerHTML = pendingItems.map((item, index) => `
+            <div class="admin-card" style="animation-delay: ${index * 0.05}s">
+                <img src="${item.image || 'assets/musha.png'}" class="admin-thumb" alt="${item.name}" loading="lazy">
+                <div class="admin-info">
+                    <h3>${item.name} <span class="tag">${item.placementTag || 'mall'}</span></h3>
+                    <p class="gold-text">$${Number(item.price).toLocaleString()}</p>
+                    <p class="vendor-id"><i class="fas fa-user"></i> ${item.vendorName || 'Unknown'}</p>
+                    <p class="vendor-id" style="margin-top:2px;"><i class="fas fa-envelope"></i> ${item.vendorEmail || 'No email'}</p>
+                    <p class="vendor-id" style="margin-top:2px;"><i class="fas fa-folder"></i> ${item.category || 'Uncategorized'}</p>
+                </div>
+                <div class="admin-actions">
+                    <button onclick="approveItem('${item.id}', '${item.sourceQueue}')" class="approve-btn">
+                        <i class="fas fa-check"></i> APPROVE
+                    </button>
+                    <button onclick="rejectItem('${item.id}', '${item.sourceQueue}')" class="reject-btn">
+                        <i class="fas fa-trash"></i> REJECT
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }).catch((error) => {
+        console.error("Admin queue error:", error);
+        queueContainer.innerHTML = `<div class="admin-placeholder"><i class="fas fa-exclamation-triangle" style="color:var(--danger);"></i><p>Error loading queue. Check Firebase rules.</p></div>`;
+    });
 }
 
 function approveItem(docId, sourceQueue) {
-    const collectionName = sourceQueue || 'mallQueue'; // fallback
+    const collectionName = sourceQueue || 'mallQueue';
     
     db.collection(collectionName).doc(docId).get()
     .then((doc) => {
@@ -74,7 +84,7 @@ function approveItem(docId, sourceQueue) {
     })
     .then(() => {
         showToast("Item approved and is now LIVE!", "success");
-        renderAdminQueue(); // Refresh the list
+        renderAdminQueue();
     })
     .catch((error) => {
         console.error("Error approving:", error);
@@ -89,7 +99,7 @@ function rejectItem(docId, sourceQueue) {
         db.collection(collectionName).doc(docId).delete()
         .then(() => {
             showToast("Item rejected and removed.", "info");
-            renderAdminQueue(); // Refresh the list
+            renderAdminQueue();
         })
         .catch((error) => {
             console.error("Error rejecting:", error);
@@ -98,15 +108,12 @@ function rejectItem(docId, sourceQueue) {
     }
 }
 
-
 /* =========================================
    ADMIN OVERRIDE: Delete ANY product
    ========================================= */
 
 function adminDeleteAnyProduct(productId) {
-    if (!confirm("ADMIN OVERRIDE: Permanently delete this product?
-
-This action cannot be undone.")) return;
+    if (!confirm("ADMIN OVERRIDE: Permanently delete this product?\n\nThis action cannot be undone.")) return;
 
     db.collection("vendor_inventory").doc(productId).delete()
     .then(() => {
@@ -123,9 +130,7 @@ This action cannot be undone.")) return;
    ========================================= */
 
 function adminDeleteVendorShop(vendorId, vendorName) {
-    if (!confirm(`ADMIN OVERRIDE: Delete entire shop "${vendorName}"?
-
-ALL their listings will be permanently removed. This cannot be undone.`)) return;
+    if (!confirm(`ADMIN OVERRIDE: Delete entire shop "${vendorName}"?\n\nALL their listings will be permanently removed. This cannot be undone.`)) return;
 
     // Step 1: Delete all their listings
     db.collection("vendor_inventory")
@@ -144,7 +149,7 @@ ALL their listings will be permanently removed. This cannot be undone.`)) return
       })
       .then(() => {
           showToast(`Shop "${vendorName}" and all listings deleted.`, "success");
-          renderAllVendors(); // Refresh the list
+          renderAllVendors();
       })
       .catch((error) => {
           console.error("Admin delete shop error:", error);
@@ -311,24 +316,27 @@ function filterAdmin(tag) {
         renderPasswordResetQueue();
     } else {
         document.getElementById('verification-desk-section').style.display = 'block';
-        if (tag !== 'all') {
-            let query = db.collection("vendor_inventory").where("status", "==", "pending");
-            if (tag !== 'all') {
-                query = query.where("placementTag", "==", tag);
-            }
-            renderFilteredQueue(query);
+        if (tag === 'all') {
+            renderAdminQueue();
+        } else {
+            // Filter by tag (mall/lot)
+            const targetCollection = (tag === 'lot') ? 'autoLotQueue' : 'mallQueue';
+            const query = db.collection(targetCollection).where("status", "==", "pending");
+            renderFilteredQueue(query, tag);
         }
     }
 }
 
-function renderFilteredQueue(query) {
+function renderFilteredQueue(query, tag) {
     const queueContainer = document.getElementById('admin-pending-list');
     if (!queueContainer) return;
+
+    const sourceQueue = (tag === 'lot') ? 'autoLotQueue' : 'mallQueue';
 
     query.get().then((querySnapshot) => {
         let items = [];
         querySnapshot.forEach((doc) => {
-            items.push({ id: doc.id, ...doc.data() });
+            items.push({ id: doc.id, ...doc.data(), sourceQueue: sourceQueue });
         });
 
         if (items.length === 0) {
@@ -345,10 +353,10 @@ function renderFilteredQueue(query) {
                     <p class="vendor-id"><i class="fas fa-user"></i> ${item.vendorName || 'Unknown'}</p>
                 </div>
                 <div class="admin-actions">
-                    <button onclick="approveItem('${item.id}')" class="approve-btn">
+                    <button onclick="approveItem('${item.id}', '${item.sourceQueue}')" class="approve-btn">
                         <i class="fas fa-check"></i> APPROVE
                     </button>
-                    <button onclick="rejectItem('${item.id}')" class="reject-btn">
+                    <button onclick="rejectItem('${item.id}', '${item.sourceQueue}')" class="reject-btn">
                         <i class="fas fa-trash"></i> REJECT
                     </button>
                 </div>
