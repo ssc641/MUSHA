@@ -53,13 +53,28 @@ function renderAdminQueue() {
       });
 }
 
-function approveItem(docId) {
-    db.collection("vendor_inventory").doc(docId).update({
-        status: 'active',
-        approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+function approveItem(docId, sourceQueue) {
+    const collectionName = sourceQueue || 'mallQueue'; // fallback
+    
+    db.collection(collectionName).doc(docId).get()
+    .then((doc) => {
+        if (!doc.exists) throw new Error("Item not found");
+        const itemData = doc.data();
+        
+        // Move to vendor_inventory as active
+        return db.collection("vendor_inventory").add({
+            ...itemData,
+            status: 'active',
+            approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    })
+    .then(() => {
+        // Delete from queue
+        return db.collection(collectionName).doc(docId).delete();
     })
     .then(() => {
         showToast("Item approved and is now LIVE!", "success");
+        renderAdminQueue(); // Refresh the list
     })
     .catch((error) => {
         console.error("Error approving:", error);
@@ -67,11 +82,14 @@ function approveItem(docId) {
     });
 }
 
-function rejectItem(docId) {
+function rejectItem(docId, sourceQueue) {
+    const collectionName = sourceQueue || 'mallQueue';
+    
     if (confirm("Delete this listing permanently?")) {
-        db.collection("vendor_inventory").doc(docId).delete()
+        db.collection(collectionName).doc(docId).delete()
         .then(() => {
             showToast("Item rejected and removed.", "info");
+            renderAdminQueue(); // Refresh the list
         })
         .catch((error) => {
             console.error("Error rejecting:", error);
@@ -79,6 +97,7 @@ function rejectItem(docId) {
         });
     }
 }
+
 
 /* =========================================
    ADMIN OVERRIDE: Delete ANY product
