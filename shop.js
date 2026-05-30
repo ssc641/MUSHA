@@ -54,7 +54,6 @@ function updateVendorStats() {
 function handleShopSubmission(event) {
     event.preventDefault();
 
-    // MUST be logged in
     if (!isVendorLoggedIn()) {
         showToast("Please log in first", "error");
         setTimeout(() => window.location.href = 'sell.html?mode=login', 1500);
@@ -70,7 +69,9 @@ function handleShopSubmission(event) {
     const email = document.getElementById('p-email').value.trim() || vendor.email || null;
     const imagePreview = document.getElementById('output-preview').src;
 
+    // FIX: Determine correct collection based on category
     const placement = (category === 'Vehicle') ? 'lot' : 'mall';
+    const targetCollection = (category === 'Vehicle') ? 'autoLotQueue' : 'mallQueue';
 
     if (!itemName || !price) {
         showToast("Please fill in product name and price.", "error");
@@ -106,7 +107,8 @@ function handleShopSubmission(event) {
         btn.disabled = true;
     }
 
-    db.collection("vendor_inventory").add(newItem)
+    // FIX: Write to the correct queue collection
+    db.collection(targetCollection).add(newItem)
     .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
         showToast(`${itemName} submitted for vetting!`, "success");
@@ -127,6 +129,7 @@ function handleShopSubmission(event) {
         }
     });
 }
+
 
 function deleteListing(docId) {
     if (!isVendorLoggedIn()) {
